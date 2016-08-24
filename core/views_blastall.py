@@ -168,6 +168,24 @@ def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_
 	result_dict['start']['match']['organism'] = prot_obj[0].organism.name
 	return result_dict
 
+def ligand_search(ligand):
+	initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%s/cids/TXT?name_type=word" % ligand
+        response = urllib2.urlopen(initial_url)
+	print response
+        results = re.split("\n",response.read().rstrip())
+        capt_cid = "<CID>(.+)</CID>"
+
+        for line in results:
+                res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/property/MolecularWeight,MolecularFormula,RotatableBondCount/XML?Threshold=99" % line)
+                hits = re.findall(capt_cid,res.read())
+                for item in hits:
+			if Ligand.objects.filter(chem_id=item).exists():
+				ligand_object = Ligand.objects.get(chem_id=item)
+                        if found_match is not None:
+                                if found_match[0] not in matches:
+                                        matches.append(found_match[0])
+                                        print "A match was found and it is " + found_match[0] + "<br>"
+
 @api_view(['POST'])
 def get_result(request):
 	if request.method == 'POST':
@@ -185,20 +203,15 @@ def get_result(request):
 			s_name = results['start']['match']['name']
 			s_seq = results['start']['match']['seq']
 			with open("msa.fa","w") as f:
-				f.write(">Query\n")
-				f.write(q_seq+"\n")
 				f.write(">Match\n")
 				f.write(s_seq+"\n")
+				f.write(">Query\n")
+				f.write(q_seq+"\n")
 			msa = check_output(['clustalo','-i','msa.fa'])
 			os.remove("msa.fa")
-			#for line in msa:
-			#	if ">" in line:
-			#		header = line
-			#	else:
-			#		seq += line
 			results['msa'] = msa
 		elif data.has_key('ligand'):
-			pass
+			results = ligand_search(data['ligand'])
 		pp.pprint(results)
 		response = JsonResponse(results)
 		os.system("rm blastdb*")
