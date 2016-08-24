@@ -1,0 +1,232 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>RampDB</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet"/>
+  <!-- Custom Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
+	
+</head>
+
+<body ng-app="homeApp" ng-controller="myCtrl">
+<nav class="navbar navbar-inverse">
+  <!--Logo-->
+  <div class="container-fluid" id="navbar_box" style="width: 100%">
+      <div class="navbar-header">
+      <a href="index.html" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+	  </div>
+
+    <div>
+      <u1 class="nav navbar-nav">
+        <li class="active"><a href="" ng-click="home='true'">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">RAMPs<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">Receptor Activity Modifying Proteins:</li>
+            <li><a href="ramp1.html">Ramp 1</a></li>
+            <li><a href="ramp2.html">Ramp 2</a></li>
+            <li><a href="ramp3.html">Ramp 3</a></li>
+            <li class="dropdown-header">RAMP-Like Proteins:</li>
+            <li><a href="ramp1.html"></a></li>
+            <li><a href="ramp2.html"></a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">GPCRs<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="ct.html">Calcitonin Receptor</a></li>
+            <li><a href="clr.html">Calcitonin-Like Receptor</a></li>
+            <li><a href="vip.html">Vasoactive Intestinal Receptor</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Ligands<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Amylin</a></li>
+            <li><a href="#">Adrenomedullin</a></li>
+            <li><a href="#">Calcitonin Gene-Related Peptide</a></li>
+          </ul>
+        </li>
+        <li><a href="#">About</a></li>
+      </u1>
+        <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results<span class='caret'></span></a>
+        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home" ng-click="home='true'";' role='button'>Search Again</a>
+    </div>
+
+  </div>
+
+</nav>
+<div ng-show="home">
+<!-- Main jumbotron-->
+  <div class="jumbotron" id="hero">
+    <div class="container-fluid">
+	<div id="logo">
+      <img src="{% static 'logo.png' %}" style="width:13vmin;vertical-align:middle; float: left;">
+      <h1 class="display-3" style="
+    vertical-align:middle;
+	line-height:13.5vmin;
+    ">Ramp<span style="color: #E0D7C5;">DB</span></h1></div>
+      <div id="banner_text">
+      <h2 style="font-size:3.0vmin;">A central repository for:</h2>
+      <p>1. Exploring known information regarding RAMPs, GPCRs and associated ligands</p>
+      <p>2. Predicting potential RAMP interactions with your sequence or ligand</p>
+      <p>3. Visualizing currently known interactions between RAMPs, GPCRs and ligands</p>
+      <a class="btn btn-primary btn-lg" id="learn_button" href="#" role="button">Learn more &raquo;</a>
+	  </div>
+    </div>
+  </div>
+  <div class="container-fluid" style="width:100%;">
+  <div class="row">
+      <div class="col-sm-8">
+			<h1 style="margin-top:2vh;">Predict Interactions:</h1>
+			<h3 style="padding-top:1vh;margin-bottom:3vh;">Enter a protein sequence or ligand name below to predict potential RAMP interactions:</h3>
+			<form action="javascript:void(0);">
+					<div class="row">
+						<div class="col-sm-6">
+							<div id="my_textarea">
+								<div class="row">
+									<div class="col-sm-8">
+										<h2 style="text-align:left">Protein Sequence:</h2>
+									</div>
+									<div class="col-sm-3" style="float:right">
+										<a class="btn btn-primary btn-lg" ng-click="Example()" name="example_ramp" id="example_button" role="button">Example</a>
+									</div>
+								</div>
+								<textarea name=textarea_r rows="9" ng-model="proteintext" cols="40" placeholder="Enter FASTA sequence" style="width:100%;height: 225px;"></textarea>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div id="my_textarea">
+								<h2 style="float:left;">Ligand Name:</h2>
+								<textarea name=textarea_l id=ligand_text ng-model="ligandtext" rows="1" cols="40" placeholder="Enter Ligand name" style="width:100%;"></textarea>
+								<h2 style="float:left;">Common Ligands:</h2>
+							<div style="margin-bottom:10px">
+								<select class="extra" id="CommonLigands" ng-click="LigandSelected()" ng-model="commonLigands" size="6" style="width:100%; height: 150px">
+									<option>Adrenomedullin</option>
+									<option>Intermedin</option>
+									<option>Amylin</option>
+									<option>Calcitonin Gene-Related Peptide</option>
+									<option>Vasoactive Intestinal Peptide</option>
+									<option>Tuberoinfundibular Peptide</option>
+								</select>
+							</div>
+						</div>
+				  </div>
+			</div>
+			<div ng-show="errorflag">
+				{% verbatim %}
+				<h2><span style="color:red">{{ error }}</span></h2>
+				{% endverbatim %}
+			</div>
+
+				<input type ="submit" ng-click="Submit()" ng-hide="main_loading" class="btn btn-primary btn-lg" id="search_submit" href="#" role="button" style="
+				box-shadow: 1px 1px 0px #000;
+				margin-top:5%;
+				margin-bottom:8%;
+				width: 35%;
+				display:block;
+				background-color: steelblue;
+				margin-left: auto;
+				margin-right:auto;" value="Submit &raquo;">
+
+			<div ng-show="main_loading">
+				<h2><img src="{% static 'bootstrap/images/spinner.gif' %}">
+				Loading results, please wait....</h2>
+			</div>
+
+			</form>
+
+			</div>
+			<div class="col-sm-4" style="padding:0;">
+				<h1 style="margin-top:2vh;margin-bottom:2vh;">Database Status:</h1>
+				<h2 ng-show="loading">Status: <span style="color:red">Offline</span><h2>
+				<img ng-show="loading" src="{% static 'bootstrap/images/spinner.gif' %}">
+				{% verbatim %}
+				<h2 ng-show="results">Status: <span style="color:green">Online</span><h2>
+				<h2 style="margin-top:2.5vh" ng-show="results" ng-repeat="(key,value) in data">{{key}} : {{value}}</h2>
+				{% endverbatim %}
+			</div>
+	  </div>
+  </div>
+</div>
+</div>
+<div id="total_results" ng-hide="home" ng-hide="main_loading">
+        <div class='container-fluid' id='results_page'>
+                <div id='summary'>
+                <h1 id='results_h1'>Summary:</h1>
+                <h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Query:</span>
+                {% verbatim %}
+                {{ quer_name }}
+                </h3>
+                <h3 id='summary_h3'><span style=font-weight:bold>Family:</span>
+		{{ family }} ({{ family_short }}) 
+		</h3>
+                <div ng-show="highConf">
+			<h3 id='summary_h3'><span style=font-weight:bold>Confidence:</span><span style=color:green> 
+			{{ confidence }}% </h3>
+                	<h3 id='summary_h3'><span style=font-weight:bold>Confidence Level:</span><span style=color:green> High</span></h3>
+		</div>
+                <div ng-hide="highConf">
+			<h3 id='summary_h3'><span style=font-weight:bold>Confidence:</span><span style=color:red> 
+			{{ confidence }}% </h3>
+                	<h3 id='summary_h3'><span style=font-weight:bold>Confidence Level:</span><span style=color:red> Low</span></h3>
+		</div>
+        </div>
+
+	<div id='right_float'>
+		<h3 id="results_h1">Best Match:</h3>
+        	<div id="sequence">
+        	</div>
+                <h3 id='summary_h3'><span style=font-weight:bold>Organism:</span>
+		{{ organism }}  
+		</h3>
+                <h3 id='summary_h3'><span style=font-weight:bold>Source Link:</span>
+		<a ng-href="{{ url }}">{{ url }}</a>
+		</h3>
+	</div>
+        <div class='container-fluid' id='results_page_int'>
+                <h1 id='results_h1' style='float:left; display:block;'>Known {{ family_short }} Interactions:</h1>
+                <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
+             	<tr>
+			<th>Phenotype</th>
+			<th>Protein</th>
+			<th>Ligand</th>
+		</tr>
+		<tr id='interactions_tr' ng-repeat="(phenotype,object) in interactions">
+			<td> {{ phenotype }} </td>
+			<td> {{ object.gpcr }} </td>
+			<td> {{ object.ligand }} </td>
+		</tr>
+		</table>
+        </div>
+               {% endverbatim %}
+
+</div>
+
+
+</body>
+
+
+
+</html>
+
+

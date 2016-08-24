@@ -1,0 +1,118 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>RampDB</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet"/>
+  <!-- Custom Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
+
+ <!-- <script src="msa/biojs_vis_easy_features.min.js"></script>-->
+</head>
+
+<body ng-app="homeApp" ng-controller="myCtrl">
+<nav class="navbar navbar-inverse">
+  <!--Logo-->
+  <div class="container-fluid" id="navbar_box" style="width: 100%;">
+      <div class="navbar-header">
+      <a href="index.html" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+      </div>
+
+    <div>
+      <u1 class="nav navbar-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">RAMPs<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="ramp1.html">Ramp 1</a></li>
+            <li><a href="ramp2.html">Ramp 2</a></li>
+            <li><a href="ramp3.html">Ramp 3</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">GPCRs<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="ct.html">Calcitonin Receptor</a></li>
+            <li><a href="clr.html">Calcitonin-Like Receptor</a></li>
+            <li><a href="vip.html">Vasoactive Intestinal Receptor</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Ligands<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Ramp 1</a></li>
+            <li><a href="#">Ramp 2</a></li>
+            <li><a href="#">Ramp 3</a></li>
+          </ul>
+        </li>
+        <li><a href="#">About</a></li>
+      </u1>
+
+    </div>
+  </div>
+</nav>
+<div id="total_results">
+	<aside style='width:12%; height:1000px; float:left; color:white; padding-left:1%; padding-right:1%;'>
+		<h1> Quicklinks: </h1>
+	</aside>
+	<div class='container-fluid' id='results_page'>
+		<div id='summary'>
+		<h1 id='results_h1'>Summary:</h1>
+		<h3 style='padding-top:4%' id='summary_h3'><span style=font-weight:bold>Query:</span>
+		{% verbatim %}
+		{{ quer_name }}
+		{% endverbatim %}
+		</h3>
+		<h3 id='summary_h3'><span style=font-weight:bold>Family:</span></h3>
+		<h3 id='summary_h3'><span style=font-weight:bold>Confidence:</span><span style=color:red></h3>
+		<h3 id='summary_h3'><span style=font-weight:bold>Confidence Level:</span><span style=color:red> Low</span></h3>
+	</div>
+	<a class='btn btn-primary btn-lg' id='export_button' href='#' role='button'>Export Results<span class='caret'></span></a>
+	<a class='btn btn-primary btn-lg' id='export_button' href='' onclick='history.go(-1);' role='button'>Search Again</a>
+	<div id='sequence'>
+	</div>
+	<div class='container-fluid' id='results_page_int'>
+		<h1 id='results_h1' style='float:left; display:block;'>Known </h1>
+		<table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
+		</table>
+	</div>	
+</div>
+<script>
+ var opts = {
+ el: sequence,
+ importURL: "./test_msa.txt"
+ };
+ opts.colorscheme = {scheme:"taylor"};
+ opts.vis = {labelId: false};
+ opts.zoomer = {alignmentHeight: "65px",alignmentWidth: "600", rowHeight: 30, columnWidth:20, labelLineHeight:"25px", labelNameLengt$
+ var m = new msa(opts);
+}
+</script>
+<footer>
+  RampDB 2016
+</footer>
+</body>
+
+
+
+</html>
+
+
