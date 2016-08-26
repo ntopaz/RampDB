@@ -169,50 +169,87 @@ def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_
 	return result_dict
 
 def ligand_search(ligand):
-	initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%s/cids/TXT?name_type=word" % ligand
-        response = urllib2.urlopen(initial_url)
-	print response
-        results = re.split("\n",response.read().rstrip())
-        capt_cid = "<CID>(.+)</CID>"
+	result_dict = {}
+	ligand_objects = Ligand.objects.all()
+	result_dict['start'] = {'query_name':ligand, 'match': {}}
+	for lig_obj in ligand_objects:
+		if ligand.lower() == lig_obj.name.lower():
+			result_dict['start']['match']['name'] = lig_obj.name
+			result_dict['start']['match']['name_short'] = lig_obj.name_short
+			result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
+			result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+			return result_dict
 
-        for line in results:
-                res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/property/MolecularWeight,MolecularFormula,RotatableBondCount/XML?Threshold=99" % line)
-                hits = re.findall(capt_cid,res.read())
-                for item in hits:
-			if Ligand.objects.filter(chem_id=item).exists():
-				ligand_object = Ligand.objects.get(chem_id=item)
-                        if found_match is not None:
-                                if found_match[0] not in matches:
-                                        matches.append(found_match[0])
-                                        print "A match was found and it is " + found_match[0] + "<br>"
+	try:
+		initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%s/cids/TXT?name_type=word" % ligand
+        	response = urllib2.urlopen(initial_url)
+		print response
+        	results = re.split("\n",response.read().rstrip())
+        	capt_cid = "<CID>(.+)</CID>"
+        	for line in results:
+                	res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/XML?Threshold=80" % line)
+                	hits = re.findall(capt_cid,res.read())
+                	for item in hits:
+		       		if Ligand.objects.filter(chem_id=item).exists():
+						lig_obj = Ligand.objects.get(chem_id=item)
+						result_dict['start']['match']['name'] = lig_obj.name
+						result_dict['start']['match']['name_short'] = lig_obj.name_short
+						result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
+						result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+						return result_dict
+	except:
+		try:
+			inchi_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/%s/cids/TXT?name_type=word" % ligand
+			response = urllib2.urlopen(inchi_url)
+                	results = re.split("\n",response.read().rstrip())
+                	capt_cid = "<CID>(.+)</CID>"
+                	for line in results:
+	                	res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/XML?Threshold=80" % line)
+                        	hits = re.findall(capt_cid,res.read())
+                        	for item in hits:
+                                	if Ligand.objects.filter(chem_id=item).exists():
+                                                	lig_obj = Ligand.objects.get(chem_id=item)
+                                                	result_dict['start']['match']['name'] = lig_obj.name
+                                                	result_dict['start']['match']['name_short'] = lig_obj.name_short
+                                                	result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
+                                                	result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+                                                	return result_dict
+		except:
+			result = {'error' : 'No match found for that ligand query'}
+			return result
 
 @api_view(['POST'])
 def get_result(request):
 	if request.method == 'POST':
 		data = request.data
 		print data
-		if data.has_key('protein') and data.has_key('ligand') and data['ligand'].strip() != '':
+		if data.has_key('protein') and data.has_key('ligand') and data['ligand'].strip() != '' and data['protein'] != '':
 			results = {'error': 'Please submit either a protein sequence or ligand, not both'}
 			response = JsonResponse(results)
 			pp.pprint(results)
 			return response
-		elif data.has_key('protein'):
+		elif data.has_key('protein') and data['protein'].strip() !='':
 			results = blast_all(data['protein'])
-			q_name = results['start']['name']
-			q_seq = results['start']['seq']
-			s_name = results['start']['match']['name']
-			s_seq = results['start']['match']['seq']
-			with open("msa.fa","w") as f:
-				f.write(">Match\n")
-				f.write(s_seq+"\n")
-				f.write(">Query\n")
-				f.write(q_seq+"\n")
-			msa = check_output(['clustalo','-i','msa.fa'])
-			os.remove("msa.fa")
-			results['msa'] = msa
+			print results
+			if results['start']['match'] == None:
+				results = {'error':'No match found for that protein query'}
+			else:
+				q_name = results['start']['name']
+				q_seq = results['start']['seq']
+				s_name = results['start']['match']['name']
+				s_seq = results['start']['match']['seq']
+				with open("msa.fa","w") as f:
+					f.write(">Match\n")
+					f.write(s_seq+"\n")
+					f.write(">Query\n")
+					f.write(q_seq+"\n")
+				msa = check_output(['clustalo','-i','msa.fa'])
+				os.remove("msa.fa")
+				results['msa'] = msa
+			os.system("rm blastdb*")
 		elif data.has_key('ligand'):
+			print "ligand search"
 			results = ligand_search(data['ligand'])
 		pp.pprint(results)
 		response = JsonResponse(results)
-		os.system("rm blastdb*")
 		return response

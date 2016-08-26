@@ -1194,7 +1194,7 @@ body {
 	float: right;
     color: white;
     line-height: .90vmin;
-    font-size: 14px;
+    font-size: 12px;
 }
 #export_button {
     background-color: steelblue;
@@ -5124,6 +5124,12 @@ a.badge:focus {
 
 #my_textarea {
 	width:59%;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+#my_ligand_textarea {
+	width:70%;
 	margin-right:auto;
 	margin-left:auto;
 }

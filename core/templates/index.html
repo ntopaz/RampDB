@@ -101,21 +101,22 @@
 			<h3 style="padding-top:1vh;margin-bottom:3vh;">Enter a protein sequence or ligand name below to predict potential RAMP interactions:</h3>
 			<form action="javascript:void(0);">
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-7">
+							<div style="float:right" class="dropdown">
+								<button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"  aria-haspopup="false" aria-expanded="false" name="example_ramp" id="example_button" role="button">Example <span class="caret"></span></button>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="example_button">
+										<li><a href="" ng-click="Example()">Perfect Match</a></li>
+										<li><a href="">Decent Match</a></li>
+										<li><a href="">Weak Match</a></li>
+									</ul>
+							</div>
 							<div id="my_textarea">
-								<div class="row">
-									<div class="col-sm-8">
-										<h2 style="text-align:left">Protein Sequence:</h2>
-									</div>
-									<div class="col-sm-3" style="float:right">
-										<a class="btn btn-primary btn-lg" ng-click="Example()" name="example_ramp" id="example_button" role="button">Example</a>
-									</div>
-								</div>
+								<h2 style="text-align:left">Protein Sequence:</h2>
 								<textarea name=textarea_r rows="9" ng-model="proteintext" cols="40" placeholder="Enter FASTA sequence" style="width:100%;height: 225px;"></textarea>
 							</div>
 						</div>
-						<div class="col-sm-6">
-							<div id="my_textarea">
+						<div class="col-sm-5">
+							<div id="my_ligand_textarea">
 								<h2 style="float:left;">Ligand Name:</h2>
 								<textarea name=textarea_l id=ligand_text ng-model="ligandtext" rows="1" cols="40" placeholder="Enter Ligand name or InChi key" style="width:100%;"></textarea>
 								<h2 style="float:left;">Common Ligands:</h2>
