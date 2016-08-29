@@ -1,6 +1,6 @@
-var app = angular.module('homeApp', []);
+var app = angular.module('homeApp', ['ngSanitize']);
 
-app.controller('myCtrl', function ($scope, $http) {
+app.controller('myCtrl', function ($scope, $http, $sce) {
 	$scope.loading = true;
 	$scope.protein_page = false;
 	$scope.ligand_page = false;
@@ -74,19 +74,9 @@ app.controller('myCtrl', function ($scope, $http) {
 				$scope.match_name = response.data['ligand']['match']['name'];
 				$scope.inchi_key = response.data['ligand']['match']['inchi_key'];
 				$scope.chem_id = response.data['ligand']['match']['chem_id'];
-				var my_dict = response.data['ligand']['match']['pc_results']['PC_Compounds']['props'];
-				console.log()
-				for (var key in my_dict){
-					console.log(key)
-					if (key == 'urn'){
-						if (my_dict[key]['label'] == 'Molecular Formula'){
-							$scope.molecular_formula = my_dict['value']['sval'];
-							}
-						if (my_dict[key]['label'] == 'Molecular Weight'){
-							$scope.molecular_weight = my_dict['value']['fval'];
-							}
-						}
-					}
+				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
+				console.log($scope.molecular_formula);
+				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
 				var img_get_url = 'pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/' + $scope.chem_id + '/PNG?record_type=2d&image_size=large';
         	        	$http.get(img_get_url)
 	                	.then(function(response) {

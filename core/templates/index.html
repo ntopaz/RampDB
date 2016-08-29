@@ -22,6 +22,7 @@
   <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
   <script src="{% static 'home.js' %}"></script>
   <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
 	
@@ -238,8 +239,7 @@
                 <h3 id='summary_h3'><span style=font-weight:bold>PubChem ID:</span>
 		{{ chem_id }}
 		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula:</span>
-		{{ molecular_formula }}
+                <h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
 		</h3>
                 <h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
 		{{ molecular_weight }}

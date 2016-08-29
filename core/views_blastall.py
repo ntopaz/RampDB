@@ -179,9 +179,20 @@ def ligand_search(ligand):
 		if ligand.lower() == lig_obj.name.lower():
 			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % lig_obj.chem_id
                         pc_results = urllib2.urlopen(match_url)
+			pc_results = json.load(pc_results)
+			for dummy in pc_results['PC_Compounds']:
+				if dummy.has_key("props"):
+					for item in dummy['props']:
+						if item.has_key("urn"):
+							print item['urn']['label']
+							if item['urn']['label'] == "Molecular Formula":
+								molecular_formula = item['value']['sval']
+							if item['urn']['label'] == "Molecular Weight":
+								molecular_weight = item['value']['fval']
+			result_dict['ligand']['match']['molecular_weight'] = molecular_weight
+			result_dict['ligand']['match']['molecular_formula'] = molecular_formula
 			result_dict['ligand']['match']['name'] = lig_obj.name
 			result_dict['ligand']['match']['name_short'] = lig_obj.name_short
-			result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
 			result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
 			result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
 			return result_dict
@@ -199,9 +210,20 @@ def ligand_search(ligand):
 		       		if Ligand.objects.filter(chem_id=item).exists():
 						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
 						pc_results = urllib2.urlopen(match_url)
+						pc_results = json.load(pc_results)
 						lig_obj = Ligand.objects.get(chem_id=item)
+						for dummy in pc_results['PC_Compounds']:
+							if dummy.has_key("props"):
+								for item in dummy['props']:
+									if item.has_key("urn"):
+										print item['urn']['label']
+										if item['urn']['label'] == "Molecular Formula":
+											molecular_formula = item['value']['sval']
+										if item['urn']['label'] == "Molecular Weight":
+											molecular_weight = item['value']['fval']
+						result_dict['ligand']['match']['molecular_weight'] = molecular_weight
+						result_dict['ligand']['match']['molecular_formula'] = molecular_formula
 						result_dict['ligand']['match']['name'] = lig_obj.name
-                                                result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
 						result_dict['ligand']['match']['name_short'] = lig_obj.name_short
 						result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
 						result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
@@ -219,9 +241,20 @@ def ligand_search(ligand):
                                 	if Ligand.objects.filter(chem_id=item).exists():
 							match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
                                                 	pc_results = urllib2.urlopen(match_url)
+							pc_results = json.load(pc_results)
 					        	lig_obj = Ligand.objects.get(chem_id=item)
+                                                	for dummy in pc_results['PC_Compounds']:
+                                                        	if dummy.has_key("props"):
+                                                                	for item in dummy['props']:
+                                                                        	if item.has_key("urn"):
+                                                                                	print item['urn']['label']
+                                                                                	if item['urn']['label'] == "Molecular Formula":
+                                                                                        	molecular_formula = item['value']['sval']
+                                                                                	if item['urn']['label'] == "Molecular Weight":
+                                                                                        	molecular_weight = item['value']['fval']
+							result_dict['ligand']['match']['molecular_weight'] = molecular_weight
+							result_dict['ligand']['match']['molecular_formula'] = molecular_formula
                                                 	result_dict['ligand']['match']['name'] = lig_obj.name
-                                                	result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
                                                 	result_dict['ligand']['match']['name_short'] = lig_obj.name_short
                                                 	result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
                                                 	result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
