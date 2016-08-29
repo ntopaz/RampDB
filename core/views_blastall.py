@@ -18,6 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 @transaction.atomic
 def blast_all(query):
 	result_dict = {}
+	if not query.startswith(">"):
+		result = {'error': 'Protein input query not in FASTA format'}
+		return result
 	q = open("query.txt","w")
 	q.write(query)
 	query = q.name
@@ -39,7 +42,7 @@ def blast_all(query):
 		query_seq = record.seq
 		query_name = record.id
 		query_desc = record.description
-	result_dict['start'] = {'name':query_name, 'seq':str(query_seq), 'length': query_length, 'desc':query_desc, 'match': None}
+	result_dict['protein'] = {'name':query_name, 'seq':str(query_seq), 'length': query_length, 'desc':query_desc, 'match': None}
 	q.close()
 	result = check_output(["makeblastdb","-dbtype","prot","-in","temp.txt","-out","blastdb","-title","blastdb","-parse_seqids"], shell=False)
 	os.remove("temp.txt")
@@ -61,16 +64,16 @@ def blast_all(query):
 				current_ident = identity
 				current_match = match
 		prot_obj = Protein.objects.filter(reference_id=current_match).select_related("family","source","organism")
-		result_dict['start']['match'] = {}
-		result_dict['start']['match']['name'] = prot_obj[0].name
-		result_dict['start']['match']['id'] = current_match
-		result_dict['start']['match']['eval'] = current_eval
-		result_dict['start']['match']['ident'] = current_ident
-		result_dict['start']['match']['seq'] = prot_obj[0].sequence
-		result_dict['start']['match']['family'] = prot_obj[0].family.name
-		result_dict['start']['match']['family_short'] = prot_obj[0].family.name_short
-		result_dict['start']['match']['source'] = prot_obj[0].source.url
-		result_dict['start']['match']['organism'] = prot_obj[0].organism.name
+		result_dict['protein']['match'] = {}
+		result_dict['protein']['match']['name'] = prot_obj[0].name
+		result_dict['protein']['match']['id'] = current_match
+		result_dict['protein']['match']['eval'] = current_eval
+		result_dict['protein']['match']['ident'] = current_ident
+		result_dict['protein']['match']['seq'] = prot_obj[0].sequence
+		result_dict['protein']['match']['family'] = prot_obj[0].family.name
+		result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
+		result_dict['protein']['match']['source'] = prot_obj[0].source.url
+		result_dict['protein']['match']['organism'] = prot_obj[0].organism.name
 		return result_dict
 	else:
 		result = hmm_query(query,result_dict,query_name)
@@ -156,28 +159,31 @@ def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_
 	print "blast results of hmm match:",blast_results
 	prot_obj = Protein.objects.filter(reference_id=blast_results.split('\t')[1]).select_related("family","source","organism")
         my_ident = round(float(my_line[2]),1)
-	result_dict['start']['match'] = {}
-	result_dict['start']['match']['name'] = prot_obj[0].name
-	result_dict['start']['match']['id'] = blast_results.split('\t')[1]
-	result_dict['start']['match']['eval'] = my_line[10]
-	result_dict['start']['match']['ident'] = my_ident
-	result_dict['start']['match']['seq'] = prot_obj[0].sequence
-	result_dict['start']['match']['family'] = prot_obj[0].family.name
-	result_dict['start']['match']['family_short'] = prot_obj[0].family.name_short
-	result_dict['start']['match']['source'] = prot_obj[0].source.url
-	result_dict['start']['match']['organism'] = prot_obj[0].organism.name
+	result_dict['protein']['match'] = {}
+	result_dict['protein']['match']['name'] = prot_obj[0].name
+	result_dict['protein']['match']['id'] = blast_results.split('\t')[1]
+	result_dict['protein']['match']['eval'] = my_line[10]
+	result_dict['protein']['match']['ident'] = my_ident
+	result_dict['protein']['match']['seq'] = prot_obj[0].sequence
+	result_dict['protein']['match']['family'] = prot_obj[0].family.name
+	result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
+	result_dict['protein']['match']['source'] = prot_obj[0].source.url
+	result_dict['protein']['match']['organism'] = prot_obj[0].organism.name
 	return result_dict
 
 def ligand_search(ligand):
 	result_dict = {}
 	ligand_objects = Ligand.objects.all()
-	result_dict['start'] = {'query_name':ligand, 'match': {}}
+	result_dict['ligand'] = {'query_name':ligand, 'match': {}}
 	for lig_obj in ligand_objects:
 		if ligand.lower() == lig_obj.name.lower():
-			result_dict['start']['match']['name'] = lig_obj.name
-			result_dict['start']['match']['name_short'] = lig_obj.name_short
-			result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
-			result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % lig_obj.chem_id
+                        pc_results = urllib2.urlopen(match_url)
+			result_dict['ligand']['match']['name'] = lig_obj.name
+			result_dict['ligand']['match']['name_short'] = lig_obj.name_short
+			result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
+			result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+			result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
 			return result_dict
 
 	try:
@@ -191,11 +197,14 @@ def ligand_search(ligand):
                 	hits = re.findall(capt_cid,res.read())
                 	for item in hits:
 		       		if Ligand.objects.filter(chem_id=item).exists():
+						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
+						pc_results = urllib2.urlopen(match_url)
 						lig_obj = Ligand.objects.get(chem_id=item)
-						result_dict['start']['match']['name'] = lig_obj.name
-						result_dict['start']['match']['name_short'] = lig_obj.name_short
-						result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
-						result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+						result_dict['ligand']['match']['name'] = lig_obj.name
+                                                result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
+						result_dict['ligand']['match']['name_short'] = lig_obj.name_short
+						result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+						result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
 						return result_dict
 	except:
 		try:
@@ -208,11 +217,14 @@ def ligand_search(ligand):
                         	hits = re.findall(capt_cid,res.read())
                         	for item in hits:
                                 	if Ligand.objects.filter(chem_id=item).exists():
-                                                	lig_obj = Ligand.objects.get(chem_id=item)
-                                                	result_dict['start']['match']['name'] = lig_obj.name
-                                                	result_dict['start']['match']['name_short'] = lig_obj.name_short
-                                                	result_dict['start']['match']['inchi_key'] = lig_obj.inchi_key
-                                                	result_dict['start']['match']['chem_id'] = lig_obj.chem_id
+							match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
+                                                	pc_results = urllib2.urlopen(match_url)
+					        	lig_obj = Ligand.objects.get(chem_id=item)
+                                                	result_dict['ligand']['match']['name'] = lig_obj.name
+                                                	result_dict['ligand']['match']['pc_results'] = json.load(pc_results)
+                                                	result_dict['ligand']['match']['name_short'] = lig_obj.name_short
+                                                	result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+                                                	result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
                                                 	return result_dict
 		except:
 			result = {'error' : 'No match found for that ligand query'}
@@ -231,13 +243,16 @@ def get_result(request):
 		elif data.has_key('protein') and data['protein'].strip() !='':
 			results = blast_all(data['protein'])
 			print results
-			if results['start']['match'] == None:
+
+                        if 'error' in results.keys():
+                                results = {'error': 'Protein input query not in FASTA format'}
+			elif results['protein']['match'] == None:
 				results = {'error':'No match found for that protein query'}
 			else:
-				q_name = results['start']['name']
-				q_seq = results['start']['seq']
-				s_name = results['start']['match']['name']
-				s_seq = results['start']['match']['seq']
+				q_name = results['protein']['name']
+				q_seq = results['protein']['seq']
+				s_name = results['protein']['match']['name']
+				s_seq = results['protein']['match']['seq']
 				with open("msa.fa","w") as f:
 					f.write(">Match\n")
 					f.write(s_seq+"\n")

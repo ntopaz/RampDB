@@ -4,12 +4,11 @@
 # Freely distributed under the GNU General Public License (GPLv3).
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # query sequence file:             query.txt
-# target HMM database:             core/profiles/CT
-# output directed to file:         /home/nadav/rampdb/tmpekzKMy
+# target HMM database:             core/profiles/Ramp 1
+# output directed to file:         /home/nadav/rampdb/tmpnyr4tF
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Query:       gi|61226909|sp|P0A334.1|KCSA_STRLI  [L=160]
-Description: RecName: Full=pH-gated potassium channel KcsA; AltName: Full=Streptomyces lividans K+ channel; Short=SKC1
+Query:       asdasd  [L=4]
 Scores for complete sequence (score includes all domains):
    --- full sequence ---   --- best 1 domain ---    -#dom-
     E-value  score  bias    E-value  score  bias    exp  N  Model    Description
@@ -25,8 +24,8 @@ Domain annotation for each model (and alignments):
 
 Internal pipeline statistics summary:
 -------------------------------------
-Query sequence(s):                         1  (160 residues searched)
-Target model(s):                           1  (108 nodes)
+Query sequence(s):                         1  (4 residues searched)
+Target model(s):                           1  (119 nodes)
 Passed MSV filter:                         0  (0); expected 0.0 (0.02)
 Passed bias filter:                        0  (0); expected 0.0 (0.02)
 Passed Vit filter:                         0  (0); expected 0.0 (0.001)
