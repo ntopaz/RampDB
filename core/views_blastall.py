@@ -195,6 +195,11 @@ def ligand_search(ligand):
 			result_dict['ligand']['match']['name_short'] = lig_obj.name_short
 			result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
 			result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
+			#img_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/PNG?record_type=2d&image_size=large" % lig_obj.chem_id
+			#img_results = urllib2.urlopen(img_url)
+			#print type(img_results)
+			#print img_results
+			#result_dict['ligand']['match']['image'] = img_results
 			return result_dict
 
 	try:

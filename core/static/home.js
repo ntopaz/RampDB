@@ -1,5 +1,6 @@
 var app = angular.module('homeApp', ['ngSanitize']);
 
+
 app.controller('myCtrl', function ($scope, $http, $sce) {
 	$scope.loading = true;
 	$scope.protein_page = false;
@@ -65,7 +66,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				m.render();
 
 				}
-
 			else if ('ligand' in response.data){
 				$scope.main_loading = false;
 				$scope.ligand_page = true;
@@ -77,11 +77,16 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
 				console.log($scope.molecular_formula);
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
-				var img_get_url = 'pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/' + $scope.chem_id + '/PNG?record_type=2d&image_size=large';
-        	        	$http.get(img_get_url)
+				var img_get_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + $scope.chem_id + "/PNG?record_type=2d&image_size=large";
+        	        	$http.get(img_get_url, {responseType: "arraybuffer"})
 	                	.then(function(response) {
-					$scope.img = response.data;
-					console.log($scope.img);
+					let blob = new Blob([response.data], {type: 'image/png'});
+					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
+					console.log($scope.ligand_img);
+					//$scope.ligand_img = response.data;
+
+					//console.log(response.data)
+					//console.log(typeof($scope.ligand_img));
 					});
 				}
 			});
