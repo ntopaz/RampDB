@@ -242,7 +242,7 @@
                 <h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
 		</h3>
                 <h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
-		{{ molecular_weight }}
+		{{ molecular_weight }} g/mol
 		</h3>
                 <h3 id='summary_h3'><span style=font-weight:bold>InChi Key:</span>
 		{{ inchi_key }}
@@ -251,16 +251,9 @@
         </div>
 
 	<div id='right_float'>
-		<h3 id="results_h1">Best Match:</h3>
 		<div id="image_area">
 			<img ng-src="{{ ligand_img }}"/>
 		</div>
-                <h3 id='summary_h3'><span style=font-weight:bold>Organism:</span>
-		{{ organism }}  
-		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Source Link:</span>
-		<a ng-href="{{ url }}">{{ url }}</a>
-		</h3>
 	</div>
         <div class='container-fluid' id='results_page_int'>
                 <h1 id='results_h1' style='float:left; display:block;'>Known {{ family_short }} Interactions:</h1>

@@ -19,7 +19,7 @@ def db_status():
 	organism_count = Organism.objects.all().count()
 	interaction_count = Interactions.objects.all().count()
 	reference_count = Reference.objects.all().count()
-	results = {'Proteins':protein_count,'Organisms':organism_count,'Interactions':interaction_count,'References':reference_count}
+	results = {'Proteins':protein_count,'Organisms':organism_count,'References':reference_count}
 	return results
 
 

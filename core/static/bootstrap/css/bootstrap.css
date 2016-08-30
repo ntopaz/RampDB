@@ -138,7 +138,7 @@ h1 {
   font-size: 2em;
 }
 #results_h1{
-	font-size:40px;
+	font-size:30px;
 }
 mark {
   color: #000;
@@ -1385,7 +1385,7 @@ h6 .small,
 }
 h1,
 .h1 {
-  font-size: 43px;
+  font-size: 28px;
 }
 h2,
 .h2 {
@@ -1393,7 +1393,7 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 28px;
+  font-size: 20px;
 }
 h4,
 .h4 {
@@ -1424,7 +1424,7 @@ p {
 #summary_h3 {
     padding-bottom: 2%;
     padding-top:1%;
-    font-size:28px;
+    font-size:22px;
 }
 small,
 .small {
