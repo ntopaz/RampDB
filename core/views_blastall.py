@@ -302,6 +302,7 @@ def get_result(request):
 				os.remove("msa.fa")
 				results['msa'] = msa
 			os.system("rm blastdb*")
+			os.system("rm tmp*")
 		elif data.has_key('ligand'):
 			print "ligand search"
 			results = ligand_search(data['ligand'])
