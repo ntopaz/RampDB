@@ -76,6 +76,14 @@ footer {
 	line-height:164px;
 	height:auto;
 }
+#lig_img {
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	border:3px !important;
+	border-style:groove !important;
+	
+}
 #summary {
   width:44%;
   padding-left:1%;

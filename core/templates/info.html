@@ -1,0 +1,61 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>RampDB</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet"/>
+  <!-- Custom Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
+	
+</head>
+
+<body ng-app="homeApp" ng-controller="myCtrl">
+<nav class="navbar navbar-inverse">
+  <!--Logo-->
+  <div class="container-fluid" id="navbar_box" style="width: 100%">
+      <div class="navbar-header">
+      <a href="{% url 'index' %}" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+	  </div>
+
+    <div>
+      <u1 class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
+        <li><a href="{% url 'info' %}">RAMP Information</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </u1>
+        <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results<span class='caret'></span></a>
+        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
+    </div>
+
+  </div>
+
+</nav>
+
+
+</body>
+
+
+
+</html>
+
+

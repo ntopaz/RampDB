@@ -93,14 +93,16 @@ def hmm_query(query, result_dict,query_name):
                 best_domain = 0
                 best_domain_score = 0
                 rows = fp.read()
-		#print rows
                 rows = re.split("\n",rows.rstrip())
                 i=0
+		skip = False
                 for line in rows:
+			if "No hits detected" in line:
+				skip = True
                         col = re.split('\s*',rows[i].strip())
                         rows[i]=(col)
                         i+=1
-                if len(rows[16]) > 1:
+                if len(rows[16]) > 1 and skip==False:
                         profile_score[profile] = float(rows[16][1])
                         do_continue = True
                         num_domains = int(rows[16][7])

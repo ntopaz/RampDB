@@ -74,19 +74,20 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.match_name = response.data['ligand']['match']['name'];
 				$scope.inchi_key = response.data['ligand']['match']['inchi_key'];
 				$scope.chem_id = response.data['ligand']['match']['chem_id'];
+				$scope.url = "https://pubchem.ncbi.nlm.nih.gov/compound/" + $scope.chem_id;
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
 				console.log($scope.molecular_formula);
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
+        	        	$http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
+	                	.then(function(response) {
+					$scope.interactions = response.data;
+					console.log($scope.interactions);
+					});
 				var img_get_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + $scope.chem_id + "/PNG?record_type=2d&image_size=large";
         	        	$http.get(img_get_url, {responseType: "arraybuffer"})
 	                	.then(function(response) {
 					let blob = new Blob([response.data], {type: 'image/png'});
 					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
-					console.log($scope.ligand_img);
-					//$scope.ligand_img = response.data;
-
-					//console.log(response.data)
-					//console.log(typeof($scope.ligand_img));
 					});
 				}
 			});

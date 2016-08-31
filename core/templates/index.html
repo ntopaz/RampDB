@@ -33,44 +33,18 @@
   <!--Logo-->
   <div class="container-fluid" id="navbar_box" style="width: 100%">
       <div class="navbar-header">
-      <a href="index.html" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+      <a href="{% url 'index' %}" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
 	  </div>
 
     <div>
       <u1 class="nav navbar-nav">
-        <li class="active"><a href="" ng-click="backtoHome()">Home</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">RAMPs<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li class="dropdown-header">Receptor Activity Modifying Proteins:</li>
-            <li><a href="ramp1.html">Ramp 1</a></li>
-            <li><a href="ramp2.html">Ramp 2</a></li>
-            <li><a href="ramp3.html">Ramp 3</a></li>
-            <li class="dropdown-header">RAMP-Like Proteins:</li>
-            <li><a href="ramp1.html"></a></li>
-            <li><a href="ramp2.html"></a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">GPCRs<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="ct.html">Calcitonin Receptor</a></li>
-            <li><a href="clr.html">Calcitonin-Like Receptor</a></li>
-            <li><a href="vip.html">Vasoactive Intestinal Receptor</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Ligands<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Amylin</a></li>
-            <li><a href="#">Adrenomedullin</a></li>
-            <li><a href="#">Calcitonin Gene-Related Peptide</a></li>
-          </ul>
-        </li>
-        <li><a href="#">About</a></li>
+        <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
+        <li><a href="{% url 'info' %}">RAMP Information</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
       </u1>
         <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results<span class='caret'></span></a>
-        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()";' role='button'>Search Again</a>
+        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
     </div>
 
   </div>
@@ -200,7 +174,7 @@
         	</div>
                 <h3 id='summary_h3'><span style=font-weight:bold>Organism:</span>
 		{{ organism }}  
-		</h3>
+		</h3>		
                 <h3 id='summary_h3'><span style=font-weight:bold>Source Link:</span>
 		<a ng-href="{{ url }}">{{ url }}</a>
 		</h3>
@@ -251,8 +225,15 @@
         </div>
 
 	<div id='right_float'>
-		<div id="image_area">
-			<img ng-src="{{ ligand_img }}"/>
+		<div class="row">
+			<div class="col-sm-4">
+			</div>
+			<div class="col-sm-8">
+				<div id="image_area">
+					<img id="lig_img" ng-src="{{ ligand_img }}"/>
+				</div>
+				<a ng-href="{{ url }}">{{ url }}</a>
+			</div>
 		</div>
 	</div>
         <div class='container-fluid' id='results_page_int'>
@@ -260,13 +241,13 @@
                 <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
              	<tr>
 			<th>Phenotype</th>
-			<th>Protein</th>
-			<th>Ligand</th>
+			<th>GPCR</th>
+			<th>RAMP</th>
 		</tr>
 		<tr id='interactions_tr' ng-repeat="(phenotype,object) in interactions">
 			<td> {{ phenotype }} </td>
 			<td> {{ object.gpcr }} </td>
-			<td> {{ object.ligand }} </td>
+			<td> {{ object.ramp }} </td>
 		</tr>
 		</table>
         </div>
