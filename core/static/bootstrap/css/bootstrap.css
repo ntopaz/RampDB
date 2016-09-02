@@ -68,6 +68,11 @@ footer {
     text-align: center;
     bottom: 0px;
 }
+#img_text {
+	text-align:center;
+	font-size:13px !important;
+	margin-top:1%;
+}
 #about_text {
 	margin-top:1%;
 	text-align:left;

@@ -49,29 +49,50 @@
   </div>
 </nav>
     <div class="container-fluid">
-	<h2>Summary</h2>
-	<p>Receptor Activity Modifying Proteins, or <span style=font-weight:bold>RAMPs</span>, are small proteins which serve to modulate the activity of several
-		 G protein-coupled receptors <span style=font-weight:bold>(GPCRs)</span>.
-	   These RAMP-GPCR interactions can result in a variety of actions, including the heterodimerization of novel receptor phenotypes,
-		and the chaperoning of the receptor to the cell surface.
-	   The novel receptor phenotypes is determined by the isoform of RAMP interaction with the given GPCR. As an example, the interactions between RAMPs 1-3 and the calcitonin-like receptor is shown.
-	</p>
-	<p>
-	   Originally, the interaction between RAMPs and GPCRs was thought to be limited to the B-class GPCRs, which consists of receptors which interact with peptide hormones, such as glucagon,
-		secretin and calcitonin. Since then, experimental findings have shown atleast one C-class GPCR to also be be regulated by RAMPs.
-	   The research into RAMPs has also opened the field to the identification of RAMP-like proteins - two of which are receptor-transporting proteins <span style=font-weight:bold>(RTPs)</span>
-		and receptor expression enhancing proteins <span style=font-weight:bold>(REEPS)</span>. These function similarly to RAMPs, particularly with odorant GPCRs.
-	</p>	
-	<h2>Mechanism of Action:</h2>
-	<p>
-	  
-	</p>
-
-
-
-
-
-	</p>
+        <div class="row">
+                <br>
+                <div id="about_text" class="col-sm-6">
+                        <h2><span style=font-weight:bold>Introduction:</span></h2>
+			<p>Receptor Activity Modifying Proteins, or <span style=font-weight:bold>RAMPs</span>, are small proteins which serve to modulate the activity of several
+		 		G protein-coupled receptors <span style=font-weight:bold>(GPCRs)</span>.
+			</p>
+			<p>
+	   		These RAMP-GPCR interactions can result in a variety of actions, including the heterodimerization of novel receptor phenotypes,
+				and the chaperoning of the receptor to the cell surface.
+			</p>
+			<p>
+	   		The novel receptor phenotypes, and consequently the ligand binding, is ultimately determined by the isoform of RAMP interaction with the given GPCR. As an example, the interactions between RAMPs 1-3 and the calcitonin-like receptor is shown.
+			</p>
+                </div>
+                <div class="col-sm-6">
+                        <img class="img-responsive" src="{% static 'ramp_int.png' %}"/>
+			<p id="img_text">Phenotype of RAMP + CLR complex is determined by RAMP isoform</p>
+                </div>
+        </div>
+	<hr>
+        <div class="row">
+                <div id="about_text" class="col-sm-6">
+                        <h2><span style=font-weight:bold>Significance:</span></h2>
+			<p>
+		   		Originally, the interaction between RAMPs and GPCRs was thought to be limited to the B-class GPCRs, which consists of receptors which interact with peptide hormones, such as glucagon,
+				secretin and calcitonin.
+			</p>
+			<p> 
+				Since then, experimental findings have shown atleast one C-class GPCR to also be be regulated by RAMPs.
+			</p>
+			<p>
+			  	The research into RAMPs has also opened the field to the identification of RAMP-like proteins - two of which are receptor-transporting proteins <span style=font-weight:bold>(RTPs)</span>
+				and receptor expression enhancing proteins <span style=font-weight:bold>(REEPS)</span>. These function similarly to RAMPs, particularly with odorant GPCRs.
+			</p>
+			<p>
+				As the various interactions of RAMPs continues to expand, there will be a growing need for a central repository to explore and predict these interactions. RampDB aims to serve as that central repository.
+			</p> 
+               </div>
+                <div class="col-sm-6">
+                        <img class="img-responsive" src="{% static 'CaSR.png' %}"/>
+			<p id="img_text">Transporting of CaSR, a C-class GPCR, to the cell surface by RAMPs 1 or 3</p>
+                </div>
+        </div>
     </div>
 </body>
 
