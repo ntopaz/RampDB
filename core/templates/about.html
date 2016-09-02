@@ -1,0 +1,117 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>RampDB</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet"/>
+  <!-- Custom Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
+	
+</head>
+
+<body ng-app="homeApp" ng-controller="myCtrl">
+<nav class="navbar navbar-inverse">
+  <!--Logo-->
+  <div class="container-fluid" id="navbar_box" style="width: 100%">
+      <div class="navbar-header">
+      <a href="{% url 'index' %}" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+	  </div>
+
+    <div>
+      <u1 class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
+        <li><a href="{% url 'info' %}">RAMP Information</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </u1>
+        <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results</a>
+        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
+    </div>
+  </div>
+</nav>
+    <div class="container-fluid">
+	<div class="row">
+		<br>
+		<div id="about_text" class="col-sm-6">
+			<h2><span style=font-weight:bold>RampDB:</span></h2>
+			<p>The goal of RampDB is to serve as a central repository for exploring currently-known and predicting RAMP interactions. RampDB itself is a MySQL database
+				with the following data model. 
+			</p>
+			<br>
+			<h2><span style=font-weight:bold>Data Model:</span></h2>
+			<p>The data model was designed with a normalized approach to reduce redudancy, and to allow for rapid 
+				acquisition of interaction data for each result.
+			</p>
+			<p>The database is loaded automatically with scripts which search for proteins matching a certain family,
+				and then filters out the false positive entries through a heuristic approach. This loading is also designed
+				to recognize updates to current entries and to update them in RampDB.  
+			</p>
+		</div>
+		<div class="col-sm-6">
+			<img class="img-responsive" src="{% static 'rampdb.png' %}"/>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div id="about_text" class="col-sm-6">
+			<h2><span style=font-weight:bold>Prediction Algorithm:</span></h2>
+			<p>The main feature of RampDB is the prediction function. This utility allows the user to input
+				either a FASTA <span style=font-weight:bold>protein</span> or <span style=font-weight:bold>ligand</span> query, and predicts whether or not that query could have RAMP or RAMP-like
+				interactions.
+			</p>
+			<br>
+			<h2><span style=font-weight:bold>Proteins:</span></h2>
+			<p>For protein queries, the first step is to do a quick ortholog check against sequences in RampDB.
+				If a high-similarity match is identified, the data for that match is obtained and the results page is generated.
+			</p>
+			<p>
+				If no match is found, the query is checked against prebuilt HMM profiles of domains known to be involved in RAMP interactions, and if
+				a high-similarity match is found, the data is obtained and displayed on the results page. 
+			</p>
+			<br>
+			<h2><span style=font-weight:bold>Ligands:</span></h2>
+			<p>
+				For ligand queries, the following queries are acceptable:
+				<ul>
+				<li> Ligand Name (case insensitive)</li>
+				<li> Partial Ligand Name (case insensitive)</li>
+				<li> InChiKey</li>
+				</ul>
+			</p>
+			<p>
+				When a ligand query is submitted, the first step is to search for an exact match in RampDB. If no match is found
+				the query is searched against PubChem's database for 2D similarity, and those results are checked for ligands known to have RAMP interactions.
+			</p>
+
+		</div>
+		<div class="col-sm-6">
+			<img class="img-responsive" src="{% static 'Prediction_Algorithm.png' %}"/>
+		</div>
+	</div>
+    </div>
+</body>
+
+
+
+</html>
+
+

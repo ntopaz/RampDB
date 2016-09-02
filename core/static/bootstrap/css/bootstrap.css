@@ -68,6 +68,11 @@ footer {
     text-align: center;
     bottom: 0px;
 }
+#about_text {
+	margin-top:1%;
+	text-align:left;
+}
+
 #logo {
 	padding-top:2%;
 	width:39%;
@@ -1419,6 +1424,7 @@ h6,
   font-size: 12px;
 }
 p {
+  font-size:16px !important;
   margin: 0 0 10px;
 }
 .lead {
@@ -4431,7 +4437,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-width: 1px 0 0;
 }
 .navbar {
- font-size: 1.75vmin;
+ font-size: 16px;
 
 }
 .navbar-brand {
