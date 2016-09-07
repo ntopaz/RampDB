@@ -3,6 +3,8 @@ var app = angular.module('homeApp', ['ngSanitize']);
 
 app.controller('myCtrl', function ($scope, $http, $sce) {
 	$scope.loading = true;
+	$scope.gpcr_quer = false;
+	$scope.ramp_quer = false;
 	$scope.protein_page = false;
 	$scope.ligand_page = false;
 	$scope.errorflag = false;
@@ -39,9 +41,11 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.family = response.data['protein']['match']['family'];
 				$scope.family_short = response.data['protein']['match']['family_short'];
 				$scope.confidence = response.data['protein']['match']['ident'];
+				$scope.eval = response.data['protein']['match']['eval'];
+				$scope.max_score = response.data['protein']['match']['max_score'];
 				var my_msa = response.data['msa'];
 				console.log(my_msa)
-				if ($scope.confidence > 75){
+				if ($scope.confidence > 30){
 					$scope.highConf = true;
 					}
 				else {
@@ -51,8 +55,16 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				console.log($scope.results);
         	        	$http.post("core/interactions",{'family':$scope.family})
 	                	.then(function(response) {
-					$scope.interactions = response.data;
-					console.log($scope.interactions);
+					if ('ramp' in response.data){
+						$scope.ramp_quer = true;
+						$scope.interactions = response.data['interactions'];
+						console.log($scope.interactions);
+					}
+					else{
+						$scope.gpcr_quer = true;
+						$scope.interactions = response.data['interactions'];
+						console.log($scope.interactions);
+					}
 					});
 				var opts = ({
 				el: sequence,

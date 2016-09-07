@@ -5,18 +5,24 @@ from core.views_load_interactions import load_interactions
 def load_int():
 	interaction = {}
 	list = []
-	attributes = {'rampfamily':'receptor activity modifying protein 1','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
-	interaction['AMY1'] = attributes
-	attributes = {'rampfamily':'receptor activity modifying protein 2','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
-	interaction['AMY2'] = attributes
-	attributes = {'rampfamily':'receptor activity modifying protein 3','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
-	interaction['AMY3'] = attributes
-	attributes = {'rampfamily':'receptor activity modifying protein 1','gpcrfamily':'calcitonin receptor-like receptor','ligand':'calcitonin gene-related peptide'}
-	interaction['CGRP'] = attributes
-	attributes = {'rampfamily':'receptor activity modifying protein 2','gpcrfamily':'calcitonin receptor-like receptor','ligand':'adrenomedullin'}
-	interaction['AM1'] = attributes
-	attributes = {'rampfamily':'receptor activity modifying protein 3','gpcrfamily':'calcitonin receptor-like receptor','ligand':'intermedin'}
-	interaction['AM2'] = attributes
+	attributes = {'name':'Amylin receptor 1','name_short': 'AMY1', 'rampfamily':'receptor activity modifying protein 1','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
+	interaction['Amylin receptor 1'] = attributes
+	attributes = {'name':'Amylin receptor 2','name_short': 'AMY2','rampfamily':'receptor activity modifying protein 2','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
+	interaction['Amylin receptor 2'] = attributes
+	attributes = {'name':'Amylin receptor 3','name_short': 'AMY3','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'calcitonin receptor','ligand':'amylin'}
+	interaction['Amylin receptor 3'] = attributes
+	attributes = {'name':'Calcitonin gene-related peptide receptor','name_short': 'CGRP','rampfamily':'receptor activity modifying protein 1','gpcrfamily':'calcitonin receptor-like receptor','ligand':'calcitonin gene-related peptide'}
+	interaction['Calcitonin gene-related peptide receptor'] = attributes
+	attributes = {'name':'Adrenomedullin receptor','name_short': 'AM1','rampfamily':'receptor activity modifying protein 2','gpcrfamily':'calcitonin receptor-like receptor','ligand':'adrenomedullin'}
+	interaction['Adrenomedullin receptor'] = attributes
+	attributes = {'name':'Intermedin receptor','name_short': 'AM2','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'calcitonin receptor-like receptor','ligand':'intermedin'}
+	interaction['Intermedin receptor'] = attributes
+	attributes = {'name':'Vasoactive Intestinal Polypeptide Receptor','name_short': 'VIP1_1','rampfamily':'receptor activity modifying protein 1','gpcrfamily':'vasoactive intestinal polypeptide receptor 1','ligand':'vasoactive intestinal polypeptide'}
+	interaction['Vasoactive Intestinal Polypeptide Receptor 1_1'] = attributes
+	attributes = {'name':'Vasoactive Intestinal Polypeptide Receptor','name_short': 'VIP1_2','rampfamily':'receptor activity modifying protein 2','gpcrfamily':'vasoactive intestinal polypeptide receptor 1','ligand':'vasoactive intestinal polypeptide'}
+	interaction['Vasoactive Intestinal Polypeptide Receptor 1_2'] = attributes
+	attributes = {'name':'Vasoactive Intestinal Polypeptide Receptor','name_short': 'VIP1_3','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'vasoactive intestinal polypeptide receptor 1','ligand':'vasoactive intestinal polypeptide'}
+	interaction['Vasoactive Intestinal Polypeptide Receptor 1_3'] = attributes
 	load_interactions(json.dumps(interaction))
 
 def main():

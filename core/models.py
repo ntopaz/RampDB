@@ -60,7 +60,8 @@ class Ligand(models.Model):
 class Interactions(models.Model):
 	rampfamily = models.ForeignKey(Family, related_name="ramp_family")
 	gpcrfamily = models.ForeignKey(Family, related_name="gpcr_family")
-	ligand = models.ForeignKey(Ligand)
+	ligand = models.ForeignKey(Ligand, null=True)
+	name_short = models.CharField(max_length=200)
 	reference = models.ManyToManyField(Reference, null=True)
 	phenotype = models.CharField(max_length=500)
 	function = models.TextField(null=True)

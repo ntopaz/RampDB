@@ -1,4 +1,5 @@
 import sys,os,json
+import pprint as pp
 from collections import OrderedDict
 #from django.conf import settings
 #settings.configure()
@@ -19,12 +20,17 @@ def db_int(family):
 	r_interactions = Interactions.objects.filter(rampfamily_id=family_obj).select_related('gpcrfamily','ligand')
 	g_interactions = Interactions.objects.filter(gpcrfamily_id=family_obj).select_related('rampfamily','ligand')
 	if len(r_interactions) > 0:
+		final_dict['interactions'] = {}
+		final_dict['ramp'] = ""
 		for interaction in r_interactions:
-			final_dict[interaction.phenotype] = {'function':interaction.function,'gpcr':interaction.gpcrfamily.name,'ligand':interaction.ligand.name}
+			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name}
 	else:
+		final_dict['interactions'] = {}
+		final_dict['gpcr'] = ""
 		for interaction in g_interactions:
-			final_dict[interaction.phenotype] = {'function':interaction.function,'ramp':interaction.rampfamily.name,'ligand':interaction.ligand.name}
+			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name}
 
+	pp.pprint(final_dict)
 	return final_dict
 
 @api_view(['POST'])

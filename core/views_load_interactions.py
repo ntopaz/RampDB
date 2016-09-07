@@ -17,11 +17,12 @@ def load_interactions(data):
 		gpcr_fam = Family.objects.get(name=data[interaction]['gpcrfamily'])
 		ligand = Ligand.objects.get(name=data[interaction]['ligand'])
 		interact_obj, interact_created = Interactions.objects.update_or_create(
-						phenotype = interaction,
+						phenotype = data[interaction]['name'],
 						rampfamily = ramp_fam,
 						gpcrfamily = gpcr_fam,
 						ligand = ligand,
 						function = None,
+						name_short = data[interaction]['name_short'],
 						)
 
 

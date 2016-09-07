@@ -161,15 +161,13 @@ def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_
 
 	print "blast results of hmm match:",blast_results
 	prot_obj = Protein.objects.filter(reference_id=blast_results.split('\t')[1]).select_related("family","source","organism")
-        my_ident = round(float(blast_results.split('\t')[2]),1)
+        my_ident = round(float(my_line[2]),1)
 	result_dict['protein']['match'] = {}
 	result_dict['protein']['match']['name'] = prot_obj[0].name
 	result_dict['protein']['match']['id'] = blast_results.split('\t')[1]
-	result_dict['protein']['match']['eval'] = blast_results.split('\t')[10]
-	result_dict['protein']['match']['max_score'] = blast_results.split('\t')[11]
+	result_dict['protein']['match']['eval'] = my_line[10]
 	result_dict['protein']['match']['ident'] = my_ident
 	result_dict['protein']['match']['seq'] = prot_obj[0].sequence
-	result_dict['protein']['match']['domain_seq'] = subj_seq
 	result_dict['protein']['match']['family'] = prot_obj[0].family.name
 	result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
 	result_dict['protein']['match']['source'] = prot_obj[0].source.url
@@ -181,7 +179,6 @@ def ligand_search(ligand):
 	ligand_objects = Ligand.objects.all()
 	result_dict['ligand'] = {'query_name':ligand, 'match': {}}
 	for lig_obj in ligand_objects:
-		print lig_obj.name.lower()
 		if ligand.lower() == lig_obj.name.lower():
 			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % lig_obj.chem_id
                         pc_results = urllib2.urlopen(match_url)
@@ -287,9 +284,9 @@ def get_result(request):
 				q_name = results['protein']['name']
 				q_seq = results['protein']['seq']
 				s_name = results['protein']['match']['name']
-				s_seq = results['protein']['match']['domain_seq']
+				s_seq = results['protein']['match']['seq']
 				with open("msa.fa","w") as f:
-					f.write(">Domain\n")
+					f.write(">Match\n")
 					f.write(s_seq+"\n")
 					f.write(">Query\n")
 					f.write(q_seq+"\n")
