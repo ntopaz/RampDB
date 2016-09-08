@@ -52,8 +52,6 @@ def blast_all(query):
 	current_ident = 0.0
 	current_eval = 10.0
 	current_match = ""
-	#if blast_results.strip() != "":
-	print blast_results
 	fixed_lines = re.split("\n",blast_results.rstrip())
 	for line in fixed_lines:
 		query_name = line.split('\t')[0]
@@ -65,18 +63,6 @@ def blast_all(query):
 			current_ident = identity
 			current_match = match
 	prot_obj = Protein.objects.filter(reference_id=current_match).select_related("family","source","organism")
-#	result_dict['protein']['match'] = {}
-#	result_dict['protein']['match']['name'] = prot_obj[0].name
-##	result_dict['protein']['match']['id'] = current_match
-#	result_dict['protein']['match']['eval'] = current_eval
-#	result_dict['protein']['match']['ident'] = current_ident
-#	result_dict['protein']['match']['seq'] = prot_obj[0].sequence
-#	result_dict['protein']['match']['family'] = prot_obj[0].family.name
-#	result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
-#	result_dict['protein']['match']['source'] = prot_obj[0].source.url
-#	result_dict['protein']['match']['organism'] = prot_obj[0].organism.name
-#	return result_dict
-#else:
 	result = hmm_query(query,result_dict,query_name)
 	return result
 

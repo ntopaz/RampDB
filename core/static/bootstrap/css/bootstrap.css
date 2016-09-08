@@ -2414,7 +2414,7 @@ caption {
 }
 th {
   text-align: center;
-  font-size: 28px;
+  font-size: 20px;
 }
 .table {
   width: 100%;
@@ -2470,7 +2470,7 @@ th {
   border: 1px solid #ddd;
 }
  #interactions_tr {
-     font-size: 21px;
+     font-size: 17px;
      text-align: center;
  }
 .table-bordered > thead > tr > th,
