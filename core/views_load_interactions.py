@@ -21,7 +21,7 @@ def load_interactions(data):
 						rampfamily = ramp_fam,
 						gpcrfamily = gpcr_fam,
 						ligand = ligand,
-						function = None,
+						function = data[interaction]['function'],
 						name_short = data[interaction]['name_short'],
 						)
 

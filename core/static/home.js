@@ -58,12 +58,10 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					if ('ramp' in response.data){
 						$scope.ramp_quer = true;
 						$scope.interactions = response.data['interactions'];
-						console.log($scope.interactions);
 					}
 					else{
 						$scope.gpcr_quer = true;
 						$scope.interactions = response.data['interactions'];
-						console.log($scope.interactions);
 					}
 					});
 				var opts = ({
@@ -93,6 +91,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
         	        	$http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
 	                	.then(function(response) {
 					$scope.interactions = response.data;
+					$scope.references = response.data['interactions']['references'];
 					console.log($scope.interactions);
 					});
 				var img_get_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + $scope.chem_id + "/PNG?record_type=2d&image_size=large";
