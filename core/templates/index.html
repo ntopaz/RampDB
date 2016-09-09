@@ -41,7 +41,7 @@
         <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
         <li><a href="{% url 'info' %}">RAMP Information</a></li>
         <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <li><a ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
       </u1>
         <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results</a>
         <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
@@ -201,12 +201,17 @@
 				 	<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
 				</td>
 				<td ng-init="hide_sources = true">
-					<button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
-				 	<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
+					<button ng-show="hide_sources" ng-click="hide_sources = false"> + </button>
+				 	<button ng-hide="hide_sources" ng-click="hide_sources = true"> - </button>
 				</td>
 		</tr>
-		<tr ng-repeat-end>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="5"> 1 </td>
+		<tr>
+			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
+			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
+		</tr>
+		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
 		</tr>
 		</table>
         </div>
@@ -233,10 +238,15 @@
 				<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
 			</td>
 		</tr>
-		<tr ng-repeat-end>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="5"> 1 </td>
+		<tr>
+			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
+			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		</table>		
+		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+		</tr>
+		</table>
         </div>
                {% endverbatim %}
 
@@ -304,10 +314,16 @@
 				<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
 			</td>
 		</tr>
-		<tr ng-repeat-end>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="5"> 1 </td>
+		<tr>
+			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
+			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		</table>
+		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+		</tr>
+		</table>		
+
         </div>
                {% endverbatim %}
 

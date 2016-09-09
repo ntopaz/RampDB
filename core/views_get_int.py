@@ -23,12 +23,19 @@ def db_int(family):
 		final_dict['interactions'] = {}
 		final_dict['ramp'] = ""
 		for interaction in r_interactions:
-			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name}
+			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name, 'references':{}}
+                        ref_objs = interaction.reference.all()
+                        for ref_obj in ref_objs:
+                                final_dict['interactions'][interaction.phenotype]['references'][ref_obj.name] = ref_obj.url
+
 	else:
 		final_dict['interactions'] = {}
 		final_dict['gpcr'] = ""
 		for interaction in g_interactions:
-			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name}
+			final_dict['interactions'][interaction.phenotype] = {'function':interaction.function,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name, 'references':{}}
+                        ref_objs = interaction.reference.all()
+                        for ref_obj in ref_objs:
+                                final_dict['interactions'][interaction.phenotype]['references'][ref_obj.name] = ref_obj.url
 
 	pp.pprint(final_dict)
 	return final_dict

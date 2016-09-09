@@ -18,7 +18,10 @@ def db_int(cid):
 	ligand_obj = Ligand.objects.get(chem_id=cid)
 	interaction_objs = Interactions.objects.filter(ligand_id=ligand_obj).select_related("gpcrfamily","rampfamily")
 	for int_obj in interaction_objs:
-		final_dict[int_obj.name_short] = {"name": int_obj.phenotype,"function":int_obj.function,"gpcr":int_obj.gpcrfamily.name,"ramp":int_obj.rampfamily.name}
+		final_dict[int_obj.name_short] = {"name": int_obj.phenotype,"function":int_obj.function,"gpcr":int_obj.gpcrfamily.name,"ramp":int_obj.rampfamily.name, "references": {}}
+		ref_objs = int_obj.reference.all()
+		for ref_obj in ref_objs:
+			final_dict[int_obj.name_short]['references'][ref_obj.name] = ref_obj.url
 	return final_dict
 
 
