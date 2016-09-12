@@ -192,8 +192,8 @@
 			<th>Function</th>
 			<th>Sources</th>
 		</tr>
-		<tr id='interactions_tr' ng-repeat-start="(phenotype,object) in interactions track by $index">
-				<td> {{ phenotype }} </td>
+		<tr id='interactions_tr' ng-repeat-start="(key,object) in interactions track by $index">
+				<td> {{ object.phenotype }} </td>
 				<td> {{ object.prot }} </td>
 				<td> {{ object.ligand }} </td>
 				<td ng-init="hide_func = true"> 
@@ -226,7 +226,7 @@
 			<th>Sources</th>
 		</tr>
 		<tr id='interactions_tr' ng-repeat-start="(phenotype,object) in interactions track by $index">
-			<td> {{ phenotype }} </td>
+			<td> {{ object.phenotype }} </td>
 			<td> {{ object.prot }} </td>
 			<td> {{ object.ligand }} </td>
 			<td ng-init="hide_func = true"> 
