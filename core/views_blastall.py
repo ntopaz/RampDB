@@ -18,10 +18,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 @transaction.atomic
 def blast_all(query):
 	result_dict = {}
+	print BASE_DIR+"/"+"temp.txt"
 	if not query.startswith(">"):
 		result = {'error': 'Protein input query not in FASTA format'}
 		return result
-	q = open("query.txt","w")
+	q = open(BASE_DIR+"/"+"query.txt","w")
 	q.write(query)
 	query = q.name
 	q.close()
@@ -33,10 +34,10 @@ def blast_all(query):
 		my_fasta += header
 		my_fasta += seq+"\n"
 
-	f = open("temp.txt","w")
+	f = open(BASE_DIR+"/"+"temp.txt","w")
 	f.write(my_fasta)
 	f.close()
-	q=open("query.txt","r+")
+	q=open(BASE_DIR + "/" + "query.txt","r+")
 	for record in SeqIO.parse(q,"fasta"):
 		query_length = len(record.seq)
 		query_seq = record.seq
@@ -44,10 +45,10 @@ def blast_all(query):
 		query_desc = record.description
 	result_dict['protein'] = {'name':query_name, 'seq':str(query_seq), 'length': query_length, 'desc':query_desc, 'match': None}
 	q.close()
-	result = check_output(["makeblastdb","-dbtype","prot","-in","temp.txt","-out","blastdb","-title","blastdb","-parse_seqids"], shell=False)
-	os.remove("temp.txt")
+	result = check_output(["makeblastdb","-dbtype","prot","-in",BASE_DIR+"/temp.txt","-out",BASE_DIR+"/"+"blastdb","-title","blastdb","-parse_seqids"], shell=False)
+	os.remove(BASE_DIR+"/"+"temp.txt")
 
-	blast_results = check_output(["blastp","-db","blastdb","-outfmt","6","-query",query,"-max_target_seqs","5"], shell=False)
+	blast_results = check_output(["blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",query,"-max_target_seqs","5"], shell=False)
 	res_avg = 0.0
 	current_ident = 0.0
 	current_eval = 10.0
@@ -70,13 +71,13 @@ def hmm_query(query, result_dict,query_name):
         profile_score = {}
         profile_quer_seq = {}
         profile_ref_seq = {}
-        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1']
-        fp = tempfile.NamedTemporaryFile(suffix="",dir="",delete = False)
+        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1','pth2']
+        fp = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR,delete = False)
         for profile in my_profiles:
                 fp.seek(0)
                 fp.truncate()
                 check_output(["hmmscan","-o",fp.name,
-                "core/profiles/%s" % profile,query],shell=False)
+                BASE_DIR+"/"+"core/profiles/%s" % profile,query],shell=False)
                 best_domain = 0
                 best_domain_score = 0
                 rows = fp.read()
@@ -116,10 +117,10 @@ def hmm_query(query, result_dict,query_name):
                         best_profile = key
 
         if max_value > 0:
-                fp_quer = tempfile.NamedTemporaryFile(suffix="",dir="", delete = False)
+                fp_quer = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR, delete = False)
                 fp_quer.write(">query\n"+profile_quer_seq[best_profile])
                 fp_quer.seek(0)
-                fp_subj = tempfile.NamedTemporaryFile(suffix="",dir="", delete = False)
+                fp_subj = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR, delete = False)
                 fp_subj.write(">ref\n"+profile_ref_seq[best_profile])
                 fp_subj.seek(0)
                 results = check_output(["blastp","-subject",
@@ -128,22 +129,22 @@ def hmm_query(query, result_dict,query_name):
                 os.remove(fp_quer.name)
                 fp_subj.close()
                 os.remove(fp_subj.name)
-                result = hmm_match(query,best_profile, profile_ref_seq[best_profile], max_value,results,result_dict,query_name)
+                result = hmm_match(query,best_profile, profile_ref_seq[best_profile], profile_quer_seq[best_profile], max_value,results,result_dict,query_name)
         	return result
 	else:
                 return result_dict
         fp.close()
         os.remove(fp.name)
 
-def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_name):
+def hmm_match(query,family,subj_seq, quer_seq, confidence,blast_results,result_dict,query_name):
 	my_line = re.split('\s+', blast_results)
 	print subj_seq
-	with open("hmm_match.txt","w") as h:
+	with open(BASE_DIR+"/hmm_match.txt","w") as h:
 		h.write(">Closest_Match\n")
 		h.write(subj_seq)
-        blast_results = check_output(["blastp","-db","blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
+        blast_results = check_output(["blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
 	print my_line
-	os.system("rm hmm_match.txt")
+	os.system("rm " + BASE_DIR + "/hmm_match.txt")
 
 	print "blast results of hmm match:",blast_results
 	prot_obj = Protein.objects.filter(reference_id=blast_results.split('\t')[1]).select_related("family","source","organism")
@@ -154,7 +155,7 @@ def hmm_match(query,family,subj_seq, confidence,blast_results,result_dict,query_
 	result_dict['protein']['match']['eval'] = blast_results.split('\t')[10]
 	result_dict['protein']['match']['max_score'] = blast_results.split('\t')[11]
 	result_dict['protein']['match']['ident'] = my_ident
-	result_dict['protein']['match']['seq'] = prot_obj[0].sequence
+	result_dict['protein']['match']['seq'] = quer_seq
 	result_dict['protein']['match']['domain_seq'] = subj_seq
 	result_dict['protein']['match']['family'] = prot_obj[0].family.name
 	result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
@@ -271,19 +272,19 @@ def get_result(request):
 				results = {'error':'No match found for that protein query'}
 			else:
 				q_name = results['protein']['name']
-				q_seq = results['protein']['seq']
+				q_seq = results['protein']['match']['seq']
 				s_name = results['protein']['match']['name']
 				s_seq = results['protein']['match']['domain_seq']
-				with open("msa.fa","w") as f:
+				with open(BASE_DIR+"/"+"msa.fa","w") as f:
 					f.write(">Domain\n")
 					f.write(s_seq+"\n")
 					f.write(">Query\n")
 					f.write(q_seq+"\n")
-				msa = check_output(['clustalo','-i','msa.fa'])
-				os.remove("msa.fa")
+				msa = check_output(['clustalo','-i',BASE_DIR+'/'+'msa.fa'])
+				os.remove(BASE_DIR+"/"+"msa.fa")
 				results['msa'] = msa
-			os.system("rm blastdb*")
-			os.system("rm tmp*")
+			os.system("rm -f "+BASE_DIR+"/"+ "blastdb*")
+			os.system("rm -f "+BASE_DIR+"/"+ "tmp*")
 		elif data.has_key('ligand'):
 			print "ligand search"
 			results = ligand_search(data['ligand'])

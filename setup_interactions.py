@@ -23,6 +23,10 @@ def load_int():
 	interaction['Vasoactive Intestinal Polypeptide Receptor 1_2'] = attributes
 	attributes = {'name':'Vasoactive Intestinal Polypeptide Receptor','name_short': 'VIP1_3','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'vasoactive intestinal polypeptide receptor 1','ligand':'vasoactive intestinal polypeptide','function':'Not enough data to determine function'}
 	interaction['Vasoactive Intestinal Polypeptide Receptor 1_3'] = attributes
+	attributes = {'name':'Parathyroid Hormone Receptor 1','name_short': 'PTHR1','rampfamily':'receptor activity modifying protein 2','gpcrfamily':'parathyroid hormone receptor 1','ligand':'parathyroid hormone','function':'Not enough data to determine function'}
+	interaction['Parathyroid Hormone Receptor 1_2'] = attributes
+	attributes = {'name':'Parathyroid Hormone Receptor 2','name_short': 'PTHR2','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'parathyroid hormone receptor 2','ligand':'parathyroid hormone','function':'Not enough data to determine function'}
+	interaction['Parathyroid Hormone Receptor 2_3'] = attributes
 	load_interactions(json.dumps(interaction))
 
 def main():

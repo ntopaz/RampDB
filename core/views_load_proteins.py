@@ -13,7 +13,8 @@ from models import *
 def load_db(data):
 	short_name = {'receptor activity modifying protein 1':'Ramp 1','receptor activity modifying protein 2':'Ramp 2','receptor activity modifying protein 3':'Ramp 3',
                         'receptor activity modifying protein 4':'Ramp 4','receptor activity modifying protein 5':'Ramp 5','calcitonin receptor':'CT','calcitonin receptor-like receptor':'CLR',
-                        'vasoactive intestinal polypeptide receptor 1':'VIP 1','parathyroid hormone receptor 1':'PTHR1'}
+                        'vasoactive intestinal polypeptide receptor 1':'VIP 1','parathyroid hormone receptor 1':'PTHR1',
+			'parathyroid hormone receptor 2':'PTHR2'}
 
 	source_obj, source_created = Source.objects.get_or_create(name="NCBI",url="www.ncbi.nlm.nih.gov")
 	for family in sorted(data.keys()):

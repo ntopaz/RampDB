@@ -12,7 +12,7 @@ desc_str = '<TSeq_defline>(.+)</TSeq_defline>'
 
 families_to_search = ['receptor activity modifying protein 1','receptor activity modifying protein 2','receptor activity modifying protein 3',
 			'receptor activity modifying protein 4','receptor activity modifying protein 5','calcitonin receptor','calcitonin receptor-like receptor',
-			'vasoactive intestinal polypeptide receptor 1', 'parathyroid hormone receptor 1']
+			'vasoactive intestinal polypeptide receptor 1', 'parathyroid hormone receptor 1','parathyroid hormone receptor 2']
 
 validation_terms = {
 			'receptor activity modifying protein 1':['ramp 1','RAMP 1','receptor activity modifying protein 1','receptor activity-modifying protein 1','receptor (calcitonin) activity modifying protein 1'],
@@ -25,6 +25,7 @@ validation_terms = {
 			'calcitonin receptor-like receptor':['calcitonin-like','calcitonin receptor-like','clr','calcitonin gene-related peptide'],
 			'vasoactive intestinal polypeptide receptor 1':['VIP1','vasoactive intestinal polypeptide receptor 1'],
 			'parathyroid hormone receptor 1': ['Parathyroid hormone receptor 1','parathyroid hormone receptor 1','PTH1R','PTHR1','Parathyroid hormone 1 receptor','parathyroid hormone 1 receptor'],
+			'parathyroid hormone receptor 2': ['Parathyroid hormone receptor 2','parathyroid hormone receptor 2','PTH2R','PTHR2','Parathyroid hormone 2 receptor','parathyroid hormone 2 receptor'],
 }
 
 for entry in families_to_search:

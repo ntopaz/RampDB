@@ -14,6 +14,7 @@ def load_interactions(data):
 	data = json.loads(data)
 	for interaction in sorted(data.keys()):
 		ramp_fam = Family.objects.get(name=data[interaction]['rampfamily'])
+		print data[interaction]['gpcrfamily']
 		gpcr_fam = Family.objects.get(name=data[interaction]['gpcrfamily'])
 		ligand = Ligand.objects.get(name=data[interaction]['ligand'])
 		interact_obj, interact_created = Interactions.objects.update_or_create(
