@@ -1196,10 +1196,8 @@ body {
 
 #learn_button {
     background-color: steelblue;
-    width: 38%;
-	float: right;
-	margin-top:1%;
-	margin-right:62%;
+    margin-top:1%;
+    margin-right:62%;
     color: white;
     box-shadow: 210px;
     box-shadow: black 2px;
@@ -5143,7 +5141,6 @@ a.badge:focus {
 #hero{
   background-image:url("../images/black_thread.png");
   color: white !important;
-  height: 34.5vh;
   margin-bottom:0;
 }
 
