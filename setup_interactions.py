@@ -27,6 +27,8 @@ def load_int():
 	interaction['Parathyroid Hormone Receptor 1_2'] = attributes
 	attributes = {'name':'Parathyroid Hormone Receptor 2','name_short': 'PTHR2','rampfamily':'receptor activity modifying protein 3','gpcrfamily':'parathyroid hormone receptor 2','ligand':'parathyroid hormone','function':'Not enough data to determine function'}
 	interaction['Parathyroid Hormone Receptor 2_3'] = attributes
+	attributes = {'name':'Glucagon Receptor','name_short': 'Glucagon','rampfamily':'receptor activity modifying protein 2','gpcrfamily':'glucagon receptor','ligand':'glucagon','function':'Not enough data to determine function'}
+	interaction['Glucagon Receptor 1_2'] = attributes
 	load_interactions(json.dumps(interaction))
 
 def main():

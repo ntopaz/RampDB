@@ -71,7 +71,7 @@ def hmm_query(query, result_dict,query_name):
         profile_score = {}
         profile_quer_seq = {}
         profile_ref_seq = {}
-        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1','pth2']
+        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1','pth2','glucagon']
         fp = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR,delete = False)
         for profile in my_profiles:
                 fp.seek(0)

@@ -19,8 +19,8 @@ def load_lig():
 	ligand['vasoactive intestinal polypeptide'] = attributes
 	attributes = {'name_short':'PTH','chem_id':'16129682','inchi_key':'OGBMKVWORPGQRR-UHFFFAOYSA-N'}
 	ligand['parathyroid hormone'] = attributes
-	attributes = {'name_short':'TIP39','chem_id':'3023','inchi_key':'IYYZUPMFVPLQIF-UHFFFAOYSA-N'}
-	ligand['tuberoinfundibular peptide'] = attributes
+	attributes = {'name_short':'Glucagon','chem_id':'16132283','inchi_key':'MASNOZXLGMXCHN-ZLPAWPGGSA-N'}
+	ligand['Glucagon'] = attributes
 
 	load_ligands(json.dumps(ligand))
 
