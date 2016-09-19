@@ -43,8 +43,10 @@
         <li><a href="{% url 'about' %}">About</a></li>
         <li><a ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
       </u1>
-        <a class='btn btn-primary btn-lg' id='export_button' href='#' ng-hide="home"role='button'>Export Results</a>
+	{% verbatim %}
+        <a class='btn btn-primary btn-lg' id='export_button'  ng-hide="home" role='button' download="results.txt" ng-href="{{ url_dl }}" >Export Results</a>
         <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
+	{% endverbatim %}
   </div>
 
   </div>
@@ -54,19 +56,20 @@
 <!-- Main jumbotron-->
   <div class="jumbotron" id="hero">
     <div class="container-fluid">
-	<div id="logo">
-      <img src="{% static 'logo.png' %}" style="width:13vmin;vertical-align:middle; float: left;">
-      <h1 class="display-3" style="
-    vertical-align:middle;
-	line-height:13.5vmin;
-    ">Ramp<span style="color: #E0D7C5;">DB</span></h1></div>
-      <div id="banner_text">
-      <h2 style="font-size:3.0vmin;">A central repository for:</h2>
-      <p>1. Exploring known information regarding RAMPs, GPCRs and associated ligands</p>
-      <p>2. Predicting potential RAMP interactions with your sequence or ligand</p>
-      <p>3. Visualizing currently known interactions between RAMPs, GPCRs and ligands</p>
-      <a class="btn btn-primary btn-lg" id="learn_button" href="{% url 'about' %}" role="button">Learn more &raquo;</a>
-	  </div>
+	<div class="row">
+		<div style="text-align:left;margin-top:3%" class="col-sm-6">
+			<div id="logo">
+      			<h1 class="display-3" style="vertical-align:middle;line-height:13.5vmin;"><img src="{% static 'logo.png' %}" style="width:13vmin;vertical-align:middle; float: left;">Ramp<span style="color: #E0D7C5;">DB</span></h1>
+			</div>
+		</div>
+		<div style="text-align:left" class="col-sm-6">
+      			<h2 style="font-size:3.0vmin;">A central repository for:</h2>
+      			<p>1. Exploring known information regarding RAMPs, GPCRs and associated ligands</p>
+      			<p>2. Predicting potential RAMP interactions with your sequence or ligand</p>
+      			<p>3. Visualizing currently known interactions between RAMPs, GPCRs and ligands</p>
+      			<a class="btn btn-primary btn-lg" id="learn_button" href="{% url 'about' %}" role="button">Learn more &raquo;</a>
+		</div>
+	</div>
     </div>
   </div>
   <div class="container-fluid" style="width:100%;">
