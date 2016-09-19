@@ -1,7 +1,12 @@
 var app = angular.module('homeApp', ['ngSanitize']);
 
+app.config(['$compileProvider',
+    function ($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
+}]);
 
 app.controller('myCtrl', function ($scope, $http, $sce) {
+	$scope.content = "";
 	$scope.loading = true;
 	$scope.gpcr_quer = false;
 	$scope.ramp_quer = false;
@@ -45,6 +50,12 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.max_score = response.data['protein']['match']['max_score'];
 				var my_msa = response.data['msa'];
 				console.log(my_msa)
+				$scope.content += "Query Name:\t" + $scope.quer_name +"\n";
+				$scope.content += "Family:\t" + $scope.family +"\n";
+				$scope.content += "Confidence:\t" + $scope.confidence +"\n";
+				$scope.content += "E value:\t" + $scope.eval +"\n";
+				$scope.content += "Max Score:\t" + $scope.max_score +"\n";
+				$scope.content += "Alignment to Domain:\t\n" + my_msa +"\n";
 				if ($scope.confidence > 30){
 					$scope.highConf = true;
 					}
@@ -58,10 +69,12 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					if ('ramp' in response.data){
 						$scope.ramp_quer = true;
 						$scope.interactions = response.data['interactions'];
+
 					}
 					else{
 						$scope.gpcr_quer = true;
 						$scope.interactions = response.data['interactions'];
+
 					}
 					});
 				var opts = ({
@@ -88,6 +101,12 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
 				console.log($scope.molecular_formula);
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
+				$scope.content += "Query Name:\t" + $scope.query_name +"\n";
+				$scope.content += "Match Name:\t" + $scope.match_name +"\n";
+				$scope.content += "PubChem ID:\t" + $scope.chem_id +"\n";
+				$scope.content += "Inchi Key:\t" + $scope.inchi_key +"\n";
+				$scope.content += "URL:\t" + $scope.url +"\n";
+
         	        	$http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
 	                	.then(function(response) {
 					$scope.interactions = response.data;
@@ -101,6 +120,9 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
 					});
 				}
+			var content = $scope.content;
+			let dl_blob = new Blob([content], { type: 'text/plain'});
+			$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 			});
 		};
 
