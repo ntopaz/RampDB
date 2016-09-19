@@ -13,6 +13,8 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from models import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BLAST_PATH = "/home/nadav/rampdb/core/exec/blast/bin/"
+HMMER_PATH = "/home/nadav/rampdb/core/exec/hmmer/src/"
 # Create your views here.
 
 @transaction.atomic
@@ -45,10 +47,10 @@ def blast_all(query):
 		query_desc = record.description
 	result_dict['protein'] = {'name':query_name, 'seq':str(query_seq), 'length': query_length, 'desc':query_desc, 'match': None}
 	q.close()
-	result = check_output(["makeblastdb","-dbtype","prot","-in",BASE_DIR+"/temp.txt","-out",BASE_DIR+"/"+"blastdb","-title","blastdb","-parse_seqids"], shell=False)
+	result = check_output([BLAST_PATH+"makeblastdb","-dbtype","prot","-in",BASE_DIR+"/temp.txt","-out",BASE_DIR+"/"+"blastdb","-title","blastdb","-parse_seqids"], shell=False)
 	os.remove(BASE_DIR+"/"+"temp.txt")
 
-	blast_results = check_output(["blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",query,"-max_target_seqs","5"], shell=False)
+	blast_results = check_output([BLAST_PATH+"blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",query,"-max_target_seqs","5"], shell=False)
 	res_avg = 0.0
 	current_ident = 0.0
 	current_eval = 10.0
@@ -76,7 +78,7 @@ def hmm_query(query, result_dict,query_name):
         for profile in my_profiles:
                 fp.seek(0)
                 fp.truncate()
-                check_output(["hmmscan","-o",fp.name,
+                check_output([HMMER_PATH+"hmmscan","-o",fp.name,
                 BASE_DIR+"/"+"core/profiles/%s" % profile,query],shell=False)
                 best_domain = 0
                 best_domain_score = 0
@@ -123,8 +125,7 @@ def hmm_query(query, result_dict,query_name):
                 fp_subj = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR, delete = False)
                 fp_subj.write(">ref\n"+profile_ref_seq[best_profile])
                 fp_subj.seek(0)
-                results = check_output(["blastp","-subject",
-                fp_subj.name,"-outfmt","6","-query",fp_quer.name],shell=False)
+                results = check_output([BLAST_PATH+"blastp","-subject",fp_subj.name,"-outfmt","6","-query",fp_quer.name],shell=False)
                 fp_quer.close()
                 os.remove(fp_quer.name)
                 fp_subj.close()
@@ -142,7 +143,7 @@ def hmm_match(query,family,subj_seq, quer_seq, confidence,blast_results,result_d
 	with open(BASE_DIR+"/hmm_match.txt","w") as h:
 		h.write(">Closest_Match\n")
 		h.write(subj_seq)
-        blast_results = check_output(["blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
+        blast_results = check_output([BLAST_PATH+"blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
 	print my_line
 	os.system("rm " + BASE_DIR + "/hmm_match.txt")
 
