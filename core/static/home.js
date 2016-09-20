@@ -6,7 +6,7 @@ app.config(['$compileProvider',
 }]);
 
 app.controller('myCtrl', function ($scope, $http, $sce) {
-	$scope.content = "";
+	var content = "";
 	$scope.loading = true;
 	$scope.gpcr_quer = false;
 	$scope.ramp_quer = false;
@@ -50,12 +50,12 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.max_score = response.data['protein']['match']['max_score'];
 				var my_msa = response.data['msa'];
 				console.log(my_msa)
-				$scope.content += "Query Name:\t" + $scope.quer_name +"\n";
-				$scope.content += "Family:\t" + $scope.family +"\n";
-				$scope.content += "Confidence:\t" + $scope.confidence +"\n";
-				$scope.content += "E value:\t" + $scope.eval +"\n";
-				$scope.content += "Max Score:\t" + $scope.max_score +"\n";
-				$scope.content += "Alignment to Domain:\t\n" + my_msa +"\n";
+				content += "Query Name:\t" + $scope.quer_name +"\n";
+				content += "Family:\t" + $scope.family +"\n";
+				content += "Confidence:\t" + $scope.confidence +"\n";
+				content += "E value:\t" + $scope.eval +"\n";
+				content += "Max Score:\t" + $scope.max_score +"\n";
+				content += "Alignment to Domain:\t\n" + my_msa +"\n";
 				if ($scope.confidence > 30){
 					$scope.highConf = true;
 					}
@@ -64,18 +64,37 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					}
 
 				console.log($scope.results);
-        	        	$http.post("core/interactions",{'family':$scope.family})
-	                	.then(function(response) {
-					if ('ramp' in response.data){
+				var interactions = ""
+				getinteraction = function () {
+        	        	return $http.post("core/interactions",{'family':$scope.family})
+	                	.success(function(data) {
+					if ('ramp' in data){
 						$scope.ramp_quer = true;
-						$scope.interactions = response.data['interactions'];
+						$scope.interactions = data['interactions'];
+						interactions += "Interactions:\n";
+						interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+						for (var key in $scope.interactions){
+							interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["prot"] + "\t" + $scope.interactions[key]["ligand"] + "\t" +  $scope.interactions[key]["function"] +"\n";
+							}
 
 					}
 					else{
 						$scope.gpcr_quer = true;
 						$scope.interactions = response.data['interactions'];
+						if ($scope.interactions) {
+							interactions += "Interactions:\n";
+							interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+							}
 
 					}
+					});
+				}
+				getinteraction().then(function(){
+					console.log(interactions)
+					content += interactions	
+					console.log(content)
+					let dl_blob = new Blob([content], { type: 'text/plain'});
+					$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 					});
 				var opts = ({
 				el: sequence,
@@ -101,11 +120,11 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
 				console.log($scope.molecular_formula);
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
-				$scope.content += "Query Name:\t" + $scope.query_name +"\n";
-				$scope.content += "Match Name:\t" + $scope.match_name +"\n";
-				$scope.content += "PubChem ID:\t" + $scope.chem_id +"\n";
-				$scope.content += "Inchi Key:\t" + $scope.inchi_key +"\n";
-				$scope.content += "URL:\t" + $scope.url +"\n";
+				content += "Query Name:\t" + $scope.query_name +"\n";
+				content += "Match Name:\t" + $scope.match_name +"\n";
+				content += "PubChem ID:\t" + $scope.chem_id +"\n";
+				content += "Inchi Key:\t" + $scope.inchi_key +"\n";
+				content += "URL:\t" + $scope.url +"\n";
 
         	        	$http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
 	                	.then(function(response) {
@@ -120,9 +139,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
 					});
 				}
-			var content = $scope.content;
-			let dl_blob = new Blob([content], { type: 'text/plain'});
-			$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
+
 			});
 		};
 
