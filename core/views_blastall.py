@@ -15,6 +15,7 @@ from models import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLAST_PATH = "/home/nadav/rampdb/core/exec/blast/bin/"
 HMMER_PATH = "/home/nadav/rampdb/core/exec/hmmer/src/"
+CLUSTAL_PATH = "/home/nadav/rampdb/core/exec/clustal/bin/"
 # Create your views here.
 
 @transaction.atomic
@@ -61,6 +62,7 @@ def blast_all(query):
 		match = line.split('\t')[1]
 		identity = float(line.split('\t')[2])
 		e_val = float(line.split('\t')[10])
+		print e_val
 		if e_val <  current_eval:
 			current_eval = e_val
 			current_ident = identity
@@ -143,14 +145,15 @@ def hmm_match(query,family,subj_seq, quer_seq, confidence,blast_results,result_d
 	with open(BASE_DIR+"/hmm_match.txt","w") as h:
 		h.write(">Closest_Match\n")
 		h.write(subj_seq)
-        blast_results = check_output([BLAST_PATH+"blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
+        blast_results_2 = check_output([BLAST_PATH+"blastp","-db",BASE_DIR+"/"+"blastdb","-outfmt","6","-query",h.name,"-max_target_seqs","1"], shell=False)
 	print my_line
 	os.system("rm " + BASE_DIR + "/hmm_match.txt")
 
 	print "blast results of hmm match:",blast_results
-	prot_obj = Protein.objects.filter(reference_id=blast_results.split('\t')[1]).select_related("family","source","organism")
+	prot_obj = Protein.objects.filter(reference_id=blast_results_2.split('\t')[1]).select_related("family","source","organism")
         my_ident = round(float(blast_results.split('\t')[2]),1)
 	result_dict['protein']['match'] = {}
+	print prot_obj
 	result_dict['protein']['match']['name'] = prot_obj[0].name
 	result_dict['protein']['match']['id'] = blast_results.split('\t')[1]
 	result_dict['protein']['match']['eval'] = blast_results.split('\t')[10]
@@ -281,7 +284,8 @@ def get_result(request):
 					f.write(s_seq+"\n")
 					f.write(">Query\n")
 					f.write(q_seq+"\n")
-				msa = check_output(['clustalo','-i',BASE_DIR+'/'+'msa.fa'])
+				print CLUSTAL_PATH+"clustalo"
+				msa = check_output([CLUSTAL_PATH+"clustalo","-i",BASE_DIR+"/msa.fa"])
 				os.remove(BASE_DIR+"/"+"msa.fa")
 				results['msa'] = msa
 			os.system("rm -f "+BASE_DIR+"/"+ "blastdb*")

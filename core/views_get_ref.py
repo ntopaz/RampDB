@@ -28,6 +28,7 @@ def db_int(family):
 			for ref_obj in ref_objs:
 				final_dict['interactions'][interaction.phenotype]['references']['name'] = ref_obj.reference.name
 				final_dict['interactions'][interaction.phenotype]['references']['url'] = ref_obj.reference.url
+			final_dict['interactions'][interaction.phenotype]['references']['length'] = len(ref_obj)
 	else:
 		final_dict['interactions'] = {}
 		final_dict['gpcr'] = ""
@@ -37,6 +38,7 @@ def db_int(family):
 			for ref_obj in ref_objs:
 				final_dict['interactions'][interaction.phenotype]['references']['name'] = ref_obj.reference.name
 				final_dict['interactions'][interaction.phenotype]['references']['url'] = ref_obj.reference.url
+			final_dict['interactions'][interaction.phenotype]['references']['length'] = len(ref_obj)
 
 	pp.pprint(final_dict)
 	return final_dict

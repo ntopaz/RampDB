@@ -27,7 +27,7 @@ def db_int(family):
                         ref_objs = interaction.reference.all()
                         for ref_obj in ref_objs:
                                 final_dict['interactions'][interaction.name_short]['references'][ref_obj.name] = ref_obj.url
-
+			final_dict['interactions'][interaction.name_short]['ref_length'] = len(ref_objs)
 	else:
 		final_dict['interactions'] = {}
 		final_dict['gpcr'] = ""
@@ -36,6 +36,7 @@ def db_int(family):
                         ref_objs = interaction.reference.all()
                         for ref_obj in ref_objs:
                                 final_dict['interactions'][interaction.name_short]['references'][ref_obj.name] = ref_obj.url
+			final_dict['interactions'][interaction.name_short]['ref_length'] = len(ref_objs)
 
 	pp.pprint(final_dict)
 	return final_dict

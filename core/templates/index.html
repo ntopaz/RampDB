@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div style="text-align:left" class="col-sm-6">
-      			<h2 style="font-size:3.0vmin;">A central repository for:</h2>
+      			<h2 style="font-size:27px;">A central repository for:</h2>
       			<p>1. Exploring known information regarding RAMPs, GPCRs and associated ligands</p>
       			<p>2. Predicting potential RAMP interactions with your sequence or ligand</p>
       			<p>3. Visualizing currently known interactions between RAMPs, GPCRs and ligands</p>
@@ -83,8 +83,14 @@
 							<div style="float:right" class="dropdown">
 								<button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"  aria-haspopup="false" aria-expanded="false" name="example_ramp" id="example_button" role="button">Example <span class="caret"></span></button>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="example_button">
-										<li><a href="" ng-click="Example()">Strong Match</a></li>
-										<li><a href="">Weak Match</a></li>
+										<li class="dropdown-header">RAMPs:</li>
+										<li><a href="" ng-click="rampStrongExample()">Strong Match</a></li>
+										<li><a href="" ng-click="rampWeakExample()">Weak Match</a></li>
+										<li class="divider"></li>
+										<li class="dropdown-header">GPCRs:</li>
+										<li><a href="" ng-click="gpcrStrongExample()">Strong Match</a></li>
+										<li><a href="" ng-click="gpcrWeakExample()">Weak Match</a></li>
+
 									</ul>
 							</div>
 							<div id="my_textarea">
@@ -155,28 +161,30 @@
                 {% verbatim %}
                 {{ quer_name }}
                 </h3>
+                <h3 id='summary_h3'><span style=font-weight:bold>Length:</span>
+		{{ length }} bp 
                 <h3 id='summary_h3'><span style=font-weight:bold>Family:</span>
 		{{ family }} ({{ family_short }}) 
 		</h3>
                 <div ng-show="highConf">
 			<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:green> 
 			{{ confidence }}% </h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
+                <!--<h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
 		<span style="color:green">{{ eval }}</span>  
 		</h3>		
                 <h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
 		<span style="color:green">{{ max_score }}</span>
-		</h3>
+		</h3>-->
 		</div>
                 <div ng-hide="highConf">
 			<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:red> 
 			{{ confidence }}% </h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
+               <!-- <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
 		<span style="color:red">{{ eval }}</span>  
 		</h3>		
                 <h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
 		<span style="color:red">{{ max_score }}</span>
-		</h3>		
+		</h3>-->	
 		</div>
         </div>
 
@@ -204,8 +212,8 @@
 				 	<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
 				</td>
 				<td ng-init="hide_sources = true">
-					<button ng-show="hide_sources" ng-click="hide_sources = false"> + </button>
-				 	<button ng-hide="hide_sources" ng-click="hide_sources = true"> - </button>
+				{{ object.ref_length }} <button ng-show="hide_sources" ng-click="hide_sources = false"> + </button>
+							<button ng-hide="hide_sources" ng-click="hide_sources = true"> - </button>
 				</td>
 		</tr>
 		<tr>
@@ -237,8 +245,8 @@
 				<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
 			</td>
 			<td ng-init="hide_sources = true">
-				<button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
-				<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
+			{{ object.ref_length }}	<button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
+						<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
 			</td>
 		</tr>
 		<tr>
@@ -313,7 +321,7 @@
 				<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
 			</td>
 			<td ng-init="hide_sources = true">
-				<button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
+			{{ object.ref_length }} <button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
 				<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
 			</td>
 		</tr>

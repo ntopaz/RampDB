@@ -22,6 +22,7 @@ def db_int(cid):
 		ref_objs = int_obj.reference.all()
 		for ref_obj in ref_objs:
 			final_dict[int_obj.name_short]['references'][ref_obj.name] = ref_obj.url
+		final_dict[int_obj.name_short]['ref_length'] = len(ref_objs)
 	return final_dict
 
 

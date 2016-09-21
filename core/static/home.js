@@ -39,6 +39,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.home = false;
 				$scope.protein_page = true;
 				$scope.organism = response.data['protein']['match']['organism'];
+				$scope.length = response.data['protein']['length'];
 				$scope.source = response.data['protein']['match']['source'];
 				$scope.id = response.data['protein']['match']['id'];
 				$scope.url = $scope.source.concat('/protein/',$scope.id);
@@ -49,7 +50,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.eval = response.data['protein']['match']['eval'];
 				$scope.max_score = response.data['protein']['match']['max_score'];
 				var my_msa = response.data['msa'];
-				console.log(my_msa)
 				content += "Query Name:\t" + $scope.quer_name +"\n";
 				content += "Family:\t" + $scope.family +"\n";
 				content += "Confidence:\t" + $scope.confidence +"\n";
@@ -63,7 +63,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					$scope.highConf = false;
 					}
 
-				console.log($scope.results);
 				var interactions = ""
 				getinteraction = function () {
         	        	return $http.post("core/interactions",{'family':$scope.family})
@@ -80,22 +79,18 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					}
 					else{
 						$scope.gpcr_quer = true;
-						$scope.interactions = response.data['interactions'];
-						if ($scope.interactions) {
-							interactions += "Interactions:\n";
-							interactions += "Phenotype\tProtein\tLigand\tFunction\n";
-							for (var key in $scope.interactions){
-								interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["prot"] + "\t" + $scope.interactions[key]["ligand"] + "\t" +  $scope.interactions[key]["function"] +"\n";
-							}
-							}
+						$scope.interactions = data['interactions'];
+						interactions += "Interactions:\n";
+						interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+						for (var key in $scope.interactions){
+							interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["prot"] + "\t" + $scope.interactions[key]["ligand"] + "\t" +  $scope.interactions[key]["function"] +"\n";
+						}
 
 					}
 					});
 				}
 				getinteraction().then(function(){
-					console.log(interactions)
 					content += interactions	
-					console.log(content)
 					let dl_blob = new Blob([content], { type: 'text/plain'});
 					$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 					});
@@ -121,7 +116,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.chem_id = response.data['ligand']['match']['chem_id'];
 				$scope.url = "https://pubchem.ncbi.nlm.nih.gov/compound/" + $scope.chem_id;
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
-				console.log($scope.molecular_formula);
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
 				content += "Query Name:\t" + $scope.query_name +"\n";
 				content += "Match Name:\t" + $scope.match_name +"\n";
@@ -133,7 +127,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				return $http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
 	                	.success(function(data) {
 					$scope.interactions = data;
-					console.log($scope.interactions);
 					//$scope.references = data['interactions']['references'];
 					if ($scope.interactions) {
 						interactions += "Interactions:\n";
@@ -146,7 +139,6 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				}
 				getliginteraction().then(function(){
 					content += interactions	
-					console.log(content)
 					let dl_blob = new Blob([content], { type: 'text/plain'});
 					$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 					});
@@ -161,8 +153,17 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 			});
 		};
 
-	$scope.Example = function() {
+	$scope.rampStrongExample = function() {
 		$scope.proteintext = ">gi|7592833|dbj|BAA94425.1| receptor activity modifying protein 1 [Rattus norvegicus]\r\nMALGLRGLPRRGLWLLLVHHLFMVTACRDPDYGTLIQELCLSRFKEDMETIGKTLWCDWGKTIGSYGELTHCTKLVANKIGCFWPNPEVDKFFIAVHHRYFSKCPVSGRALRDPPNSILCPFIVLPITVTLLMTALVVWRSKRTEGIV"
+	};
+	$scope.gpcrStrongExample = function() {
+		$scope.proteintext = ">gi|290543392|ref|NP_001166395.1| calcitonin receptor precursor [Cavia porcellus]\r\nMRFTFTRQFLAFFILISNPASILPRSENLTFPTFEPEPYLYSVGRKKLVDAQYRCYDRMQQLPPYEGEGPYCNRTWDGWMCWDDTPAGVLSVQLCPDYFPDFDPTEKVTKYCDESGVWFKHPENNRTWSNYTLCNAFTPEKLQNAYVLYYLAIVGHSMSIITLVVSLGIFVYFRSLGCQRVTLHKNMFLTYILNSMIIIIHLVEVVPNGELVRKDPVSCKILHFFHQYMMACNYFWMLCEGIYLHTLIVVSVFNEAKHLRWYYLLGWGFPLVPTTIHAITRALYFNDNCWISVDTHLLYIIHGPVMVALVVNFFFLLNIVRVLVTKMRETHEAESYMYLKAVKATMILVPLLGIQFVVFPWRPSNKVLGKIYDYFMHSLIHFQGFFVATIYCFCNNEVQTTLKRQWAQFKIQWNQRWGTRPSNRSAAARAAAAAAEAGGDNIPVYICHQEPRNDPPNNQGEEGAEMIVLNIIEKESSA"
+	};
+	$scope.gpcrWeakExample = function() {
+		$scope.proteintext = ""
+	};
+	$scope.rampWeakExample = function() {
+		$scope.proteintext = ">gi|827050818|gb|KLL02457.1| hypothetical protein MRERC_1c040 [Mycoplasmataceae bacterium RC_NB112A]\r\nMTDNSQNINSSLRKQNKTLEQRKWGSYRVIGLPQDSSKDDIELNCSASTNIDTSGLSKFEEEERIKKNKKVKESSDYLLDYQEKVNLISTELNKVVEKYGLELTDFRMIYNQYTSRIDNCRTWDEVNKVIDEIKSEIEFFYQLRENHFKRQIDSGFTPNEVLCAHLVLVIPAVIFMTSILIWLLSITQKNKDGL"
 	};
 	$scope.LigandSelected = function() {
 		$scope.ligandtext = $scope.commonLigands;
