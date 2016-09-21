@@ -84,6 +84,9 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 						if ($scope.interactions) {
 							interactions += "Interactions:\n";
 							interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+							for (var key in $scope.interactions){
+								interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["prot"] + "\t" + $scope.interactions[key]["ligand"] + "\t" +  $scope.interactions[key]["function"] +"\n";
+							}
 							}
 
 					}
@@ -125,12 +128,27 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				content += "PubChem ID:\t" + $scope.chem_id +"\n";
 				content += "Inchi Key:\t" + $scope.inchi_key +"\n";
 				content += "URL:\t" + $scope.url +"\n";
-
-        	        	$http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
-	                	.then(function(response) {
-					$scope.interactions = response.data;
-					$scope.references = response.data['interactions']['references'];
+				var interactions = ""
+        	        	getliginteraction = function () {
+				return $http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
+	                	.success(function(data) {
+					$scope.interactions = data;
 					console.log($scope.interactions);
+					//$scope.references = data['interactions']['references'];
+					if ($scope.interactions) {
+						interactions += "Interactions:\n";
+						interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+						for (var key in $scope.interactions){
+							interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["ramp"] + "\t" + $scope.interactions[key]["ramp"] + "\t" +  $scope.interactions[key]["function"] +"\n";
+						}
+						}
+					});
+				}
+				getliginteraction().then(function(){
+					content += interactions	
+					console.log(content)
+					let dl_blob = new Blob([content], { type: 'text/plain'});
+					$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 					});
 				var img_get_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + $scope.chem_id + "/PNG?record_type=2d&image_size=large";
         	        	$http.get(img_get_url, {responseType: "arraybuffer"})
