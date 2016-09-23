@@ -93,17 +93,12 @@ footer {
 	
 }
 #summary {
-  width:44%;
   padding-left:1%;
-  float:left;
+  text-align:left !important;
 }
 
 #hero_container{
   background-image:url("../images/black_thread.png");
-}
-#right_float {
-  float:right;
-  width: 44%;
 }
 #sequence{
   padding-top:2%;
@@ -126,11 +121,13 @@ footer {
   width: 90%;
 
 }
-#results_page_int{
+#results_page_int_lig{
   margin-top: 4%;
   width: 100%;
-  float: left;
-
+}
+#results_page_int{
+  margin-top: 4%;
+  width: 90%;
 }
 a {
   background-color: transparent;
@@ -1212,7 +1209,6 @@ body {
 }
 #export_button {
     background-color: steelblue;
-    width: 14%;
     float:right;
     margin-right: 1%;
     line-height: 16px;

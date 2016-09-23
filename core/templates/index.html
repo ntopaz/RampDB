@@ -155,42 +155,46 @@
 </div>
 <div id="total_results"  ng-show="protein_page && !home">
         <div class='container-fluid' id='results_page'>
-                <div id='summary'>
-                <h1 id='results_h1'>Summary:</h1>
-                <h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Query:</span>
-                {% verbatim %}
-                {{ quer_name }}
-                </h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Length:</span>
-		{{ length }} bp 
-                <h3 id='summary_h3'><span style=font-weight:bold>Family:</span>
-		{{ family }} ({{ family_short }}) 
-		</h3>
-                <div ng-show="highConf">
-			<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:green> 
-			{{ confidence }}% </h3>
-                <!--<h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
-		<span style="color:green">{{ eval }}</span>  
-		</h3>		
-                <h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
-		<span style="color:green">{{ max_score }}</span>
-		</h3>-->
-		</div>
-                <div ng-hide="highConf">
-			<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:red> 
-			{{ confidence }}% </h3>
-               <!-- <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
-		<span style="color:red">{{ eval }}</span>  
-		</h3>		
-                <h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
-		<span style="color:red">{{ max_score }}</span>
-		</h3>-->	
-		</div>
-        </div>
-
-	<div id='right_float'>
-		<h3 id="results_h1">Sequence Alignment to Domain:</h3>
-        	<div id="sequence">
+		<div class="row">
+			<div class="col-sm-6">
+                		<div id='summary'>
+                			<h1 id='results_h1'>Summary:</h1>
+                			<h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Query:</span>
+                			{% verbatim %}
+                			{{ quer_name }}
+                			</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>Length:</span>
+					{{ length }} bp 
+                			<h3 id='summary_h3'><span style=font-weight:bold>Family:</span>
+					{{ family }} ({{ family_short }}) 
+					</h3>
+                			<div ng-show="highConf">
+						<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:green> 
+						{{ confidence }}% </h3>
+                				<!--<h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
+						<span style="color:green">{{ eval }}</span>  
+						</h3>		
+                				<h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
+						<span style="color:green">{{ max_score }}</span>
+						</h3>-->
+					</div>
+                			<div ng-hide="highConf">
+						<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:red> 
+						{{ confidence }}% </h3>
+               					<!-- <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
+							<span style="color:red">{{ eval }}</span>  
+							</h3>		
+                					<h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
+							<span style="color:red">{{ max_score }}</span>
+							</h3>-->	
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h3 id="results_h1">Sequence Alignment to Domain:</h3>
+        			<div id="sequence">
+				</div>
+			</div>
         	</div>
 	</div>
         <div ng-show="ramp_quer" class='container-fluid' id='results_page_int'>
@@ -266,42 +270,44 @@
 
 <div id="total_results" ng-show="ligand_page && !home">
         <div class='container-fluid' id='results_page'>
-                <div id='summary'>
-                <h1 id='results_h1'>Summary:</h1>
-                <h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Found Match for Query:</span>
-                {% verbatim %}
-		{{ query_name }}
-                </h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Match Name:</span>
-		{{ match_name }}
-		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>PubChem ID:</span>
-		{{ chem_id }}
-		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
- 		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
-		{{ molecular_weight }} g/mol
-		</h3>
-                <h3 id='summary_h3'><span style=font-weight:bold>InChi Key:</span>
-		{{ inchi_key }}
-		</h3>
-
-        </div>
-
-	<div id='right_float'>
 		<div class="row">
-			<div class="col-sm-4">
-			</div>
-			<div class="col-sm-8">
-				<div id="image_area">
-					<img id="lig_img" ng-src="{{ ligand_img }}"/>
+			<div class="col-sm-6">
+	                	<div id='summary'>
+                			<h1 id='results_h1'>Summary:</h1>
+                			<h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Found Match for Query:</span>
+                			{% verbatim %}
+					{{ query_name }}
+                			</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>Match Name:</span>
+					{{ match_name }}
+					</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>PubChem ID:</span>
+					{{ chem_id }}
+					</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
+ 					</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
+					{{ molecular_weight }} g/mol
+					</h3>
+                			<h3 id='summary_h3'><span style=font-weight:bold>InChi Key:</span>
+					{{ inchi_key }}
+					</h3>
 				</div>
-				<a ng-href="{{ url }}">{{ url }}</a>
 			</div>
-		</div>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-4">
+						</div>
+						<div class="col-sm-8">
+							<div id="image_area">
+								<img id="lig_img" ng-src="{{ ligand_img }}"/>
+							</div>
+							<a ng-href="{{ url }}">{{ url }}</a>
+						</div>
+					</div>
+				</div>
 	</div>
-        <div class='container-fluid' id='results_page_int'>
+        <div class='container-fluid' id='results_page_int_lig'>
                 <h1 id='results_h1' style='float:left; display:block;'>Known {{ match_name }} RAMP Interactions:</h1>
                 <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
              	<tr>

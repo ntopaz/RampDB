@@ -261,6 +261,10 @@ def get_result(request):
 	if request.method == 'POST':
 		data = request.data
 		print data
+		if not data:
+			results = {'error': 'Please make a selection above'}
+			response = JsonResponse(results)
+			return response
 		if data.has_key('protein') and data.has_key('ligand') and data['ligand'].strip() != '' and data['protein'] != '':
 			results = {'error': 'Please submit either a protein sequence or ligand, not both'}
 			response = JsonResponse(results)
