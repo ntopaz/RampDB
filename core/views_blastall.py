@@ -199,10 +199,12 @@ def ligand_search(ligand):
         	results = re.split("\n",response.read().rstrip())
         	capt_cid = "<CID>(.+)</CID>"
         	for line in results:
-                	res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/XML?Threshold=80" % line)
+			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/cids/XML?Threshhold=99" % line
+                	res = urllib2.urlopen(url)
                 	hits = re.findall(capt_cid,res.read())
                 	for item in hits:
 		       		if Ligand.objects.filter(chem_id=item).exists():
+						print "Found match",item
 						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
 						pc_results = urllib2.urlopen(match_url)
 						pc_results = json.load(pc_results)
@@ -229,7 +231,8 @@ def ligand_search(ligand):
                 	results = re.split("\n",response.read().rstrip())
                 	capt_cid = "<CID>(.+)</CID>"
                 	for line in results:
-	                	res = urllib2.urlopen("http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/XML?Threshold=80" % line)
+				url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/cids/XML?Threshhold=99" % line
+	                	res = urllib2.urlopen(url)
                         	hits = re.findall(capt_cid,res.read())
                         	for item in hits:
                                 	if Ligand.objects.filter(chem_id=item).exists():
