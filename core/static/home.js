@@ -8,6 +8,7 @@ app.config(['$compileProvider',
 app.controller('myCtrl', function ($scope, $http, $sce) {
 	var content = "";
 	$scope.loading = true;
+	$scope.img_loaded = false;
 	$scope.gpcr_quer = false;
 	$scope.ramp_quer = false;
 	$scope.protein_page = false;
@@ -147,6 +148,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 	                	.then(function(response) {
 					let blob = new Blob([response.data], {type: 'image/png'});
 					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
+					$scope.img_loaded = true;
 					});
 				}
 

@@ -299,10 +299,13 @@
 						<div class="col-sm-4">
 						</div>
 						<div class="col-sm-8">
-							<div id="image_area">
+							<div ng-show="img_loaded" id="image_area">
 								<img id="lig_img" ng-src="{{ ligand_img }}"/>
 							</div>
 							<a ng-href="{{ url }}">{{ url }}</a>
+							<div ng-hide="img_loaded" id="image_area">
+								<img src="{% static 'bootstrap/images/spinner.gif' %}">
+							</div>
 						</div>
 					</div>
 				</div>
