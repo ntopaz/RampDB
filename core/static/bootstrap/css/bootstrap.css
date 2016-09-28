@@ -356,6 +356,16 @@ th {
     border: 1px solid #ddd !important;
   }
 }
+.table_row {
+	display:table;
+	table-layout:fixed;
+}
+.vcenter {
+	float:none !important;
+	display: table-cell;
+	vertical-align:middle;
+	text-align:left !important;
+}
 #navbar-box{
 	width:100% !important;
 }

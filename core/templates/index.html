@@ -56,13 +56,13 @@
 <!-- Main jumbotron-->
   <div class="jumbotron" id="hero">
     <div class="container-fluid">
-	<div class="row">
-		<div style="text-align:left;margin-top:3%" class="col-sm-6">
+	<div class="row table-row">
+		<div class="col-sm-7 vcenter">
 			<div id="logo">
-      			<h1 class="display-3" style="vertical-align:middle;line-height:13.5vmin;"><img src="{% static 'logo.png' %}" style="width:13vmin;vertical-align:middle; float: left;">Ramp<span style="color: #E0D7C5;">DB</span></h1>
+      			<h1 style="vertical-align:middle;line-height:12vmin;font-size:45px"><img src="{% static 'logo.png' %}" style="width:12vmin;vertical-align:middle; float: left;">Ramp<span style="color: #E0D7C5;">DB</span></h1>
 			</div>
 		</div>
-		<div style="text-align:left" class="col-sm-6">
+		<div class="col-sm-5 vcenter">
       			<h2 style="font-size:27px;">A central repository for:</h2>
       			<p>1. Exploring known information regarding RAMPs, GPCRs and associated ligands</p>
       			<p>2. Predicting potential RAMP interactions with your sequence or ligand</p>
@@ -304,7 +304,9 @@
 							</div>
 							<a ng-href="{{ url }}">{{ url }}</a>
 							<div ng-hide="img_loaded" id="image_area">
+							{% endverbatim %}
 								<img src="{% static 'bootstrap/images/spinner.gif' %}">
+							{% verbatim %}
 							</div>
 						</div>
 					</div>
