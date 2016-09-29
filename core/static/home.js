@@ -6,7 +6,6 @@ app.config(['$compileProvider',
 }]);
 
 app.controller('myCtrl', function ($scope, $http, $sce) {
-	var content = "";
 	$scope.loading = true;
 	$scope.img_loaded = false;
 	$scope.gpcr_quer = false;
@@ -25,6 +24,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 	});
 
 	$scope.Submit = function() {
+		var content = "";
 		$scope.main_loading = true;
 		$scope.errorflag = false;
 		$http.post("core/calculate_results/",{"protein":$scope.proteintext,"ligand":$scope.ligandtext})
