@@ -101,11 +101,13 @@ footer {
   background-image:url("../images/black_thread.png");
 }
 #sequence{
+  width: 600px;
+  margin-right:auto;
+  margin-left:auto;
   padding-top:2%;
   padding-bottom:2%;
   margin-top:4%;
   border-style:double;
-  margin-right:1%;
   padding-right:44%;
   padding-left:1%;
   background-image:url("../images/squared-metal.png");

@@ -101,7 +101,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					});
  				opts.colorscheme = {scheme:"taylor"};
 				opts.vis = {labelId: false, textVisible: true, labelNameLength:100};
-				opts.zoomer = {alignmentHeight: 65,alignmentWidth: "450", rowHeight: 30, columnWidth:15,
+				opts.zoomer = {alignmentHeight: 65,alignmentWidth: "500", rowHeight: 30, columnWidth:15,
 						labelLineHeight:"25px",labelNameLength: 75, labelFontsize:19,residueFont:"19"};
 				var m = new msa(opts);
 				m.render();
