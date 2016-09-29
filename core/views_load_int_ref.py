@@ -14,7 +14,10 @@ def load_db(data):
 	for int_name_short in data.keys():
 		int_obj = Interactions.objects.get(name_short=int_name_short)
 		for ref in data[int_name_short]:
-			ref_obj = Reference.objects.get(name=ref)
+			if Reference.objects.filter(name=ref).exists():
+				ref_obj = Reference.objects.get(name=ref)
+			else:
+				continue
 			int_obj.reference.add(ref_obj)
 			int_obj.save()
 
