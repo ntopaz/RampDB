@@ -81,31 +81,50 @@
 			</p>
 			<br>
 			<h2><span style=font-weight:bold>Proteins:</span></h2>
-			<p>For protein queries, the first step is to do a quick ortholog check against sequences in RampDB.
-				If a high-similarity match is identified, the data for that match is obtained and the results page is generated.
-			</p>
-			<p>
-				If no match is found, the query is checked against prebuilt HMM profiles of domains known to be involved in RAMP interactions, and if
-				a high-similarity match is found, the data is obtained and displayed on the results page. 
-			</p>
+                        <p>For protein queries, the first step is to do a local blast against all proteins in RampDB.
+                                The goal of this is to quickly determine the potential family of the query.
+                        </p>
+                        <p>
+                                If a family is identified, the next step is to use HMMscan to compare it against a pre-built HMM profile of the RAMP interacting domain
+                                 in that protein to determine the similarity.
+                                If no match is found, the query is scanned against all the prebuilt HMM profiles for each family 
+                                 to determine the liklihood of any interaction.
+                        </p>
+
 			<br>
 			<h2><span style=font-weight:bold>Ligands:</span></h2>
-			<p>
-				For ligand queries, the following queries are acceptable:
-				<ul>
-				<li> Ligand Name (case insensitive)</li>
-				<li> Partial Ligand Name (case insensitive)</li>
-				<li> InChiKey</li>
-				</ul>
-			</p>
-			<p>
-				When a ligand query is submitted, the first step is to search for an exact match in RampDB. If no match is found
-				the query is searched against PubChem's database for 2D similarity, and those results are checked for ligands known to have RAMP interactions.
-			</p>
+                        <p>
+                                For ligand queries, the following search terms are acceptable:
+                               	<ul>
+                               	<li> Ligand Name (case insensitive)</li>
+                               	<li> Partial Ligand Name (case insensitive)</li>
+                                <li> InChiKey</li>
+                               	</ul>
+                       	</p>
+                        <p>
+                                When a ligand query is submitted, the first step is to search for an exact match in RampDB. If no match is found, 
+                                the query is searched against PubChem's database for 2D similarity, and those results are checked for ligands known to have RAMP interactions.
+                        </p>
+                       	<p>
+                               	The <b>Tanimoto Score</b> between two ligands is used to determine their similarity. This works by
+                                dividing the intersect of the descriptors between the query and subject by the union of the descriptors.
+                        </p>
+                        <p>
+                               	<b>Descriptors used: </b>Atom count, ring count, atom sequence, bond sequence, augmented atoms, degree of connectivity, element composition, type of ring fusion
+                        </p>
+                        <p>
+                                <b>Tanimoto Score:</b>
+                               	<ul>
+                               	<li> Score = <b>C</b> / ((<b>QS</b> + <b>FS</b>) – <b>C</b>) </li>
+                                <li> <b>C</b> = number of descriptors shared by query and subject </li>
+                                <li> <b>QS</b> = number of descriptors in the query</li>
+                                <li> <b>FS</b> = number of descriptors in the subject</li>
+                                </ul>
+                        </p>
 
 		</div>
 		<div class="col-sm-6">
-			<img class="img-responsive" src="{% static 'Prediction_Algorithm.png' %}"/>
+			<img class="img-responsive" src="{% static 'update_predict_algo.png' %}"/>
 		</div>
 	</div>
     </div>
