@@ -1,4 +1,4 @@
-import sys,os,json, re, tempfile
+import sys,os,json, re, tempfile, time
 import pprint as pp
 import urllib2
 from subprocess import *
@@ -262,6 +262,14 @@ def ligand_search(ligand):
 @api_view(['POST'])
 def get_result(request):
 	if request.method == 'POST':
+		if not LoadingHandler.objects.filter(name="handler").exists():
+			loading_obj = LoadingHandler(name="handler")
+			loading_obj.save()
+		else:
+			loading_obj = LoadingHandler.objects.get(name="handler")
+			while loading_obj.handler:
+				time.sleep(7)
+				loading_obj = LoadingHandler.objects.get(name="handler")
 		data = request.data
 		print data
 		if not data:
@@ -274,7 +282,12 @@ def get_result(request):
 			pp.pprint(results)
 			return response
 		elif data.has_key('protein') and data['protein'].strip() !='':
+			loading_obj = LoadingHandler.objects.get(name="handler")
+			loading_obj.handler = True
+			loading_obj.save()
 			results = blast_all(data['protein'])
+			loading_obj.handler = False
+			loading_obj.save()
 			print results
 
                         if 'error' in results.keys():
@@ -299,7 +312,12 @@ def get_result(request):
 			os.system("rm -f "+BASE_DIR+"/"+ "tmp*")
 		elif data.has_key('ligand'):
 			print "ligand search"
+			loading_obj = LoadingHandler.objects.get(name="handler")
+			loading_obj.handler = True
+			loading_obj.save()
 			results = ligand_search(data['ligand'])
+			loading_obj.handler = False
+			loading_obj.save()
 		pp.pprint(results)
 		response = JsonResponse(results)
 		return response

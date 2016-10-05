@@ -18,6 +18,12 @@ class Organism(models.Model):
 	def __unicode__(self):
 		return self.name
 
+
+class LoadingHandler(models.Model):
+	name = models.CharField(max_length=100)
+	handler = models.BooleanField(default=False)
+
+
 class Reference(models.Model):
 	name = models.CharField(max_length=1000)
 	url = models.TextField()
