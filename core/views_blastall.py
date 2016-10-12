@@ -25,6 +25,17 @@ def blast_all(query):
 	if not query.startswith(">"):
 		result = {'error': 'Protein input query not in FASTA format'}
 		return result
+	if not "|" in query:
+		new_query = ""
+		count = 0 
+		for item in query.split("\n"):
+			if count == 0:
+				new_query += item + " | ph \r\n"
+			else:
+				new_query += item
+			count +=1
+		query = new_query
+	print query
 	q = open(BASE_DIR+"/"+"query.txt","w")
 	q.write(query)
 	query = q.name
@@ -285,9 +296,14 @@ def get_result(request):
 			loading_obj = LoadingHandler.objects.get(name="handler")
 			loading_obj.handler = True
 			loading_obj.save()
-			results = blast_all(data['protein'])
-			loading_obj.handler = False
-			loading_obj.save()
+			try:
+				results = blast_all(data['protein'])
+				loading_obj.handler = False
+				loading_obj.save()
+			except:
+				results = {'error':'No match found for that protein query'}
+				loading_obj.handler = False
+				loading_obj.save()
 			print results
 
                         if 'error' in results.keys():
@@ -315,9 +331,13 @@ def get_result(request):
 			loading_obj = LoadingHandler.objects.get(name="handler")
 			loading_obj.handler = True
 			loading_obj.save()
-			results = ligand_search(data['ligand'])
-			loading_obj.handler = False
-			loading_obj.save()
-		pp.pprint(results)
+			try:
+				results = ligand_search(data['ligand'])
+				loading_obj.handler = False
+				loading_obj.save()
+			except:
+				results = {'error': 'No match found for that ligand query'}
+				loading_obj.handler = False
+				loading_obj.save()
 		response = JsonResponse(results)
 		return response

@@ -27,7 +27,7 @@ class LoadingHandler(models.Model):
 class Reference(models.Model):
 	name = models.CharField(max_length=1000)
 	url = models.TextField()
-	citation = models.TextField()
+	citation = models.TextField(null=True)
 
 
 	def __unicode__(self):

@@ -41,7 +41,7 @@
         <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
         <li><a href="{% url 'info' %}">RAMP Information</a></li>
         <li><a href="{% url 'about' %}">About</a></li>
-        <li><a ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
+        <li><a target="_blank" ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
       </u1>
 	{% verbatim %}
         <a class='btn btn-primary btn-lg' id='export_button'  ng-hide="home" role='button' download="results.txt" ng-href="{{ url_dl }}" >Export Results</a>
@@ -198,8 +198,8 @@
         	</div>
 	</div>
         <div ng-show="ramp_quer" class='container-fluid' id='results_page_int'>
-                <h1 id='results_h1' style='float:left; display:block;'>Known {{ family_short }} Interactions:</h1>
-                <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
+                <h1 id="results_h1">Known {{ family_short }} Interactions:</h1>
+                <table id="interaction_table" border="1">
              	<tr>
 			<th>Phenotype</th>
 			<th>GPCR</th>
@@ -224,15 +224,17 @@
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
-		</tr>
+		<div id="source_tr" ng-if="!hide_sources">
+			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+			</tr>
+		</div>
 		</table>
         </div>
         <div ng-hide="ramp_quer" class='container-fluid' id='results_page_int'>
-                <h1 id='results_h1' style='float:left; display:block;'>Known {{ family_short }} Interactions:</h1>
-                <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
+                <h1 id="results_h1">Known {{ family_short }} Interactions:</h1>
+                <table id="interaction_table" border="1">
              	<tr>
 			<th>Phenotype</th>
 			<th>RAMP</th>
@@ -257,10 +259,12 @@
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
-		</tr>
+		<div id="source_tr" ng-if="!hide_sources">
+			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+			</tr>
+		</div>
 		</table>
         </div>
                {% endverbatim %}
@@ -313,8 +317,8 @@
 				</div>
 	</div>
         <div class='container-fluid' id='results_page_int_lig'>
-                <h1 id='results_h1' style='float:left; display:block;'>Known {{ match_name }} RAMP Interactions:</h1>
-                <table border='1' style='margin-left:auto; margin-right:auto; width:100%; margin-top: 5%; margin-bottom:1%;'>
+                <h1 id="results_h1">Known {{ match_name }} RAMP Interactions:</h1>
+                <table id="interaction_table" border="1">
              	<tr>
 			<th>Phenotype</th>
 			<th>GPCR</th>
@@ -323,7 +327,7 @@
 			<th>Sources</th>
 
 		</tr>
-		<tr id='interactions_tr' ng-repeat-start="(phenotype,object) in interactions track by $index">
+		<tr id="interactions_tr" ng-repeat-start="(phenotype,object) in interactions track by $index">
 			<td> {{ object.name }} </td>
 			<td> {{ object.gpcr }} </td>
 			<td> {{ object.ramp }} </td>
@@ -340,10 +344,10 @@
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
-		</tr>
+			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+			</tr>
 		</table>		
 
         </div>
