@@ -339,5 +339,9 @@ def get_result(request):
 				results = {'error': 'No match found for that ligand query'}
 				loading_obj.handler = False
 				loading_obj.save()
+<<<<<<< HEAD
+=======
+		pp.pprint(results)
+>>>>>>> 9176de3ddfa0c13b280ae9e7a0beb6bef95aa72a
 		response = JsonResponse(results)
 		return response
