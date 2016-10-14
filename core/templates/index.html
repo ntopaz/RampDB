@@ -224,12 +224,10 @@
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		<div id="source_tr" ng-if="!hide_sources">
-			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
-			</tr>
-		</div>
+		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+		</tr>
 		</table>
         </div>
         <div ng-hide="ramp_quer" class='container-fluid' id='results_page_int'>
@@ -259,12 +257,10 @@
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-		<div id="source_tr" ng-if="!hide_sources">
-			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
-			</tr>
-		</div>
+		<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
+			<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+		</tr>
 		</table>
         </div>
                {% endverbatim %}
@@ -319,6 +315,7 @@
         <div class='container-fluid' id='results_page_int_lig'>
                 <h1 id="results_h1">Known {{ match_name }} RAMP Interactions:</h1>
                 <table id="interaction_table" border="1">
+		<thead>
              	<tr>
 			<th>Phenotype</th>
 			<th>GPCR</th>
@@ -327,27 +324,32 @@
 			<th>Sources</th>
 
 		</tr>
-		<tr id="interactions_tr" ng-repeat-start="(phenotype,object) in interactions track by $index">
-			<td> {{ object.name }} </td>
-			<td> {{ object.gpcr }} </td>
-			<td> {{ object.ramp }} </td>
-			<td ng-init="hide_func = true"> 
-				<button ng-show="hide_func" ng-click="hide_func = false">+</button>
-				<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
-			</td>
-			<td ng-init="hide_sources = true">
-			{{ object.ref_length }} <button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
-				<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
-			</td>
-		</tr>
+		</thead>
+		<tbody  id="interactions_tr" border="1" ng-repeat-start="(phenotype,object) in interactions track by $index">
+			<tr>
+				<td> {{ object.name }} </td>
+				<td> {{ object.gpcr }} </td>
+				<td> {{ object.ramp }} </td>
+				<td ng-init="hide_func = true"> 
+					<button ng-show="hide_func" ng-click="hide_func = false">+</button>
+					<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
+				</td>
+				<td ng-init="hide_sources = true">
+				{{ object.ref_length }} <button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
+					<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
+				</td>
+			</tr>
 		<tr>
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
-			<tr ng-repeat-end ng-repeat="(name, url) in object.references track by $index">
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"> {{ name }} </td>
-				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"><a  ng-href="{{ url }}">{{ url }}</a></td>
+		</tbody>
+		<tbody id="source_tbody"  ng-repeat-end  ng-hide="hide_sources">
+			<tr id="source_tr" ng-repeat="(name, url) in object.references">
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"> {{ name }} </td>
+				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"><a  ng-href="{{ url }}">{{ url }}</a></td>
 			</tr>
+		</tbody>
 		</table>		
 
         </div>

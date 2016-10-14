@@ -73,7 +73,7 @@ def blast_all(query):
 		match = line.split('\t')[1]
 		identity = float(line.split('\t')[2])
 		e_val = float(line.split('\t')[10])
-		print e_val
+		print match,identity,e_val
 		if e_val <  current_eval:
 			current_eval = e_val
 			current_ident = identity
@@ -339,9 +339,6 @@ def get_result(request):
 				results = {'error': 'No match found for that ligand query'}
 				loading_obj.handler = False
 				loading_obj.save()
-<<<<<<< HEAD
-=======
 		pp.pprint(results)
->>>>>>> 9176de3ddfa0c13b280ae9e7a0beb6bef95aa72a
 		response = JsonResponse(results)
 		return response

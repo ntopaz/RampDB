@@ -154,8 +154,6 @@ h1 {
 }
 #results_h1{
 	font-size:30px;
-	float:left;
-	display:block;
 }
 mark {
   color: #000;
@@ -286,9 +284,13 @@ table {
   margin-top:5%;
   margin-bottom:1%;
 }
-#source_tr {
+#source_tbody {
   height:300px;
   overflow-y: scroll;
+  display: inline-block;
+}
+#source_tr{
+ 
 }
 td,
 th {
