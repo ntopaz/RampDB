@@ -325,7 +325,7 @@
 
 		</tr>
 		</thead>
-		<tbody  id="interactions_tr" border="1" ng-repeat-start="(phenotype,object) in interactions track by $index">
+		<tbody  id="interactions_tr" border="1" ng-repeat="(phenotype,object) in interactions track by $index">
 			<tr>
 				<td> {{ object.name }} </td>
 				<td> {{ object.gpcr }} </td>
@@ -335,21 +335,40 @@
 					<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
 				</td>
 				<td ng-init="hide_sources = true">
-				{{ object.ref_length }} <button ng-show="hide_sources" ng-click="hide_sources = false">+</button>
-					<button ng-hide="hide_sources" ng-click="hide_sources = true">-</button>
+				{{ object.ref_length }}
+					<button data-toggle="modal" data-target="#example{{$index}}">+</button>
+					<div id="example{{$index}}" class="modal">
+  						<div class="modal-content">
+    							<span class="close">x</span>
+							<div class="row" ng-repeat="(name,url) in object.references track by $index">
+								<div class="col-sm-1">
+    									<p> {{ $index + 1 }}</p>
+								</div>
+								<div class="col-sm-6">
+    									<p> {{ name }}</p>
+								</div>
+								<div class="col-sm-5">
+    									<p><a ng-href="{{ url }}"> {{ url }}</a></p>
+								</div>
+							</div>
+  						</div>	
+					</div>
 				</td>
 			</tr>
 		<tr>
 			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
 			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
 		</tr>
+
 		</tbody>
-		<tbody id="source_tbody"  ng-repeat-end  ng-hide="hide_sources">
+
+		<tbody>
 			<tr id="source_tr" ng-repeat="(name, url) in object.references">
 				<td id="interactions_tr" ng-if="!hide_sources" colspan="3"> {{ name }} </td>
 				<td id="interactions_tr" ng-if="!hide_sources" colspan="2"><a  ng-href="{{ url }}">{{ url }}</a></td>
 			</tr>
 		</tbody>
+
 		</table>		
 
         </div>
