@@ -190,6 +190,10 @@ hr {
      -moz-box-sizing: content-box;
           box-sizing: content-box;
 }
+#sources_hr{
+  margin-bottom:0;
+  margin-top:0;
+}
 pre {
   overflow: auto;
 }
@@ -5183,6 +5187,11 @@ a.badge:focus {
     right: 5%;
     top: 10%;
 }
+#source_exit_button {
+   margin-bottom:2%;
+   margin-top:1%;
+   width: 40%;
+}
 .jumbotron h1,
 .jumbotron .h1 {
   color: inherit;
@@ -6089,15 +6098,15 @@ button.close {
 }
 .modal {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: none;
   z-index: 1050;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   outline: 0;
+  width:100%;
+  height: 500px;
+  margin-top:auto;
+  margin-bottom:auto;
 }
 .modal.fade .modal-dialog {
   -webkit-transition: -webkit-transform .3s ease-out;
