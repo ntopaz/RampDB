@@ -13,9 +13,18 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from models import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+### LOCAL ###
 BLAST_PATH = "/home/nadav/rampdb/core/exec/blast/bin/"
 HMMER_PATH = "/home/nadav/rampdb/core/exec/hmmer/src/"
 CLUSTAL_PATH = "/home/nadav/rampdb/core/exec/clustal/bin/"
+############
+
+### SERVER ###
+#HOME_DIR= "/home/ntopaz3/"
+#BLAST_PATH = "/projects/VirtualHost/rampdb/core/exec/blast/bin"
+#HMMER_PATH = "/projects/VirtualHost/rampdb/core/exec/hmmer/src"
+#CLUSTAL_PATH = "/projects/VirtualHost/rampdb/core/exec/clustal/bin"
+##############
 # Create your views here.
 
 @transaction.atomic
