@@ -16,6 +16,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 	$scope.main_loading = false;
 	$scope.results = false;
 	$scope.home = true;
+	$scope.t_threshold = "85"
 	$http.get('core/db_status')
 	.then(function(response){
 		$scope.data = response.data;
@@ -27,7 +28,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 		var content = "";
 		$scope.main_loading = true;
 		$scope.errorflag = false;
-		$http.post("core/calculate_results/",{"protein":$scope.proteintext,"ligand":$scope.ligandtext})
+		$http.post("core/calculate_results/",{"protein":$scope.proteintext,"ligand":$scope.ligandtext, "t_score":$scope.t_threshold})
 		.then(function(response) {
 			if ('error' in response.data){
 				$scope.error = response.data['error'];

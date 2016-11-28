@@ -99,21 +99,23 @@
 							</div>
 						</div>
 						<div class="col-sm-5">
-							<div id="my_ligand_textarea">
+							<div id="my_ligand_textarea" style="margin-bottom:10px">
 								<h2 style="float:left;">Ligand Name:</h2>
 								<textarea name=textarea_l id=ligand_text ng-model="ligandtext" rows="1" cols="40" placeholder="Enter Ligand name or InChi key" style="width:100%;"></textarea>
 								<h2 style="float:left;">Common Ligands:</h2>
-							<div style="margin-bottom:10px">
-								<select id="CommonLigands" ng-click="LigandSelected()" ng-model="commonLigands" size="6" style="width:100%; height: 150px">
-									<option>Adrenomedullin</option>
-									<option>Intermedin</option>
-									<option>Amylin</option>
-									<option>Calcitonin Gene-Related Peptide</option>
-									<option>Vasoactive Intestinal Polypeptide</option>
-									<option>Parathyroid Hormone</option>
-								</select>
+								<div>
+									<select id="CommonLigands" ng-click="LigandSelected()" ng-model="commonLigands" size="6" style="width:100%; height: 130px">
+										<option>Adrenomedullin</option>
+										<option>Intermedin</option>
+										<option>Amylin</option>
+										<option>Calcitonin Gene-Related Peptide</option>
+										<option>Vasoactive Intestinal Polypeptide</option>
+										<option>Parathyroid Hormone</option>
+									</select>
+								</div>
+								<h2 id="t_score_field">Tanimoto Threshold:<input size="1" type="text" ng-model="t_threshold" value="85">%</h2>
+
 							</div>
-						</div>
 				  </div>
 			</div>
 			<div ng-show="errorflag">
@@ -136,7 +138,6 @@
 				<h2><img src="{% static 'bootstrap/images/spinner.gif' %}">
 				Loading results, please wait....</h2>
 			</div>
-
 			</form>
 
 			</div>

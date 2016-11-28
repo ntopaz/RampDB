@@ -20,6 +20,7 @@ CLUSTAL_PATH = "/home/nadav/rampdb/core/exec/clustal/bin/"
 
 @transaction.atomic
 def blast_all(query):
+	print query
 	result_dict = {}
 	print BASE_DIR+"/"+"temp.txt"
 	if not query.startswith(">"):
@@ -30,7 +31,7 @@ def blast_all(query):
 		count = 0 
 		for item in query.split("\n"):
 			if count == 0:
-				new_query += item + " | ph \r\n"
+				new_query += item + " | ph \n"
 			else:
 				new_query += item
 			count +=1
@@ -178,14 +179,14 @@ def hmm_match(query,family,subj_seq, quer_seq, confidence,blast_results,result_d
 	result_dict['protein']['match']['organism'] = prot_obj[0].organism.name
 	return result_dict
 
-def ligand_search(ligand):
+def ligand_search(ligand, t_threshold):
 	result_dict = {}
 	ligand_objects = Ligand.objects.all()
 	result_dict['ligand'] = {'query_name':ligand, 'match': {}}
 	for lig_obj in ligand_objects:
 		print lig_obj.name.lower()
 		if ligand.lower() == lig_obj.name.lower():
-			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % lig_obj.chem_id
+			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(lig_obj.chem_id)
                         pc_results = urllib2.urlopen(match_url)
 			pc_results = json.load(pc_results)
 			for dummy in pc_results['PC_Compounds']:
@@ -205,18 +206,18 @@ def ligand_search(ligand):
 			return result_dict
 
 	try:
-		initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%s/cids/TXT?name_type=word" % ligand
+		initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{}/cids/TXT?name_type=word".format(ligand)
         	response = urllib2.urlopen(initial_url)
         	results = re.split("\n",response.read().rstrip())
         	capt_cid = "<CID>(.+)</CID>"
         	for line in results:
-			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/cids/XML?Threshhold=99" % line
+			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
                 	res = urllib2.urlopen(url)
                 	hits = re.findall(capt_cid,res.read())
                 	for item in hits:
 		       		if Ligand.objects.filter(chem_id=item).exists():
 						print "Found match",item
-						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
+						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(item)
 						pc_results = urllib2.urlopen(match_url)
 						pc_results = json.load(pc_results)
 						lig_obj = Ligand.objects.get(chem_id=item)
@@ -237,17 +238,17 @@ def ligand_search(ligand):
 						return result_dict
 	except:
 		try:
-			inchi_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/%s/cids/TXT?name_type=word" % ligand
+			inchi_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{}/cids/TXT?name_type=word".format(ligand)
 			response = urllib2.urlopen(inchi_url)
                 	results = re.split("\n",response.read().rstrip())
                 	capt_cid = "<CID>(.+)</CID>"
                 	for line in results:
-				url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/%s/cids/XML?Threshhold=99" % line
+				url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
 	                	res = urllib2.urlopen(url)
                         	hits = re.findall(capt_cid,res.read())
                         	for item in hits:
                                 	if Ligand.objects.filter(chem_id=item).exists():
-							match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%s/JSON" % item
+							match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(item)
                                                 	pc_results = urllib2.urlopen(match_url)
 							pc_results = json.load(pc_results)
 					        	lig_obj = Ligand.objects.get(chem_id=item)
@@ -284,6 +285,10 @@ def get_result(request):
 		data = request.data
 		print data
 		if not data:
+			results = {'error': 'Please make a selection above'}
+			response = JsonResponse(results)
+			return response
+		if not data.has_key('protein') and not data.has_key('ligand'):
 			results = {'error': 'Please make a selection above'}
 			response = JsonResponse(results)
 			return response
@@ -332,7 +337,7 @@ def get_result(request):
 			loading_obj.handler = True
 			loading_obj.save()
 			try:
-				results = ligand_search(data['ligand'])
+				results = ligand_search(data['ligand'], data['t_score'])
 				loading_obj.handler = False
 				loading_obj.save()
 			except:

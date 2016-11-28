@@ -77,6 +77,10 @@ footer {
 	margin-top:1%;
 	text-align:left;
 }
+#t_score_field {
+	font-size:18px;
+	float:left;
+}
 
 #logo {
 	display: inline-block;
