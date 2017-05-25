@@ -21,7 +21,7 @@ def main():
 			handle = Entrez.efetch(db="pubmed", id=my_sources, rettype="json")
 			record = Entrez.read(handle)
 			for item in record:
-				url = "www.ncbi.nlm.nih.gov/pubmed/"+item['MedlineCitation']['PMID']
+				url = "https://www.ncbi.nlm.nih.gov/pubmed/"+item['MedlineCitation']['PMID']
 				title = item['MedlineCitation']['Article']['ArticleTitle']
 				try:
 					if Reference.objects.filter(name=title).exists():
