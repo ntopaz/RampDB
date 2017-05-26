@@ -220,7 +220,6 @@ def ligand_search(ligand, t_threshold):
         	results = re.split("\n",response.read().rstrip())
         	capt_cid = "<CID>(.+)</CID>"
         	for line in results:
-			print(results)
 			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
                 	res = urllib2.urlopen(url)
                 	hits = re.findall(capt_cid,res.read())
