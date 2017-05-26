@@ -220,6 +220,7 @@ def ligand_search(ligand, t_threshold):
         	results = re.split("\n",response.read().rstrip())
         	capt_cid = "<CID>(.+)</CID>"
         	for line in results:
+			print(results)
 			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
                 	res = urllib2.urlopen(url)
                 	hits = re.findall(capt_cid,res.read())
@@ -347,6 +348,8 @@ def get_result(request):
 			loading_obj.save()
 			try:
 				results = ligand_search(data['ligand'], data['t_score'])
+				if results == None:
+					results = {'error':'No match found for that ligand query'}
 				loading_obj.handler = False
 				loading_obj.save()
 			except:
