@@ -19,6 +19,8 @@ def load_ligands(data):
 						name_short = data[ligand]['name_short'],
 						chem_id = data[ligand]['chem_id'],
 						inchi_key = data[ligand]['inchi_key'],
+						sequence = data[ligand]['sequence'],
+						lig_type = data[ligand]['type'],
 						source = source_obj,
 						)
 
