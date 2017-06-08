@@ -68,7 +68,7 @@ def load_lig_api():
 			interacting_ligands[complex][ligand_name]["synonyms"] = synonyms
 	#interacting_ligands = ast.literal_eval(json.dumps(interacting_ligands))
 	out_json = json.dumps(interacting_ligands)
-	pp.pprint(out_json)
+	load_ligands(out_json)
 def load_lig():
 	ligand = {}
 	### old ###

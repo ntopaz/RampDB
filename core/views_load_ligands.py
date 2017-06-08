@@ -12,17 +12,21 @@ from models import *
 @transaction.atomic
 def load_ligands(data):
 	data = json.loads(data)
-	source_obj,source_created = Source.objects.update_or_create(name="PubChem",url="pubchem.ncbi.nlm.nih.gov")
-	for ligand in sorted(data.keys()):
-		ligand_obj, ligand_created = Ligand.objects.update_or_create(
-						name = ligand,
-						name_short = data[ligand]['name_short'],
-						chem_id = data[ligand]['chem_id'],
-						inchi_key = data[ligand]['inchi_key'],
-						sequence = data[ligand]['sequence'],
-						lig_type = data[ligand]['type'],
-						source = source_obj,
-						)
+	source_obj,source_created = Source.objects.update_or_create(name="GuideToPharmacology",url="http://www.guidetopharmacology.org")
+	for complex in data:
+		for ligand in data[complex]:
+			if "[" in ligand:
+				continue
+			ligand_obj, ligand_created = Ligand.objects.update_or_create(
+							name = ligand,
+							chem_id = data[complex][ligand]['chem_id'],
+							inchi_key = data[complex][ligand]['inchi_key'],
+							sequence = data[complex][ligand]['sequence'],
+							lig_type = data[complex][ligand]['ligand_type'],
+							affinity = data[complex][ligand]['affinity'],
+							binding_type = data[complex][ligand]['binding_type'],
+							source = source_obj,
+							)
 
 
 

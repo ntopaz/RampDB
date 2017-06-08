@@ -55,11 +55,13 @@ class Protein(models.Model):
 
 class Ligand(models.Model):
 	name = models.CharField(max_length=1000)
-	name_short = models.CharField(max_length=100)
 	inchi_key = models.CharField(max_length=200)
 	chem_id = models.CharField(max_length=200)
-	sequence = models.CharField(max_length=200)
+	sequence = models.CharField(max_length=200, null=True)
 	lig_type = models.CharField(max_length=50)
+	affinity = models.CharField(max_length=200)
+	binding_type = models.CharField(max_length=200)
+	synonoyms = models.TextField(null=True)
 	source = models.ForeignKey(Source)
 
 	def __unicode__(self):
