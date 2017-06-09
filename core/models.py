@@ -59,8 +59,6 @@ class Ligand(models.Model):
 	chem_id = models.CharField(max_length=200)
 	sequence = models.CharField(max_length=200, null=True)
 	lig_type = models.CharField(max_length=50)
-	affinity = models.CharField(max_length=200)
-	binding_type = models.CharField(max_length=200)
 	synonoyms = models.TextField(null=True)
 	source = models.ForeignKey(Source)
 
@@ -71,10 +69,11 @@ class Interactions(models.Model):
 	rampfamily = models.ForeignKey(Family, related_name="ramp_family")
 	gpcrfamily = models.ForeignKey(Family, related_name="gpcr_family")
 	ligand = models.ForeignKey(Ligand, null=True)
+	ligand_affinity = models.CharField(max_length=200)
+	ligand_binding_type = models.CharField(max_length=200)
 	name_short = models.CharField(max_length=200)
 	reference = models.ManyToManyField(Reference, null=True)
 	phenotype = models.CharField(max_length=500)
-	function = models.TextField(null=True)
 
 	def __unicode__(self):
 		return self.phenotype

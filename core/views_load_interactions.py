@@ -14,17 +14,19 @@ def load_interactions(data):
 	data = json.loads(data)
 	for interaction in sorted(data.keys()):
 		ramp_fam = Family.objects.get(name=data[interaction]['rampfamily'])
-		print data[interaction]['gpcrfamily']
 		gpcr_fam = Family.objects.get(name=data[interaction]['gpcrfamily'])
-		ligand = Ligand.objects.get(name=data[interaction]['ligand'])
-		interact_obj, interact_created = Interactions.objects.update_or_create(
-						phenotype = data[interaction]['name'],
-						rampfamily = ramp_fam,
-						gpcrfamily = gpcr_fam,
-						ligand = ligand,
-						function = data[interaction]['function'],
-						name_short = data[interaction]['name_short'],
-						)
+		for ligand in data[interaction]["ligands"]:
+			lig_seq = data[interaction]["ligands"][ligand]["sequence"]
+			ligand_obj = Ligand.objects.get(name=ligand,sequence=lig_seq)
+			interact_obj, interact_created = Interactions.objects.update_or_create(
+							phenotype = data[interaction]['name'],
+							rampfamily = ramp_fam,
+							gpcrfamily = gpcr_fam,
+							ligand = ligand_obj,
+							ligand_affinity = str(data[interaction]["ligands"][ligand]["affinity"]),
+							ligand_binding_type = data[interaction]["ligands"][ligand]["binding_type"],
+							name_short = data[interaction]['name_short'],
+							)
 
 
 
