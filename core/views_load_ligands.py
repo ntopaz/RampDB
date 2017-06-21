@@ -17,7 +17,13 @@ def load_ligands(data):
 		for ligand in data[complex]:
 			if "[" in ligand:
 				continue
-			ligand_obj, ligand_created = Ligand.objects.update_or_create(
+			ligand_objs = Ligand.objects.filter(name=ligand)
+			if len(ligand_objs) > 0:
+				ligand_obj = ligand_objs[0]
+				if data[complex][ligand]["chem_id"] != 0:
+					if ligand_obj.chem_id == "0":
+						ligand_obj.delete()
+						ligand_obj, ligand_created = Ligand.objects.update_or_create(
 							name = ligand,
 							chem_id = data[complex][ligand]['chem_id'],
 							gtp_id = data[complex][ligand]['gtp_id'],
@@ -26,7 +32,19 @@ def load_ligands(data):
 							lig_type = data[complex][ligand]['ligand_type'],
 							source = source_obj,
 							synonyms = data[complex][ligand]["synonyms"],
-							)
+							)	
+						
+			else:	
+				ligand_obj, ligand_created = Ligand.objects.update_or_create(
+								name = ligand,
+								chem_id = data[complex][ligand]['chem_id'],
+								gtp_id = data[complex][ligand]['gtp_id'],
+								inchi_key = data[complex][ligand]['inchi_key'],
+								sequence = data[complex][ligand]['sequence'],
+								lig_type = data[complex][ligand]['ligand_type'],
+								source = source_obj,
+								synonyms = data[complex][ligand]["synonyms"],
+								)
 
 
 

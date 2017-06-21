@@ -7,7 +7,6 @@ app.config(['$compileProvider',
 
 app.controller('myCtrl', function ($scope, $http, $sce) {
 	$scope.loading = true;
-	$scope.img_loaded = false;
 	$scope.gpcr_quer = false;
 	$scope.ramp_quer = false;
 	$scope.protein_page = false;
@@ -110,13 +109,19 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				}
 			else if ('ligand' in response.data){
 				$scope.main_loading = false;
+				$scope.img_loaded = false;
 				$scope.ligand_page = true;
 				$scope.home = false;
+				$scope.peptide = false
 				$scope.query_name = response.data['ligand']['query_name'];
 				$scope.match_name = response.data['ligand']['match']['name'];
 				$scope.inchi_key = response.data['ligand']['match']['inchi_key'];
 				$scope.chem_id = response.data['ligand']['match']['chem_id'];
+				$scope.sequence = response.data['ligand']['match']['sequence'];
 				$scope.lig_type = response.data['ligand']['match']['lig_type'];
+				if ($scope.lig_type == "Peptide") {
+				$scope.peptide = true
+				}
 				$scope.gtp_id = response.data['ligand']['match']['gtp_id'];
 				$scope.url = "http://guidetopharmacology.org/GRAC/LigandDisplayForward?tab=summary&ligandId=" + $scope.gtp_id;
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");

@@ -61,6 +61,8 @@ def load_lig_api():
 			interacting_ligands[complex][ligand_name]["affinity"] = result["affinity"]
 			interacting_ligands[complex][ligand_name]["binding_type"] = result["type"]
 			interacting_ligands[complex][ligand_name]["ligand_type"] = ligand_type
+			if inchi_key.strip() == "":
+				inchi_key = "N/A"
 			interacting_ligands[complex][ligand_name]["inchi_key"] = inchi_key
 			interacting_ligands[complex][ligand_name]["sequence"] = sequence
 			interacting_ligands[complex][ligand_name]["chem_id"] = chem_id

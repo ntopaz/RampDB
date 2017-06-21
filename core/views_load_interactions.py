@@ -17,7 +17,8 @@ def load_interactions(data):
 		gpcr_fam = Family.objects.get(name=data[interaction]['gpcrfamily'])
 		for ligand in data[interaction]["ligands"]:
 			lig_seq = data[interaction]["ligands"][ligand]["sequence"]
-			ligand_obj = Ligand.objects.get(name=ligand,sequence=lig_seq)
+			#ligand_obj = Ligand.objects.get(name=ligand,sequence=lig_seq)
+			ligand_obj = Ligand.objects.get(name=ligand)			
 			interact_obj, interact_created = Interactions.objects.update_or_create(
 							phenotype = data[interaction]['name'],
 							rampfamily = ramp_fam,

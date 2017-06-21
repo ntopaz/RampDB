@@ -344,11 +344,19 @@
                 			<h3 id='summary_h3'><span style=font-weight:bold>Ligand Type:</span>
 					{{ lig_type }}
 					</h3>
+					<div ng-hide="peptide">
                 			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
  					</h3>
                 			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
 					{{ molecular_weight }}
 					</h3>
+					</div>
+					<div ng-hide="!peptide">
+                			<h3 id='summary_h3'><span style=font-weight:bold>Peptide Sequence:</span>
+                			{{ sequence }}
+ 					</h3>						
+					</div>
+					
                 			<h3 id='summary_h3'><span style=font-weight:bold>InChi Key:</span>
 					{{ inchi_key }}
 					</h3>
