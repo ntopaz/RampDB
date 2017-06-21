@@ -192,94 +192,110 @@ def ligand_search(ligand, t_threshold):
 	result_dict = {}
 	ligand_objects = Ligand.objects.all()
 	result_dict['ligand'] = {'query_name':ligand, 'match': {}}
+	found_result = False
 	for lig_obj in ligand_objects:
-		print lig_obj.name.lower()
-		if ligand.lower() == lig_obj.name.lower():
-			match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(lig_obj.chem_id)
-                        pc_results = urllib2.urlopen(match_url)
-			pc_results = json.load(pc_results)
-			for dummy in pc_results['PC_Compounds']:
-				if dummy.has_key("props"):
-					for item in dummy['props']:
-						if item.has_key("urn"):
-							if item['urn']['label'] == "Molecular Formula":
-								molecular_formula = item['value']['sval']
-							if item['urn']['label'] == "Molecular Weight":
-								molecular_weight = item['value']['fval']
-			result_dict['ligand']['match']['molecular_weight'] = molecular_weight
-			result_dict['ligand']['match']['molecular_formula'] = molecular_formula
+		synonyms = lig_obj.synonyms
+		if ligand.lower() == lig_obj.name.lower() or ligand in synonyms:
+			found_result = True
+			if lig_obj.chem_id != '0':
+				match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(lig_obj.chem_id)
+                        	pc_results = urllib2.urlopen(match_url)
+				pc_results = json.load(pc_results)
+				for dummy in pc_results['PC_Compounds']:
+					if dummy.has_key("props"):
+						for item in dummy['props']:
+							if item.has_key("urn"):
+								if item['urn']['label'] == "Molecular Formula":
+									molecular_formula = item['value']['sval']
+								if item['urn']['label'] == "Molecular Weight":
+									molecular_weight = item['value']['fval']
+								if item['urn']['label'] == "InChIKey":
+									inchi_key = item['value']['sval']
+				result_dict['ligand']['match']['molecular_weight'] = molecular_weight
+				result_dict['ligand']['match']['molecular_formula'] = molecular_formula
+				result_dict['ligand']['match']['inchi_key'] = inchi_key
+				result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
+
+			else:
+				result_dict['ligand']['match']['molecular_weight'] = "N/A"
+				result_dict['ligand']['match']['molecular_formula'] = "N/A"
+				result_dict['ligand']['match']['chem_id'] = "Not on PubChem"
+				result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+
 			result_dict['ligand']['match']['name'] = lig_obj.name
-			result_dict['ligand']['match']['name_short'] = lig_obj.name_short
-			result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
-			result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
+			result_dict['ligand']['match']['gtp_id'] = lig_obj.gtp_id
+			result_dict['ligand']['match']['sequence'] = lig_obj.sequence
+			result_dict['ligand']['match']['lig_type'] = lig_obj.lig_type
+			result_dict['ligand']['match']['type'] = lig_obj.lig_type
 			return result_dict
 
-	try:
-		initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{}/cids/TXT?name_type=word".format(ligand)
-        	response = urllib2.urlopen(initial_url)
-        	results = re.split("\n",response.read().rstrip())
-        	capt_cid = "<CID>(.+)</CID>"
-        	for line in results:
-			url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
-                	res = urllib2.urlopen(url)
-                	hits = re.findall(capt_cid,res.read())
-                	for item in hits:
-		       		if Ligand.objects.filter(chem_id=item).exists():
-						print "Found match",item
-						match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(item)
-						pc_results = urllib2.urlopen(match_url)
-						pc_results = json.load(pc_results)
-						lig_obj = Ligand.objects.get(chem_id=item)
-						for dummy in pc_results['PC_Compounds']:
-							if dummy.has_key("props"):
-								for item in dummy['props']:
-									if item.has_key("urn"):
-										if item['urn']['label'] == "Molecular Formula":
-											molecular_formula = item['value']['sval']
-										if item['urn']['label'] == "Molecular Weight":
-											molecular_weight = item['value']['fval']
-						result_dict['ligand']['match']['molecular_weight'] = molecular_weight
-						result_dict['ligand']['match']['molecular_formula'] = molecular_formula
-						result_dict['ligand']['match']['name'] = lig_obj.name
-						result_dict['ligand']['match']['name_short'] = lig_obj.name_short
-						result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
-						result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
-						return result_dict
-	except:
+	if not found_result:
 		try:
-			inchi_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{}/cids/TXT?name_type=word".format(ligand)
-			response = urllib2.urlopen(inchi_url)
-                	results = re.split("\n",response.read().rstrip())
-                	capt_cid = "<CID>(.+)</CID>"
-                	for line in results:
+			initial_url = "http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{}/cids/TXT?name_type=word".format(ligand)
+        		response = urllib2.urlopen(initial_url)
+        		results = re.split("\n",response.read().rstrip())
+        		capt_cid = "<CID>(.+)</CID>"
+        		for line in results:
 				url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
-	                	res = urllib2.urlopen(url)
-                        	hits = re.findall(capt_cid,res.read())
-                        	for item in hits:
-                                	if Ligand.objects.filter(chem_id=item).exists():
+                		res = urllib2.urlopen(url)
+                		hits = re.findall(capt_cid,res.read())
+                		for item in hits:
+		       			if Ligand.objects.filter(chem_id=item).exists():
+							print "Found match",item
 							match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(item)
-                                                	pc_results = urllib2.urlopen(match_url)
+							pc_results = urllib2.urlopen(match_url)
 							pc_results = json.load(pc_results)
-					        	lig_obj = Ligand.objects.get(chem_id=item)
-                                                	for dummy in pc_results['PC_Compounds']:
-                                                        	if dummy.has_key("props"):
-                                                                	for item in dummy['props']:
-                                                                        	if item.has_key("urn"):
-                                                                                	if item['urn']['label'] == "Molecular Formula":
-                                                                                        	molecular_formula = item['value']['sval']
-                                                                                	if item['urn']['label'] == "Molecular Weight":
-                                                                                        	molecular_weight = item['value']['fval']
+							lig_obj = Ligand.objects.get(chem_id=item)
+							for dummy in pc_results['PC_Compounds']:
+								if dummy.has_key("props"):
+									for item in dummy['props']:
+										if item.has_key("urn"):
+											if item['urn']['label'] == "Molecular Formula":
+												molecular_formula = item['value']['sval']
+											if item['urn']['label'] == "Molecular Weight":
+												molecular_weight = item['value']['fval']
 							result_dict['ligand']['match']['molecular_weight'] = molecular_weight
 							result_dict['ligand']['match']['molecular_formula'] = molecular_formula
-                                                	result_dict['ligand']['match']['name'] = lig_obj.name
-                                                	result_dict['ligand']['match']['name_short'] = lig_obj.name_short
-                                                	result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
-                                                	result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
-                                                	return result_dict
+							result_dict['ligand']['match']['name'] = lig_obj.name
+							result_dict['ligand']['match']['name_short'] = lig_obj.name_short
+							result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+							result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
+							return result_dict
 		except:
-			result = {'error' : 'No match found for that ligand query'}
-			return result
-
+			try:
+				inchi_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{}/cids/TXT?name_type=word".format(ligand)
+				response = urllib2.urlopen(inchi_url)
+                		results = re.split("\n",response.read().rstrip())
+                		capt_cid = "<CID>(.+)</CID>"
+                		for line in results:
+					url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/fastsimilarity_2d/cid/{}/cids/XML?Threshhold={}".format(line,t_threshold)
+	                		res = urllib2.urlopen(url)
+                        		hits = re.findall(capt_cid,res.read())
+                        		for item in hits:
+                                		if Ligand.objects.filter(chem_id=item).exists():
+								match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(item)
+                                                		pc_results = urllib2.urlopen(match_url)
+								pc_results = json.load(pc_results)
+					        		lig_obj = Ligand.objects.get(chem_id=item)
+                                                		for dummy in pc_results['PC_Compounds']:
+                                                        		if dummy.has_key("props"):
+                                                                		for item in dummy['props']:
+                                                                        		if item.has_key("urn"):
+                                                                                		if item['urn']['label'] == "Molecular Formula":
+                                                                                        		molecular_formula = item['value']['sval']
+                                                                                		if item['urn']['label'] == "Molecular Weight":
+                                                                                        		molecular_weight = item['value']['fval']
+								result_dict['ligand']['match']['molecular_weight'] = molecular_weight
+								result_dict['ligand']['match']['molecular_formula'] = molecular_formula
+                                                		result_dict['ligand']['match']['name'] = lig_obj.name
+                                                		result_dict['ligand']['match']['name_short'] = lig_obj.name_short
+                                                		result_dict['ligand']['match']['inchi_key'] = lig_obj.inchi_key
+                                                		result_dict['ligand']['match']['chem_id'] = lig_obj.chem_id
+                                                		return result_dict
+			except:
+				result = {'error' : 'No match found for that ligand query'}
+				return result
+	
 @api_view(['POST'])
 def get_result(request):
 	if request.method == 'POST':
@@ -345,16 +361,17 @@ def get_result(request):
 			loading_obj = LoadingHandler.objects.get(name="handler")
 			loading_obj.handler = True
 			loading_obj.save()
-			try:
-				results = ligand_search(data['ligand'], data['t_score'])
-				if results == None:
-					results = {'error':'No match found for that ligand query'}
-				loading_obj.handler = False
-				loading_obj.save()
-			except:
-				results = {'error': 'No match found for that ligand query'}
-				loading_obj.handler = False
-				loading_obj.save()
+			#try:
+			results = ligand_search(data['ligand'], data['t_score'])
+			print(results)
+			if results == None:
+				results = {'error':'No match found for that ligand query'}
+			loading_obj.handler = False
+			loading_obj.save()
+			#except:
+			#	results = {'error': 'No match found for that ligand query'}
+			#	loading_obj.handler = False
+			#	loading_obj.save()
 		pp.pprint(results)
 		response = JsonResponse(results)
 		return response

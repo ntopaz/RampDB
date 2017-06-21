@@ -116,9 +116,14 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				$scope.match_name = response.data['ligand']['match']['name'];
 				$scope.inchi_key = response.data['ligand']['match']['inchi_key'];
 				$scope.chem_id = response.data['ligand']['match']['chem_id'];
-				$scope.url = "https://pubchem.ncbi.nlm.nih.gov/compound/" + $scope.chem_id;
+				$scope.lig_type = response.data['ligand']['match']['lig_type'];
+				$scope.gtp_id = response.data['ligand']['match']['gtp_id'];
+				$scope.url = "http://guidetopharmacology.org/GRAC/LigandDisplayForward?tab=summary&ligandId=" + $scope.gtp_id;
 				$scope.molecular_formula = response.data['ligand']['match']['molecular_formula'].replace(/(\d+)/g,"<sub>$1</sub>");
 				$scope.molecular_weight = response.data['ligand']['match']['molecular_weight'];
+				if ($scope.molecular_weight != "N/A"){
+					$scope.molecular_weight += " g/mol";
+				}
 				content += "Query Name:\t" + $scope.query_name +"\n";
 				content += "Match Name:\t" + $scope.match_name +"\n";
 				content += "PubChem ID:\t" + $scope.chem_id +"\n";
@@ -126,15 +131,15 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				content += "URL:\t" + $scope.url +"\n";
 				var interactions = ""
         	        	getliginteraction = function () {
-				return $http.post("core/ligand_int",{'ligand_cid':$scope.chem_id})
+				return $http.post("core/ligand_int",{'ligand_name':$scope.match_name})
 	                	.success(function(data) {
 					$scope.interactions = data;
 					//$scope.references = data['interactions']['references'];
 					if ($scope.interactions) {
 						interactions += "Interactions:\n";
-						interactions += "Phenotype\tProtein\tLigand\tFunction\n";
+						interactions += "Phenotype\tProtein\tLigand\tAffinity\n";
 						for (var key in $scope.interactions){
-							interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["ramp"] + "\t" + $scope.interactions[key]["ramp"] + "\t" +  $scope.interactions[key]["function"] +"\n";
+							interactions += $scope.interactions[key]["phenotype"] + "\t" +  $scope.interactions[key]["ramp"] + "\t" + $scope.interactions[key]["gpcr"] + "\t" +  $scope.interactions[key]["function"] +"\n";
 						}
 						}
 					});
@@ -144,6 +149,8 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					let dl_blob = new Blob([content], { type: 'text/plain'});
 					$scope.url_dl = (window.URL || window.webkitURL).createObjectURL(dl_blob);
 					});
+				console.log($scope.chem_id);
+				if ($scope.chem_id != "Not on PubChem") {
 				var img_get_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + $scope.chem_id + "/PNG?record_type=2d&image_size=large";
         	        	$http.get(img_get_url, {responseType: "arraybuffer"})
 	                	.then(function(response) {
@@ -151,6 +158,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 					$scope.ligand_img = (window.URL || window.webkitURL).createObjectURL(blob);
 					$scope.img_loaded = true;
 					});
+				}
 				}
 
 			});

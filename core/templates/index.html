@@ -106,11 +106,13 @@
 								<div>
 									<select id="CommonLigands" ng-click="LigandSelected()" ng-model="commonLigands" size="6" style="width:100%; height: 130px">
 										<option>Adrenomedullin</option>
-										<option>Intermedin</option>
+										<option>Adrenomedullin 2/Intermedin</option>
+										<option>Olcegepant</option>
+										<option>Telcagepant</option>
 										<option>Amylin</option>
-										<option>Calcitonin Gene-Related Peptide</option>
-										<option>Vasoactive Intestinal Polypeptide</option>
-										<option>Parathyroid Hormone</option>
+										<option>CGRP</option>
+										<option>VIP</option>
+										<option>PTH</option>
 									</select>
 								</div>
 								<h2 id="t_score_field">Tanimoto Threshold:<input size="1" type="text" ng-model="t_threshold" value="85">%</h2>
@@ -339,13 +341,13 @@
                 			<h3 id='summary_h3'><span style=font-weight:bold>Match Name:</span>
 					{{ match_name }}
 					</h3>
-                			<h3 id='summary_h3'><span style=font-weight:bold>PubChem ID:</span>
-					{{ chem_id }}
+                			<h3 id='summary_h3'><span style=font-weight:bold>Ligand Type:</span>
+					{{ lig_type }}
 					</h3>
                 			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Formula: </span><span ng-bind-html="molecular_formula"></span>
  					</h3>
                 			<h3 id='summary_h3'><span style=font-weight:bold>Molecular Weight:</span>
-					{{ molecular_weight }} g/mol
+					{{ molecular_weight }}
 					</h3>
                 			<h3 id='summary_h3'><span style=font-weight:bold>InChi Key:</span>
 					{{ inchi_key }}
@@ -360,12 +362,18 @@
 							<div ng-show="img_loaded" id="image_area">
 								<img id="lig_img" ng-src="{{ ligand_img }}"/>
 							</div>
+							<div ng-show="!img_loaded" id="image_area">
+							{% endverbatim %}
+								<img src="{% static 'no_image_found.jpg' %}">
+							{% verbatim %}
+							</div>
 							<a ng-href="{{ url }}">{{ url }}</a>
-							<div ng-hide="img_loaded" id="image_area">
+							<!--<div ng-show="!img_loaded" id="image_area">
 							{% endverbatim %}
 								<img src="{% static 'bootstrap/images/spinner.gif' %}">
 							{% verbatim %}
-							</div>
+							</div>-->
+
 						</div>
 					</div>
 				</div>
@@ -378,7 +386,8 @@
 			<th>Phenotype</th>
 			<th>GPCR</th>
 			<th>RAMP</th>
-			<th>Function</th>
+			<th>Affinity</th>
+			<th>Type</th>
 			<th>Sources</th>
 
 		</tr>
@@ -388,10 +397,8 @@
 				<td> {{ object.name }} </td>
 				<td> {{ object.gpcr }} </td>
 				<td> {{ object.ramp }} </td>
-				<td ng-init="hide_func = true"> 
-					<button ng-show="hide_func" ng-click="hide_func = false">+</button>
-					<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
-				</td>
+				<td> {{ object.ligand_affinity}} </td>
+				<td> {{ object.ligand_binding_type}} </td>
 				<td ng-init="hide_sources = true">
 				{{ object.ref_length }}
 					<button data-toggle="modal" data-target="#lig_example{{$index}}">View</button>
@@ -428,10 +435,6 @@
 					</div>
 				</td>
 			</tr>
-		<tr>
-			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
-		</tr>
 
 		</tbody>
 		</table>		

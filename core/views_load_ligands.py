@@ -20,12 +20,12 @@ def load_ligands(data):
 			ligand_obj, ligand_created = Ligand.objects.update_or_create(
 							name = ligand,
 							chem_id = data[complex][ligand]['chem_id'],
+							gtp_id = data[complex][ligand]['gtp_id'],
 							inchi_key = data[complex][ligand]['inchi_key'],
 							sequence = data[complex][ligand]['sequence'],
 							lig_type = data[complex][ligand]['ligand_type'],
-							affinity = data[complex][ligand]['affinity'],
-							binding_type = data[complex][ligand]['binding_type'],
 							source = source_obj,
+							synonyms = data[complex][ligand]["synonyms"],
 							)
 
 
