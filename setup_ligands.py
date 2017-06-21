@@ -82,6 +82,8 @@ def load_lig_api():
 			interacting_ligands[complex][ligand_name]["synonyms"] = all_synonyms[ligand_name]
 	#interacting_ligands = ast.literal_eval(json.dumps(interacting_ligands))
 	out_json = json.dumps(interacting_ligands)
+	with open("interacting_ligands.json","w") as f:
+		json.dump(interacting_ligands,f)
 	load_ligands(out_json)
 	return interacting_ligands
 

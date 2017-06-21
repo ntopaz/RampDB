@@ -11,7 +11,7 @@ from models import *
 
 @transaction.atomic
 def load_ligands(data):
-	data = json.loads(data)
+	#data = json.loads(data)
 	source_obj,source_created = Source.objects.update_or_create(name="GuideToPharmacology",url="http://www.guidetopharmacology.org")
 	for complex in data:
 		for ligand in data[complex]:
