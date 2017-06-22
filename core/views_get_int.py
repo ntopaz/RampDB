@@ -20,23 +20,24 @@ def db_int(family):
 	r_interactions = Interactions.objects.filter(rampfamily_id=family_obj).select_related('gpcrfamily','ligand')
 	g_interactions = Interactions.objects.filter(gpcrfamily_id=family_obj).select_related('rampfamily','ligand')
 	if len(r_interactions) > 0:
-		final_dict['interactions'] = {}
+		final_dict['interactions'] = []
 		final_dict['ramp'] = ""
 		for interaction in r_interactions:
-			final_dict['interactions'][interaction.name_short] = {'function':interaction.function,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name, 'references':{}, 'phenotype':interaction.phenotype}
+			reference_set = {}
                         ref_objs = interaction.reference.all()
                         for ref_obj in ref_objs:
-                                final_dict['interactions'][interaction.name_short]['references'][ref_obj.name] = ref_obj.url
-			final_dict['interactions'][interaction.name_short]['ref_length'] = len(ref_objs)
+				reference_set[ref_obj.name] = ref_obj.url
+			final_dict['interactions'].append({'ref_length':len(reference_set),'references':reference_set,'name_short':interaction.name_short,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name, 'phenotype':interaction.phenotype})
+
 	else:
-		final_dict['interactions'] = {}
+		final_dict['interactions'] = []
 		final_dict['gpcr'] = ""
 		for interaction in g_interactions:
-			final_dict['interactions'][interaction.name_short] = {'function':interaction.function,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name, 'references':{}, 'phenotype':interaction.phenotype}
                         ref_objs = interaction.reference.all()
+			reference_set = {}
                         for ref_obj in ref_objs:
-                                final_dict['interactions'][interaction.name_short]['references'][ref_obj.name] = ref_obj.url
-			final_dict['interactions'][interaction.name_short]['ref_length'] = len(ref_objs)
+				reference_set[ref_obj.name] = ref_obj.url
+			final_dict['interactions'].append({'ref_length':len(reference_set),'references':reference_set,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name, 'references':{}, 'phenotype':interaction.phenotype})
 
 	pp.pprint(final_dict)
 	return final_dict

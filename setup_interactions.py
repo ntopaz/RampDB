@@ -3,6 +3,7 @@ import pprint as pp
 from core.views_load_interactions import load_interactions
 ligand_dict = sys.argv[1]
 def load_int(ligand_dict):
+		
 	interaction = {}
 	list = []
 	interaction['Amylin receptor 1'] = {'name':'Amylin receptor 1','name_short': 'AMY1', 'rampfamily':'receptor activity modifying protein 1','gpcrfamily':'calcitonin receptor'}

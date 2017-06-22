@@ -202,126 +202,120 @@
 	</div>
         <div ng-show="ramp_quer" class='container-fluid' id='results_page_int'>
                 <h1 id="results_h1">Known {{ family_short }} Interactions:</h1>
-                <table id="interaction_table" border="1">
-             	<tr>
-			<th>Phenotype</th>
-			<th>GPCR</th>
-			<th>Ligand</th>
-			<th>Function</th>
-			<th>Sources</th>
-		</tr>
-		<tbody id='interactions_tr' ng-repeat="(key,object) in interactions track by $index">
-				<td> {{ object.phenotype }} </td>
-				<td> {{ object.prot }} </td>
-				<td> {{ object.ligand }} </td>
-				<td ng-init="hide_func = true"> 
-					<button ng-show="hide_func" ng-click="hide_func = false">+</button>
-				 	<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
-				</td>
-				<td ng-init="hide_sources = true">
-				{{ object.ref_length }}
-                                <button data-toggle="modal" data-target="#ramp_example{{$index}}">View</button>
-                                        <div id="ramp_example{{$index}}" class="modal">
-                                                <div class="modal-content">
-                                                        <div class="row">
-                                                                <div class="col-sm-1">
-                                                                        <p><span style="font-weight:bold">#</span></p>
-                                                                </div>
-                                                                <div class="col-sm-5">
-                                                                        <p><span style="font-weight:bold">Source</span></p>
-                                                                </div>
-                                                                <div class="col-sm-5">
-                                                                        <p><span style="font-weight:bold">URL</span></p>
-                                                                </div>
-                                                                <div class="col-sm-1">
-									<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#ramp_example{{$index}}">x</button></span>
-                                                                </div>
-                                                        </div>
-                                                        <hr id="sources_hr">
-                                                        <div class="row" ng-repeat="(name,url) in object.references track by $index">
-                                                                <div class="col-sm-1">
-                                                                        <p> {{ $index + 1 }}</p>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                        <p> {{ name }}</p>
-                                                                </div>
-                                                                <div class="col-sm-5">
-                                                                        <p><a ng-href="{{ url }}"> {{ url }}</a></p>
-                                                                </div>
-                                                        </div>
-								<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#ramp_example{{$index}}">Close</button>
-                                                </div>
-                                        </div>
-
-				</td>
-		</tr>
-		<tr>
-			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
-		</tr>
-		</tbody>
-		</table>
+		<div id="scrolling_table">
+                	<table id="interaction_table" border="1">
+             		<tr>
+				<th>Phenotype</th>
+				<th>GPCR</th>
+				<th>Ligand</th>
+				<th>Affinity</th>
+				<th>Type</th>
+				<th>Sources</th>
+			</tr>
+			<tbody id='interactions_tr' ng-repeat="(key,object) in interactions track by $index">
+					<td> {{ object.phenotype }} </td>
+					<td> {{ object.prot }} </td>
+					<td> {{ object.ligand }} </td>
+					<td> {{ object.ligand_affinity}} </td>
+					<td> {{ object.ligand_binding_type}} </td>				
+					<td ng-init="hide_sources = true">
+					{{ object.ref_length }}
+                                	<button data-toggle="modal" data-target="#ramp_example{{$index}}">View</button>
+                                        	<div id="ramp_example{{$index}}" class="modal">
+                                                	<div class="modal-content">
+                                                        	<div class="row">
+                                                                	<div class="col-sm-1">
+                                                                        	<p><span style="font-weight:bold">#</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><span style="font-weight:bold">Source</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><span style="font-weight:bold">URL</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-1">
+										<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#ramp_example{{$index}}">x</button></span>
+                                                                	</div>
+                                                        	</div>
+                                                        	<hr id="sources_hr">
+                                                        	<div class="row" ng-repeat="(name,url) in object.references track by $index">
+                                                                	<div class="col-sm-1">
+                                                                        	<p> {{ $index + 1 }}</p>
+                                                                	</div>
+                                                                	<div class="col-sm-6">
+                                                                        	<p> {{ name }}</p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><a ng-href="{{ url }}" target="_blank"> {{ url }}</a></p>
+                                                                	</div>
+                                                        	</div>
+									<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#ramp_example{{$index}}">Close</button>
+                                                	</div>
+                                        	</div>
+	
+					</td>
+			</tr>
+			</tbody>
+			</table>
+		</div>
         </div>
         <div ng-hide="ramp_quer" class='container-fluid' id='results_page_int'>
                 <h1 id="results_h1">Known {{ family_short }} Interactions:</h1>
-                <table id="interaction_table" border="1">
-             	<tr>
-			<th>Phenotype</th>
-			<th>RAMP</th>
-			<th>Ligand</th>
-			<th>Function</th>
-			<th>Sources</th>
-		</tr>
-		<tbody id='interactions_tr' ng-repeat="(phenotype,object) in interactions track by $index">
-			<td> {{ object.phenotype }} </td>
-			<td> {{ object.prot }} </td>
-			<td> {{ object.ligand }} </td>
-			<td ng-init="hide_func = true"> 
-				<button ng-show="hide_func" ng-click="hide_func = false">+</button>
-				<button ng-hide="hide_func" ng-click="hide_func = true">-</button>
-			</td>
-			<td ng-init="hide_sources = true">
-			{{ object.ref_length }}	
-				<button data-toggle="modal" data-target="#gpcr_example{{$index}}">View</button>
-					<div id="gpcr_example{{$index}}" class="modal">
-  						<div class="modal-content">
-							<div class="row">
-								<div class="col-sm-1">
-    									<p><span style="font-weight:bold">#</span></p>
-								</div>
-								<div class="col-sm-5">
-    									<p><span style="font-weight:bold">Source</span></p>
-								</div>
-								<div class="col-sm-5">
-    									<p><span style="font-weight:bold">URL</span></p>
-								</div>
-								<div class="col-sm-1">
-									<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#gpcr_example{{$index}}">x</button></span>
-								</div>
+		<div id="scrolling_table">
+                		<table id="interaction_table" border="1">
+             			<tr>
+					<th>Phenotype</th>
+					<th>RAMP</th>
+					<th>Ligand</th>
+					<th>Affinity</th>
+					<th>Type</th>
+					<th>Sources</th>
+				</tr>
+				<tbody id='interactions_tr' ng-repeat="(phenotype,object) in interactions track by $index">
+					<td> {{ object.phenotype }} </td>
+					<td> {{ object.prot }} </td>
+					<td> {{ object.ligand }} </td>
+					<td> {{ object.ligand_affinity}} </td>
+					<td> {{ object.ligand_binding_type}} </td>
+					<td ng-init="hide_sources = true">
+					{{ object.ref_length }}	
+						<button data-toggle="modal" data-target="#gpcr_example{{$index}}">View</button>
+							<div id="gpcr_example{{$index}}" class="modal">
+  								<div class="modal-content">
+									<div class="row">
+										<div class="col-sm-1">
+    											<p><span style="font-weight:bold">#</span></p>
+										</div>
+										<div class="col-sm-5">
+    											<p><span style="font-weight:bold">Source</span></p>
+										</div>
+										<div class="col-sm-5">
+    											<p><span style="font-weight:bold">URL</span></p>
+										</div>
+										<div class="col-sm-1">
+											<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#gpcr_example{{$index}}">x</button></span>
+										</div>
+									</div>
+									<hr id="sources_hr">
+									<div class="row" ng-repeat="(name,url) in object.references track by $index">
+										<div class="col-sm-1">
+    											<p> {{ $index + 1 }}</p>
+										</div>
+										<div class="col-sm-6">
+    											<p> {{ name }}</p>
+										</div>
+										<div class="col-sm-5">
+    											<p><a ng-href="{{ url }}" target="_blank"> {{ url }}</a></p>
+										</div>
+									</div>
+										<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#gpcr_example{{$index}}">Close</button>
+  								</div>	
 							</div>
-							<hr id="sources_hr">
-							<div class="row" ng-repeat="(name,url) in object.references track by $index">
-								<div class="col-sm-1">
-    									<p> {{ $index + 1 }}</p>
-								</div>
-								<div class="col-sm-6">
-    									<p> {{ name }}</p>
-								</div>
-								<div class="col-sm-5">
-    									<p><a ng-href="{{ url }}"> {{ url }}</a></p>
-								</div>
-							</div>
-								<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#gpcr_example{{$index}}">Close</button>
-  						</div>	
-					</div>
-			</td>
-		</tr>
-		<tr>
-			<td id="interactions_th" ng-if="!hide_func" colspan="1"> Function </td>
-			<td id="interactions_tr" ng-if="!hide_func" colspan="4"> {{ object.function }} </td>
-		</tr>
-		</tbody>
-		</table>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
         </div>
                {% endverbatim %}
 
@@ -375,7 +369,7 @@
 								<img src="{% static 'no_image_found.jpg' %}">
 							{% verbatim %}
 							</div>
-							<a ng-href="{{ url }}">{{ url }}</a>
+							<a ng-href="{{ url }}" target="_blank">{{ url }}</a>
 							<!--<div ng-show="!img_loaded" id="image_area">
 							{% endverbatim %}
 								<img src="{% static 'bootstrap/images/spinner.gif' %}">
@@ -388,65 +382,66 @@
 	</div>
         <div class='container-fluid' id='results_page_int_lig'>
                 <h1 id="results_h1">Known {{ match_name }} RAMP Interactions:</h1>
-                <table id="interaction_table" border="1">
-		<thead>
-             	<tr>
-			<th>Phenotype</th>
-			<th>GPCR</th>
-			<th>RAMP</th>
-			<th>Affinity</th>
-			<th>Type</th>
-			<th>Sources</th>
-
-		</tr>
-		</thead>
-		<tbody  id="interactions_tr" border="1" ng-repeat="(phenotype,object) in interactions track by $index">
-			<tr>
-				<td> {{ object.name }} </td>
-				<td> {{ object.gpcr }} </td>
-				<td> {{ object.ramp }} </td>
-				<td> {{ object.ligand_affinity}} </td>
-				<td> {{ object.ligand_binding_type}} </td>
-				<td ng-init="hide_sources = true">
-				{{ object.ref_length }}
-					<button data-toggle="modal" data-target="#lig_example{{$index}}">View</button>
-					<div id="lig_example{{$index}}" class="modal">
-  						<div class="modal-content">
-							<div class="row">
-								<div class="col-sm-1">
-    									<p><span style="font-weight:bold">#</span></p>
-								</div>
-								<div class="col-sm-5">
-    									<p><span style="font-weight:bold">Source</span></p>
-								</div>
-								<div class="col-sm-5">
-    									<p><span style="font-weight:bold">URL</span></p>
-								</div>
-								<div class="col-sm-1">
-									<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#lig_example{{$index}}">x</button></span>
-								</div>
-							</div>
-							<hr id="sources_hr">
-							<div class="row" ng-repeat="(name,url) in object.references track by $index">
-								<div class="col-sm-1">
-    									<p> {{ $index + 1 }}</p>
-								</div>
-								<div class="col-sm-6">
-    									<p> {{ name }}</p>
-								</div>
-								<div class="col-sm-5">
-    									<p><a ng-href="{{ url }}"> {{ url }}</a></p>
-								</div>
-							</div>
-								<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#lig_example{{$index}}">Close</button>
-  						</div>	
-					</div>
-				</td>
+		<div id="scrolling_table">
+                	<table id="interaction_table" border="1">
+			<thead>
+             		<tr>
+				<th>Phenotype</th>
+				<th>GPCR</th>
+				<th>RAMP</th>
+				<th>Affinity</th>
+				<th>Type</th>
+				<th>Sources</th>
+	
 			</tr>
-
-		</tbody>
+			</thead>
+			<tbody  id="interactions_tr" border="1" ng-repeat="(phenotype,object) in interactions track by $index">
+				<tr>
+					<td> {{ object.name }} </td>
+					<td> {{ object.gpcr }} </td>
+					<td> {{ object.ramp }} </td>
+					<td> {{ object.ligand_affinity}} </td>
+					<td> {{ object.ligand_binding_type}} </td>
+					<td ng-init="hide_sources = true">
+					{{ object.ref_length }}
+						<button data-toggle="modal" data-target="#lig_example{{$index}}">View</button>
+						<div id="lig_example{{$index}}" class="modal">
+  							<div class="modal-content">
+								<div class="row">
+									<div class="col-sm-1">
+    										<p><span style="font-weight:bold">#</span></p>
+									</div>
+									<div class="col-sm-5">
+    										<p><span style="font-weight:bold">Source</span></p>
+									</div>
+									<div class="col-sm-5">
+    										<p><span style="font-weight:bold">URL</span></p>
+									</div>
+									<div class="col-sm-1">
+										<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#lig_example{{$index}}">x</button></span>
+									</div>
+								</div>
+								<hr id="sources_hr">
+								<div class="row" ng-repeat="(name,url) in object.references track by $index">
+									<div class="col-sm-1">
+    										<p> {{ $index + 1 }}</p>
+									</div>
+									<div class="col-sm-6">
+    										<p> {{ name }}</p>
+									</div>
+									<div class="col-sm-5">
+    										<p><a ng-href="{{ url }}" target="_blank"> {{ url }}</a></p>
+									</div>
+								</div>
+									<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#lig_example{{$index}}">Close</button>
+  							</div>	
+						</div>
+					</td>
+				</tr>
+	
+			</tbody>
 		</table>		
-
+		</div>
         </div>
                {% endverbatim %}
 
