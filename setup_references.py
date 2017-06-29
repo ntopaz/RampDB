@@ -36,6 +36,8 @@ def load_reference():
 	attributes = {'url':'https://www.ncbi.nlm.nih.gov/pubmed/16888151','citation':'''Sexton, P. M., M. Morfis, et al. (2006). "Complexing receptor pharmacology: modulation of family B G protein-coupled receptor function by RAMPs." Ann N Y Acad Sci 1070: 90-104.
 	The most well-characterized subgroup of family B G protein-coupledreceptors (GPCRs) comprises receptors for peptide hormones, such as secretin, calcitonin (CT), glucagon, and vasoactive intestinal peptide (VIP). Recent data suggest that many of these receptors can interact with a novel family of GPCR accessory proteins termed receptor activity modifying proteins (RAMPs). RAMP interaction with receptors can lead to a variety of actions that include chaperoning of the receptor protein to the cell surface as is the case for the calcitonin receptor-like receptor (CLR) and the generation of novel receptor phenotypes. RAMP heterodimerization with the CLR and related CT receptor is required for the formation of specific CT gene-related peptide, adrenomedullin (AM) or amylin receptors. More recent work has revealed that the specific RAMP present in a heterodimer may modulate other functions such as receptor internalization and recycling and also the strength of activation of downstream signaling pathways. In this article we review our current state of knowledge of the consequence of RAMP interaction with family B GPCRs.'''}
 	reference['Complexing receptor pharmacology: modulation of family B G protein-coupled receptor function by RAMPs'] = attributes
+	
+	
 
 	load_ref(json.dumps(reference))
 

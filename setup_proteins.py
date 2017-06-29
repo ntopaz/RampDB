@@ -1,11 +1,11 @@
 import sys, os, json
 from core.views_load_proteins import *
 
-def load_proteins(input_file):
+def load_proteins(input_file,family_data):
 	with open(input_file) as f:
 		my_dict=json.load(f)
 
-	load_db(my_dict)
+	load_db(my_dict,family_data)
 
 
 def main():

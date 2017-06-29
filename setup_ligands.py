@@ -9,7 +9,7 @@ def load_lig_api():
 	http = urllib3.PoolManager()
 	interacting_ligands = {}
 	all_synonyms = {}
-	targets = {"AMY1":44,"CGRP":48,"AMY2":45,"AM1":49,"AMY3":46,"AM2":50,"VPAC1":371,"PTH1":331,"PTH2":332,"Glucagon":251}
+	targets = {"AMY1":44,"CGRP":48,"AMY2":45,"AM1":49,"AMY3":46,"AM2":50,"VPAC1":371,"PTH1":331,"PTH2":332,"Glucagon":251,"VPAC2":372,"CRF":212,"GPER/GPR30":221}
 	for complex in targets:
 		if complex not in interacting_ligands:
 			interacting_ligands[complex] = {}
@@ -86,7 +86,7 @@ def load_lig_api():
 	out_json = json.dumps(interacting_ligands)
 	with open("interacting_ligands.json","w") as f:
 		json.dump(interacting_ligands,f)
-	load_ligands(out_json)
+	#load_ligands(out_json)
 	return interacting_ligands
 
 def main():

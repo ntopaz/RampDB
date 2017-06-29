@@ -7,6 +7,8 @@ from django.db import models
 class Family(models.Model):
 	name = models.CharField(max_length=1000)
 	name_short = models.CharField(max_length=500)
+	pdb_id = models.CharField(max_length=500)
+	gtp_id = models.CharField(max_length=200)
 
 	def __unicode__(self):
 		return self.name + " " + self.name_short

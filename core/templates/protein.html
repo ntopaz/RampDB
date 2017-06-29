@@ -1,0 +1,224 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>RampDB</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet"/>
+  <!-- Custom Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'jquery-1.12.0.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+  <script src="{% static 'protein.js' %}"></script>
+  <script src=//cdn.bio.sh/msa/1.0/msa.min.gz.js></script>
+	
+</head>
+
+<body ng-app="protApp" ng-controller="protCtrl">
+<nav class="navbar navbar-inverse">
+  <!--Logo-->
+  <div class="container-fluid" id="navbar_box" style="width: 100%">
+      <div class="navbar-header">
+      <a href="{% url 'index' %}" class="navbar-brand" style="margin-right: 4px; width:54px;"><img src="{% static 'logo.png' %}" style="width: 175%;"></a>
+	  </div>
+
+    <div>
+      <u1 class="nav navbar-nav">
+        <li><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
+			<li class="dropdown">
+			 <a role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Proteins <span class="caret"></span>
+				</a>
+			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <li class="dropdown-header">RAMPs:</li>
+				{% verbatim %}
+				<li><a class="dropdown-item" ng-click="popProtein(value)" ng-repeat="value in ramp_data">{{ value }}</a></li>
+				{% endverbatim %}
+				<li role="separator" class="divider"></li>
+				<li class="dropdown-header">GPCRs:</li>
+				{% verbatim %}
+				<li><a class="dropdown-item" ng-click="popProtein(value)" ng-repeat="value in gpcr_data">{{ value }}</a></li>
+				{% endverbatim %}	
+			  </ul>
+			</li>
+        <li><a href="{% url 'info' %}">RAMP Information</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a target="_blank" ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
+      </u1>
+	{% verbatim %}
+        <a class='btn btn-primary btn-lg' id='export_button' href='' ng-hide="home"  ng-click="backtoHome()" role='button'>Search Again</a>
+	{% endverbatim %}
+  </div>
+</nav>
+<div id="total_results">
+	<div class='container-fluid' id='results_page'>
+		<div class="row">
+			<div class="col-sm-6">
+				<div id='summary'>
+					<h1 id='results_h1'>Summary:</h1>
+					<h3 style='margin-top:3%' id='summary_h3'><span style=font-weight:bold>Protein Name:</span>
+					{% verbatim %}
+					{{ prot_name }}
+					</h3>
+					<h3 id='summary_h3'><span style=font-weight:bold>Name Short:</span>
+					{{ name_short }}
+					{% endverbatim %}					
+					</h3>
+					<h3 id='summary_h3'><span style=font-weight:bold>GuideToPharmacology: <br></span>
+					{% verbatim %}
+					<a target="_blank" ng-href="{{ gtp_link }}">{{ gtp_link }}</a>
+					{% endverbatim %}
+					</h3>
+					<h3 id='summary_h3'><span style=font-weight:bold>PDB: <br></span>
+					{% verbatim %}					
+					<a target="_blank" ng-show="pdb_flag" ng-href="{{ pdb_link }}">{{ pdb_link }}</a>
+					<h3 ng-show="!pdb_flag">{{ pdb_link }}</h3>
+					{% endverbatim %}					
+					</h3>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+		{% verbatim %}
+        <div ng-show="ramp_quer" class='container-fluid' id='results_page_int'>
+                <h1 id="results_h1">Known {{ prot_name }} Interactions:</h1>
+		<div id="scrolling_table">
+                	<table id="interaction_table" border="1">
+             		<tr>
+				<th>Phenotype</th>
+				<th>GPCR</th>
+				<th>Ligand</th>
+				<th>Affinity</th>
+				<th>Type</th>
+				<th>Sources</th>
+			</tr>
+			<tbody id='interactions_tr' ng-repeat="(key,object) in interactions track by $index">
+					<td> {{ object.phenotype }} </td>
+					<td> {{ object.prot }} </td>
+					<td> {{ object.ligand }} </td>
+					<td> {{ object.ligand_affinity}} </td>
+					<td> {{ object.ligand_binding_type}} </td>				
+					<td ng-init="hide_sources = true">
+					{{ object.ref_length }}
+                                	<button data-toggle="modal" data-target="#ramp_example{{$index}}">View</button>
+                                        	<div id="ramp_example{{$index}}" class="modal">
+                                                	<div class="modal-content">
+                                                        	<div class="row">
+                                                                	<div class="col-sm-1">
+                                                                        	<p><span style="font-weight:bold">#</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><span style="font-weight:bold">Source</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><span style="font-weight:bold">URL</span></p>
+                                                                	</div>
+                                                                	<div class="col-sm-1">
+										<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#ramp_example{{$index}}">x</button></span>
+                                                                	</div>
+                                                        	</div>
+                                                        	<hr id="sources_hr">
+                                                        	<div class="row" ng-repeat="(name,url) in object.references track by $index">
+                                                                	<div class="col-sm-1">
+                                                                        	<p> {{ $index + 1 }}</p>
+                                                                	</div>
+                                                                	<div class="col-sm-6">
+                                                                        	<p> {{ name }}</p>
+                                                                	</div>
+                                                                	<div class="col-sm-5">
+                                                                        	<p><a ng-href="{{ url }}" target="_blank"> {{ url }}</a></p>
+                                                                	</div>
+                                                        	</div>
+									<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#ramp_example{{$index}}">Close</button>
+                                                	</div>
+                                        	</div>
+	
+					</td>
+			</tr>
+			</tbody>
+			</table>
+		</div>
+        </div>
+        <div ng-hide="ramp_quer" class='container-fluid' id='results_page_int'>
+                <h1 id="results_h1">Known {{ family_short }} Interactions:</h1>
+		<div id="scrolling_table">
+                		<table id="interaction_table" border="1">
+             			<tr>
+					<th>Phenotype</th>
+					<th>RAMP</th>
+					<th>Ligand</th>
+					<th>Affinity</th>
+					<th>Type</th>
+					<th>Sources</th>
+				</tr>
+				<tbody id='interactions_tr' ng-repeat="(phenotype,object) in interactions track by $index">
+					<td> {{ object.phenotype }} </td>
+					<td> {{ object.prot }} </td>
+					<td> {{ object.ligand }} </td>
+					<td> {{ object.ligand_affinity}} </td>
+					<td> {{ object.ligand_binding_type}} </td>
+					<td ng-init="hide_sources = true">
+					{{ object.ref_length }}	
+						<button data-toggle="modal" data-target="#gpcr_example{{$index}}">View</button>
+							<div id="gpcr_example{{$index}}" class="modal">
+  								<div class="modal-content">
+									<div class="row">
+										<div class="col-sm-1">
+    											<p><span style="font-weight:bold">#</span></p>
+										</div>
+										<div class="col-sm-5">
+    											<p><span style="font-weight:bold">Source</span></p>
+										</div>
+										<div class="col-sm-5">
+    											<p><span style="font-weight:bold">URL</span></p>
+										</div>
+										<div class="col-sm-1">
+											<span style="font-weight:bold"><button class="close" data-toggle="modal" data-target="#gpcr_example{{$index}}">x</button></span>
+										</div>
+									</div>
+									<hr id="sources_hr">
+									<div class="row" ng-repeat="(name,url) in object.references track by $index">
+										<div class="col-sm-1">
+    											<p> {{ $index + 1 }}</p>
+										</div>
+										<div class="col-sm-6">
+    											<p> {{ name }}</p>
+										</div>
+										<div class="col-sm-5">
+    											<p><a ng-href="{{ url }}" target="_blank"> {{ url }}</a></p>
+										</div>
+									</div>
+										<button id="source_exit_button" class="btn btn-primary btn-large" data-toggle="modal" data-target="#gpcr_example{{$index}}">Close</button>
+  								</div>	
+							</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% endverbatim %}
+
+
+</body>
+
+
+
+</html>
+
+

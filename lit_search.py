@@ -14,7 +14,7 @@ int_short = {}
 
 ### keyword checks
 #strong_checks = ['interacts with','binds with','complex with','complexes with']
-weak_checks = ['interacts','interaction','binding','binds','complex']
+weak_checks = ['interacts','interaction','binding','binds','complex','interact']
 
 ### function to scan each line of matched literature for keywords
 def check_text(text, ramp, gpcr):

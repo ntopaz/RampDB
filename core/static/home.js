@@ -22,7 +22,11 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 		$scope.loading = false;
 		$scope.results = true;
 	});
-
+	$http.get('core/get_prot')
+	.then(function(response){
+		$scope.ramp_data = response.data["Ramp"];
+		$scope.gpcr_data = response.data["GPCR"];
+	});
 	$scope.Submit = function() {
 		var content = "";
 		$scope.main_loading = true;
@@ -66,8 +70,8 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 
 				var interactions = ""
 				getinteraction = function () {
-        	        	return $http.post("core/interactions",{'family':$scope.family})
-	                	.success(function(data) {
+				return $http.post("core/interactions",{'family':$scope.family})
+				.success(function(data) {
 					if ('ramp' in data){
 						$scope.ramp_quer = true;
 						$scope.interactions = data['interactions'];
@@ -191,5 +195,11 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 		$scope.ramp_quer = false;
 		$scope.gpcr_quer = false;
 	};
+	$scope.popProtein = function(my_val) {
+		$scope.my_val = my_val;
+		$scope.my_val = $scope.my_val.replace(/\s/g,"_");
+		window.location = "/protein?" + $scope.my_val;
+
+	};	
 });
 

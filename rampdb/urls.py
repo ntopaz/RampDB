@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'info/', TemplateView.as_view(template_name='info.html'), name="info"),
     url(r'about/', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'contact/', TemplateView.as_view(template_name='contact.html'), name="contact"),
+    url(r'protein', TemplateView.as_view(template_name='protein.html'), name="protein"),
 ]

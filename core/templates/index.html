@@ -39,6 +39,22 @@
     <div>
       <u1 class="nav navbar-nav">
         <li class="active"><a href="{% url 'index' %}" ng-click="backtoHome()">Home</a></li>
+			<li class="dropdown">
+			 <a role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Proteins <span class="caret"></span>
+				</a>
+			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <li class="dropdown-header">RAMPs:</li>
+				{% verbatim %}
+				<li><a class="dropdown-item" ng-click="popProtein(value)" ng-repeat="value in ramp_data">{{ value }}</a></li>
+				{% endverbatim %}
+				<li role="separator" class="divider"></li>
+				<li class="dropdown-header">GPCRs:</li>
+				{% verbatim %}
+				<li><a class="dropdown-item" ng-click="popProtein(value)" ng-repeat="value in gpcr_data">{{ value }}</a></li>
+				{% endverbatim %}	
+			  </ul>
+			</li>
         <li><a href="{% url 'info' %}">RAMP Information</a></li>
         <li><a href="{% url 'about' %}">About</a></li>
         <li><a target="_blank" ng-href="http://jordan.biology.gatech.edu/page/">Contact</a></li>
