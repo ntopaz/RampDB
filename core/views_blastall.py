@@ -28,7 +28,7 @@ CLUSTAL_PATH = ""
 #CLUSTAL_PATH = "/projects/VirtualHost/rampdb/core/exec/clustal/bin"
 ##############
 # Create your views here.
-
+aa_list = ['D','S','Q','K','I','P','F','N','H','L','R','W','Y','M','V','E']
 @transaction.atomic
 def blast_all(query):
 	print query
@@ -63,12 +63,19 @@ def blast_all(query):
 	f = open(BASE_DIR+"/"+"temp.txt","w")
 	f.write(my_fasta)
 	f.close()
+	query_is_prot = False
 	q=open(BASE_DIR + "/" + "query.txt","r+")
 	for record in SeqIO.parse(q,"fasta"):
 		query_length = len(record.seq)
 		query_seq = record.seq
+		for letter in query_seq:
+			if letter in aa_list:
+				query_is_prot = True
 		query_name = record.id
 		query_desc = record.description
+	if not query_is_prot:
+		result = {'error': 'Input must be a protein sequence, not DNA'}
+		return result
 	result_dict['protein'] = {'name':query_name, 'seq':str(query_seq), 'length': query_length, 'desc':query_desc, 'match': None}
 	q.close()
 	result = check_output([BLAST_PATH+"makeblastdb","-dbtype","prot","-in",BASE_DIR+"/temp.txt","-out",BASE_DIR+"/"+"blastdb","-title","blastdb","-parse_seqids"], shell=False)
@@ -373,7 +380,8 @@ def get_result(request):
 			print results
 
                         if 'error' in results.keys():
-                                results = {'error': 'Protein input query not in FASTA format'}
+                                #results = {'error': 'Protein input query not in FASTA format'}
+				pass
 			elif results['protein']['match'] == None:
 				results = {'error':'No match found for that protein query'}
 			else:
