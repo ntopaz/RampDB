@@ -143,7 +143,7 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 				return $http.post("core/ligand_int",{'ligand_name':$scope.match_name})
 	                	.success(function(data) {
 					$scope.interactions = data;
-					//$scope.references = data['interactions']['references'];
+					$scope.references = data['interactions']['references'];
 					if ($scope.interactions) {
 						interactions += "Interactions:\n";
 						interactions += "Phenotype\tProtein\tLigand\tAffinity\n";
