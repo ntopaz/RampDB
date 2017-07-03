@@ -58,6 +58,8 @@ def load_lig_api():
 				interacting_ligands[complex][ligand_name] = {}
 			else:
 				continue
+			if result["affinity"].strip() == "":
+				result["affinity"] = "N/A"
 			interacting_ligands[complex][ligand_name]["affinity"] = result["affinity"]
 			interacting_ligands[complex][ligand_name]["binding_type"] = result["type"]
 			interacting_ligands[complex][ligand_name]["ligand_type"] = ligand_type
