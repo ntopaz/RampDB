@@ -9,6 +9,7 @@ class Family(models.Model):
 	name_short = models.CharField(max_length=500)
 	pdb_id = models.CharField(max_length=500)
 	gtp_id = models.CharField(max_length=200)
+	status = models.CharField(max_length=500)
 
 	def __unicode__(self):
 		return self.name + " " + self.name_short
@@ -77,7 +78,6 @@ class Interactions(models.Model):
 	name_short = models.CharField(max_length=200)
 	reference = models.ManyToManyField(Reference, null=True)
 	phenotype = models.CharField(max_length=500)
-	status = models.CharField(max_length=500)
 
 	def __unicode__(self):
 		return self.phenotype

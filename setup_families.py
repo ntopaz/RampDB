@@ -29,7 +29,12 @@ def load_families():
 			pdb_id = "None"
 		family_data[matching_name]["pdb_id"] = pdb_id
 		family_data[matching_name]["name"] = name
-		family_data[matching_name]["gtp_id"] = target_id		
+		family_data[matching_name]["gtp_id"] = target_id
+		if matching_name == "CLR" or matching_name == "CT":
+			status = "Verified Interaction"
+		else:
+			status = "Unverified: Predicted domain of interaction based on sequence alignment with closely related receptors"
+		family_data[matching_name]["status"] = status
 	#pp.pprint(family_data)
 	#out_json = json.dumps(interacting_ligands)
 	#with open("interacting_ligands.json","w") as f:

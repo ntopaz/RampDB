@@ -27,7 +27,7 @@ def db_int(family):
                         ref_objs = interaction.reference.all()
                         for ref_obj in ref_objs:
 				reference_set[ref_obj.name] = ref_obj.url
-			final_dict['interactions'].append({'status':interaction.status,'ref_length':len(reference_set),'references':reference_set,'name_short':interaction.name_short,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name, 'phenotype':interaction.phenotype})
+			final_dict['interactions'].append({'ref_length':len(reference_set),'references':reference_set,'name_short':interaction.name_short,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.gpcrfamily.name,'ligand':interaction.ligand.name, 'phenotype':interaction.phenotype})
 
 	else:
 		final_dict['gpcr'] = ""
@@ -36,7 +36,7 @@ def db_int(family):
                         ref_objs = interaction.reference.all()
                         for ref_obj in ref_objs:
 				reference_set[ref_obj.name] = ref_obj.url
-			final_dict['interactions'].append({'status':interaction.status,'ref_length':len(reference_set),'references':reference_set,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name, 'phenotype':interaction.phenotype})
+			final_dict['interactions'].append({'ref_length':len(reference_set),'references':reference_set,'ligand_affinity':interaction.ligand_affinity,'ligand_binding_type':interaction.ligand_binding_type,'prot':interaction.rampfamily.name,'ligand':interaction.ligand.name, 'phenotype':interaction.phenotype})
 
 	pp.pprint(final_dict)
 	return final_dict

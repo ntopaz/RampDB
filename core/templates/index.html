@@ -200,13 +200,12 @@
                 			<div ng-hide="highConf">
 						<h3 id='summary_h3'><span style=font-weight:bold>Identity with interacting domain: </span><span style=color:red> 
 						{{ confidence }}% </h3>
-               					<!-- <h3 id='summary_h3'><span style=font-weight:bold>E-Value with interacting domain: </span>
-							<span style="color:red">{{ eval }}</span>  
-							</h3>		
-                					<h3 id='summary_h3'><span style=font-weight:bold>Max Score with interacting domain: </span>
-							<span style="color:red">{{ max_score }}</span>
-							</h3>-->	
 					</div>
+					<div ng-hide="ramp_query">
+						<h3 id='summary_h3'><span style=font-weight:bold>Interaction Status: </span>
+						{{ int_status }} </h3>
+					</div>
+				
 				</div>
 			<div id="my_spinner">
 						{% endverbatim %}

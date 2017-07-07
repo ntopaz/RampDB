@@ -52,6 +52,7 @@ app.controller('myCtrl', function ($scope, $http, $sce, $window) {
 				$scope.quer_name = response.data['protein']['name'];
 				$scope.family = response.data['protein']['match']['family'];
 				$scope.family_short = response.data['protein']['match']['family_short'];
+				$scope.int_status = response.data['protein']['match']['int_status'];
 				$scope.confidence = response.data['protein']['match']['ident'];
 				$scope.eval = response.data['protein']['match']['eval'];
 				$scope.max_score = response.data['protein']['match']['max_score'];

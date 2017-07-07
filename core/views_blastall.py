@@ -105,7 +105,7 @@ def hmm_query(query, result_dict,query_name):
         profile_score = {}
         profile_quer_seq = {}
         profile_ref_seq = {}
-        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1','pth2','glucagon']
+        my_profiles = ['Ramp 1','Ramp 2','Ramp 3','CLR','CT','vip1','pth1','pth2','glucagon','VPAC2']
         fp = tempfile.NamedTemporaryFile(suffix="",dir=BASE_DIR,delete = False)
         for profile in my_profiles:
                 fp.seek(0)
@@ -193,6 +193,7 @@ def hmm_match(query,family,subj_seq, quer_seq, confidence,blast_results,result_d
 	result_dict['protein']['match']['domain_seq'] = subj_seq
 	result_dict['protein']['match']['family'] = prot_obj[0].family.name
 	result_dict['protein']['match']['family_short'] = prot_obj[0].family.name_short
+	result_dict['protein']['match']['int_status'] = prot_obj[0].family.status
 	result_dict['protein']['match']['source'] = prot_obj[0].source.url
 	result_dict['protein']['match']['organism'] = prot_obj[0].organism.name
 	return result_dict
