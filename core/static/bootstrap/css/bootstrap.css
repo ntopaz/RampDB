@@ -97,8 +97,10 @@ footer {
 	
 }
 #scrolling_table {
+	margin-top:5%;
+	margin-top:1%;
 	height:500px !important;
-	overflow-y: scroll !important;
+	overflow-y: auto !important;
 }
 #summary {
   padding-left:1%;
@@ -291,12 +293,11 @@ table {
   border-collapse: collapse;
 }
 #interaction_table {
-  margin-left:auto;
-  margin-right:auto;
   width:100%;
-  margin-top:5%;
-  margin-bottom:1%;
+  height:0px;
 }
+#my_spinner {
+  }
 #source_tbody {
   height:300px;
   overflow-y: scroll;

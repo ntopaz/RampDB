@@ -5,7 +5,8 @@ app.config(['$compileProvider',
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
 }]);
 
-app.controller('myCtrl', function ($scope, $http, $sce) {
+
+app.controller('myCtrl', function ($scope, $http, $sce, $window) {
 	$scope.loading = true;
 	$scope.gpcr_quer = false;
 	$scope.ramp_quer = false;
@@ -203,3 +204,11 @@ app.controller('myCtrl', function ($scope, $http, $sce) {
 	};	
 });
 
+app.directive('myRepeatDirective',function() {
+	return function(scope,element,attrs){		
+		if (scope.$last){
+			scope.show_element=true;
+			document.getElementById("my_spinner").style.display = "none";
+		}
+	};
+})
