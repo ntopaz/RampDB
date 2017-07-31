@@ -9,6 +9,7 @@ def load_lig_api():
 	http = urllib3.PoolManager()
 	interacting_ligands = {}
 	all_synonyms = {}
+	skip = [696, 4449, 1787, 1788,1790,1814,700,701,682]
 	targets = {"AMY1":44,"CGRP":48,"AMY2":45,"AM1":49,"AMY3":46,"AM2":50,"VPAC1":371,"PTH1":331,"PTH2":332,"Glucagon":251,"VPAC2":372,"CRF":212,"GPER/GPR30":221}
 	for complex in targets:
 		if complex not in interacting_ligands:
@@ -19,6 +20,8 @@ def load_lig_api():
 		request_data = json.loads(request.data)
 		for result in request_data:
 			ligand_int = result["ligandId"]
+			if ligand_int in skip:
+				continue
 			url="http://www.guidetopharmacology.org/services/ligands/{}".format(ligand_int)
 			lig_request = http.request("GET",url)
 			lig_request_data = json.loads(lig_request.data)
@@ -85,9 +88,20 @@ def load_lig_api():
 		for ligand_name in interacting_ligands[complex]:
 			interacting_ligands[complex][ligand_name]["synonyms"] = all_synonyms[ligand_name]
 	#interacting_ligands = ast.literal_eval(json.dumps(interacting_ligands))
+	custom_ligand = {}
+	custom_ligand["amylin"] = {"inchi_key":"PLOPBXQQPZYQFA-AXPWDRQUSA-N","chem_id":16132430}
+	custom_ligand["adrenomedullin"] = {"inchi_key":"ULCUCJFASIJEOE-NPECTJMMSA-N","chem_id":56841671}
+	custom_ligand["alpha-CGRP"] = {"inchi_key":"PBGNJGVTFINXOG-XJVRLEFXSA-N","chem_id":56841902}
+	custom_ligand["PTHrP-(1-34) (human)"] = {"inchi_key":"ZOWOHMFPXMYFKJ-WBTWNKCNSA-N","chem_id":16144017}
+	for complex in interacting_ligands:
+		for ligand in custom_ligand:
+			if ligand in interacting_ligands[complex]:
+				interacting_ligands[complex][ligand]["inchi_key"] = custom_ligand[ligand]["inchi_key"]
+				interacting_ligands[complex][ligand]["chem_id"] = custom_ligand[ligand]["chem_id"]
 	out_json = json.dumps(interacting_ligands)
 	with open("interacting_ligands.json","w") as f:
 		json.dump(interacting_ligands,f)
+	pp.pprint(interacting_ligands)
 	#load_ligands(out_json)
 	return interacting_ligands
 
