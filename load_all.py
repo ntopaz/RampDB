@@ -1,6 +1,6 @@
 import json
 from setup_interactions import load_int
-from setup_ligands import load_lig_api
+#from setup_ligands import load_lig_api
 from setup_references import load_reference
 from setup_proteins import load_proteins
 from setup_families import load_families
