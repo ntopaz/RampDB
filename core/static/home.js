@@ -9,7 +9,7 @@ app.config(['$compileProvider',
 app.controller('myCtrl', function ($scope, $http, $sce, $window) {
 	$scope.loading = true;
 	$scope.gpcr_quer = false;
-	$scope.ramp_quer = false;
+	$scope.ramp_quer = true;
 	$scope.protein_page = false;
 	$scope.ligand_page = false;
 	$scope.errorflag = false;
