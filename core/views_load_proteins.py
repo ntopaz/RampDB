@@ -17,7 +17,8 @@ def load_db(data,family_data):
 		family_name = family_data[family]["name"]
 		pdb_id = family_data[family]["pdb_id"]
 		gtp_id = family_data[family]["gtp_id"]
-		family_obj, family_created = Family.objects.get_or_create(name= family_name, name_short=family, pdb_id = pdb_id, gtp_id = gtp_id)
+		status = family_data[family]["status"]
+		family_obj, family_created = Family.objects.get_or_create(name= family_name, name_short=family, pdb_id = pdb_id, gtp_id = gtp_id, status = status)
 		if family_name in data:
 			for protein in sorted(data[family_name].keys()):
 				organism_obj, organism_created = Organism.objects.update_or_create(name=data[family_name][protein]['org'])
