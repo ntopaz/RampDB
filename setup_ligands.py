@@ -82,7 +82,7 @@ def load_lig_api():
 			for res in synonym_request_data:
 				res_name = res["name"].replace("<sup>"," ").replace("</sup>"," ").replace("<sub>"," ")
 				res_name = res_name.replace("u'","").replace("'","")
-				all_synonyms[ligand_name].append(res_name)
+				#all_synonyms[ligand_name].append(res_name)
 			#interacting_ligands[complex][ligand_name]["synonyms"] = synonyms
 	for complex in interacting_ligands:
 		for ligand_name in interacting_ligands[complex]:
@@ -98,6 +98,9 @@ def load_lig_api():
 			if ligand in interacting_ligands[complex]:
 				interacting_ligands[complex][ligand]["inchi_key"] = custom_ligand[ligand]["inchi_key"]
 				interacting_ligands[complex][ligand]["chem_id"] = custom_ligand[ligand]["chem_id"]
+		for lig in interacting_ligands[complex]:
+			if "CGRP" in lig:
+				interacting_ligands[complex][ligand]["synonyms"].append("CGRP")
 	out_json = json.dumps(interacting_ligands)
 	with open("interacting_ligands.json","w") as f:
 		json.dump(interacting_ligands,f)
