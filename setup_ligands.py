@@ -9,7 +9,7 @@ def load_lig_api():
 	http = urllib3.PoolManager()
 	interacting_ligands = {}
 	all_synonyms = {}
-	skip = [696, 4449, 1787, 1788,1790,1814,700,701,682]
+	skip = [696, 4449, 1787, 1788,1790,1814,700,701,682,692]
 	targets = {"AMY1":44,"CGRP":48,"AMY2":45,"AM1":49,"AMY3":46,"AM2":50,"VPAC1":371,"PTH1":331,"PTH2":332,"Glucagon":251,"VPAC2":372,"CRF":212,"GPER/GPR30":221}
 	for complex in targets:
 		if complex not in interacting_ligands:
