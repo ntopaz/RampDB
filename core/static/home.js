@@ -86,6 +86,7 @@ app.controller('myCtrl', function ($scope, $http, $sce, $window) {
 					}
 					else{
 						$scope.gpcr_quer = true;
+						$scope.ramp_quer = false;
 						$scope.interactions = data['interactions'];
 						interactions += "Interactions:\n";
 						interactions += "Phenotype\tProtein\tLigand\tFunction\n";
