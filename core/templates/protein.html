@@ -103,15 +103,13 @@
 				<th>Phenotype</th>
 				<th>GPCR</th>
 				<th>Ligand</th>
-				<th>Affinity (pEC<sub>50</sub>)</th>
-				<th>Type</th>
+				<th>Ligand Action</th>
 				<th>Sources</th>
 			</tr>
 			<tbody id='interactions_tr' ng-repeat="(key,object) in interactions track by $index">
 					<td> {{ object.phenotype }} </td>
 					<td> {{ object.prot }} </td>
 					<td> {{ object.ligand }} </td>
-					<td> {{ object.ligand_affinity}} </td>
 					<td> {{ object.ligand_binding_type}} </td>				
 					<td ng-init="hide_sources = true">
 					{{ object.ref_length }}
@@ -162,15 +160,13 @@
 					<th>Phenotype</th>
 					<th>RAMP</th>
 					<th>Ligand</th>
-				    <th>Affinity (pEC<sub>50</sub>)</th>
-					<th>Type</th>
+					<th>Ligand Action</th>
 					<th>Sources</th>
 				</tr>
 				<tbody id='interactions_tr' ng-repeat="(phenotype,object) in interactions track by $index">
 					<td> {{ object.phenotype }} </td>
 					<td> {{ object.prot }} </td>
 					<td> {{ object.ligand }} </td>
-					<td> {{ object.ligand_affinity}} </td>
 					<td> {{ object.ligand_binding_type}} </td>
 					<td ng-init="hide_sources = true">
 					{{ object.ref_length }}	
