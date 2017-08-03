@@ -204,7 +204,7 @@ def ligand_search(ligand, t_threshold):
 	result_dict['ligand'] = {'query_name':ligand, 'match': {}}
 	found_result = False
 	for lig_obj in ligand_objects:
-		if ligand.lower() == lig_obj.name.lower() or ligand.lower() in lig_obj.name.lower():
+		if ligand.lower() == lig_obj.name.lower():
 			found_result = True
 			if lig_obj.chem_id != '0':
 				match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(lig_obj.chem_id)
@@ -239,8 +239,7 @@ def ligand_search(ligand, t_threshold):
 			return result_dict
 	if not found_result:
 		for lig_obj in ligand_objects:
-			synonyms = lig_obj.synonyms
-			if ligand in synonyms:
+			if ligand.lower() in lig_obj.name.lower():
 				found_result = True
 				if lig_obj.chem_id != '0':
 					match_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/JSON".format(lig_obj.chem_id)
