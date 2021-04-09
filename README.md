@@ -1,4 +1,4 @@
-# Rampdb
+# About RampDB 
 
 RampDB is a central repository for:
 
@@ -16,21 +16,21 @@ RampDB was developed using the following stack:
 * Front End: HTML/CSS/AngularJS
 * Server: Apache2.4
 ```
-To flush current DB content and repopulate:
 
+Flushes current DB content
 ```
-(Flushes current DB content)
-
 python manage.py flush
-
-(Loads all proteins, interactions, ligands and pre-existing reference names into DB)
-python load_all.py output.json references.json
-
-(loads all text-mined sources into DB)
-
-python upload_int_sources.py text_mining_sources.json
-
 ```
+Loads all proteins, interactions, ligands and pre-existing reference names into DB
+```
+python load_all.py output.json references.json 
+```
+
+Loads all text-mined sources into DB
+```
+python upload_int_sources.py text_mining_sources.json 
+```
+
 
 # Citation Information:
 
