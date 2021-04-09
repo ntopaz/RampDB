@@ -1,5 +1,7 @@
 # About RampDB 
 
+URL: http://rampdb.biology.gatech.edu/
+
 RampDB is a central repository for:
 
 1. Exploring known information regarding Receptor Activity Modifying proteins (RAMPs), G-Protein Coupled Receptors (GPCRs) and associated ligands
