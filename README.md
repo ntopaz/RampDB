@@ -2,6 +2,8 @@
 
 URL: http://rampdb.biology.gatech.edu/
 
+Data Model and Prediction Algorithm: http://rampdb.biology.gatech.edu/about/
+
 RampDB is a central repository for:
 
 1. Exploring known information regarding Receptor Activity Modifying proteins (RAMPs), G-Protein Coupled Receptors (GPCRs) and associated ligands
@@ -32,7 +34,6 @@ Loads all text-mined sources into DB
 ```
 python upload_int_sources.py text_mining_sources.json 
 ```
-
 
 # Citation Information:
 
