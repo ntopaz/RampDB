@@ -1,3 +1,5 @@
+# This project is no longer maintained
+
 # About RampDB 
 
 URL: http://rampdb.biology.gatech.edu/
